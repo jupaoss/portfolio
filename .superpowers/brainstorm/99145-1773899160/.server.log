@@ -1,0 +1,7 @@
+{"type":"server-started","port":55914,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:55914","screen_dir":"/Users/julpatin2/Desktop/portfolio/.superpowers/brainstorm/99145-1773899160"}
+{"type":"screen-added","file":"/Users/julpatin2/Desktop/portfolio/.superpowers/brainstorm/99145-1773899160/header-layout.html"}
+{"source":"user-event","type":"click","text":"B\n    \n      Siempre negro en Gallery, siempre dinámico en ProjectDetail\n      El componente acepta un prop variant: \"light\" | \"dynamic\". En \"dynamic\", ProjectDetail le pasa los colores vía props; en \"light\" siempre negro.","choice":"context","id":null,"timestamp":1773899274130}
+{"source":"user-event","type":"click","text":"B\n    \n      Siempre negro en Gallery, siempre dinámico en ProjectDetail\n      El componente acepta un prop variant: \"light\" | \"dynamic\". En \"dynamic\", ProjectDetail le pasa los colores vía props; en \"light\" siempre negro.","choice":"context","id":null,"timestamp":1773899283599}
+{"source":"user-event","type":"click","text":"B\n    \n      Siempre negro en Gallery, siempre dinámico en ProjectDetail\n      El componente acepta un prop variant: \"light\" | \"dynamic\". En \"dynamic\", ProjectDetail le pasa los colores vía props; en \"light\" siempre negro.","choice":"context","id":null,"timestamp":1773899283758}
+{"type":"screen-added","file":"/Users/julpatin2/Desktop/portfolio/.superpowers/brainstorm/99145-1773899160/waiting.html"}
+{"type":"server-stopped","reason":"idle timeout"}

@@ -1,0 +1,29 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+@import './tokens.css';
+
+html {
+  font-family: 'Space Grotesk', sans-serif;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow: hidden;
+  height: 100dvh;
+  width: 100vw;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Hide custom cursor on touch devices */
+@media (pointer: coarse) {
+  [data-name="Dragger"] {
+    display: none !important;
+  }
+}

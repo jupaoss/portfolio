@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "Bash(grep -rh \"size=\\\\|width:\\\\|height:\\\\|padding:\\\\|margin:\\\\|gap:\\\\|border\" /Users/julpatin2/Desktop/portfolio/src/styles --include=*.css)",
+      "Bash(grep -roh [[0-9.a-z%-]*] /Users/julpatin2/Desktop/portfolio/src/app/pages/Gallery.tsx /Users/julpatin2/Desktop/portfolio/src/app/pages/ProjectDetail.tsx /Users/julpatin2/Desktop/portfolio/src/app/components/SiteHeader.tsx)"
+    ]
+  }
+}

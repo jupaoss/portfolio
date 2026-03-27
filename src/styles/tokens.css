@@ -1,0 +1,138 @@
+/* ─────────────────────────────────────────────────────────────
+   Design System — Julian Patiño Portfolio
+   Single source of truth for all design tokens.
+   Extends Tailwind v4's @theme so every token is available
+   as a Tailwind utility (e.g. bg-brand-ink, text-brand-subtle).
+───────────────────────────────────────────────────────────── */
+
+@theme inline {
+
+  /* ── Colors ─────────────────────────────────────────────── */
+
+  /* Brand neutrals */
+  --color-brand-ink:      #131313; /* near-black — selection, primary text */
+  --color-brand-surface:  #ffffff; /* page background                      */
+  --color-brand-subtle:   #eaeaea; /* light gray  — footer, secondary text  */
+  --color-brand-icon:     #404040; /* dark gray   — icons, dividers         */
+  --color-brand-grid:     #aaaaaa; /* dot grid, decorative                 */
+
+  /* UI feedback */
+  --color-brand-destructive: #d4183d;
+
+  /* ── Typography ─────────────────────────────────────────── */
+
+  --font-brand: 'Space Grotesk', sans-serif;
+
+  /* Scale */
+  --text-brand-display: 80px;  /* hero title    */
+  --text-brand-h1:      48px;  /* project title */
+  --text-brand-h2:      36px;  /* section title */
+  --text-brand-body:    16px;  /* body copy     */
+  --text-brand-label:   14px;  /* labels, roles */
+  --text-brand-caption: 12px;  /* nav, footer   */
+
+  /* Weights */
+  --font-weight-brand-normal: 400;
+  --font-weight-brand-medium: 500;
+  --font-weight-brand-bold:   700;
+
+  /* Leading */
+  --leading-brand-display: 0.86; /* tight — large hero text  */
+  --leading-brand-tight:   1.1;  /* project titles           */
+  --leading-brand-body:    1.6;  /* descriptions             */
+  --leading-brand-ui:      1;    /* nav, labels (leading-none) */
+
+  /* Tracking */
+  --tracking-brand-ui: 0.48px; /* uppercase labels, nav links */
+
+  /* ── Spacing ─────────────────────────────────────────────── */
+
+  --spacing-brand-1:  4px;
+  --spacing-brand-2:  8px;
+  --spacing-brand-3:  12px;
+  --spacing-brand-4:  16px;  /* image margins, inner gaps    */
+  --spacing-brand-6:  24px;  /* header padding, column gap   */
+  --spacing-brand-8:  32px;  /* nav-to-hero gap              */
+  --spacing-brand-10: 40px;  /* desktop image-to-image gap   */
+  --spacing-brand-20: 80px;  /* mobile section gap           */
+  --spacing-brand-30: 120px; /* desktop section gap          */
+
+  /* ── Layout ─────────────────────────────────────────────── */
+
+  /* Header */
+  --size-brand-nav-desktop: 80px;
+  --size-brand-nav-mobile:  60px;
+  --size-brand-logo-h:      20px;
+  --size-brand-logo-w:      58.962px;
+
+  /* Header columns (from left edge of container) */
+  --layout-brand-col-logo:     0px;    /* logo                             */
+  --layout-brand-col-subtitle: 232px;  /* "Software & Experience Designer" */
+  --layout-brand-col-location: 75%;    /* location pin                     */
+
+  /* Container inset (desktop) */
+  --layout-brand-inset: 24px;
+
+  /* Gallery carousel */
+  --size-brand-card-w: 380px;
+  --size-brand-card-h: 476px;
+
+  /* Hero mobile */
+  --size-brand-hero-mobile-top: 92px;  /* nav 60px + 32px gap */
+  --size-brand-hero-mobile-h:   410px;
+
+  /* ── Z-index ─────────────────────────────────────────────── */
+
+  --z-brand-overlay: 40;
+  --z-brand-gallery: 10;
+  /* nav uses Tailwind's z-50 (50) */
+
+  /* ── Border radius ──────────────────────────────────────── */
+
+  --radius-brand-sm: 4px;
+  --radius-brand-md: 8px;
+  --radius-brand-lg: 10px;
+
+  /* ── Motion ─────────────────────────────────────────────── */
+
+  /* Primary easing — used for all hero / carousel transitions */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Duration scale */
+  --duration-brand-fast:   0.25s; /* quick resize            */
+  --duration-brand-short:  0.35s; /* text transitions        */
+  --duration-brand-base:   0.4s;  /* carousel image fade     */
+  --duration-brand-slot:   0.55s; /* slot-machine spin       */
+  --duration-brand-hero:   0.58s; /* hero zoom on page enter */
+  --duration-brand-snap:   0.65s; /* carousel snap-to        */
+  --duration-brand-colors: 0.3s;  /* header color shifts     */
+
+}
+
+/* ── Slot-machine CTA animations ──────────────────────────── */
+/* Used by SlotCta component for letter-spin hover effect.    */
+
+@keyframes slot-spin-up {
+  from { transform: translateY(0);    }
+  to   { transform: translateY(-1em); }
+}
+
+@keyframes slot-spin-down {
+  from { transform: translateY(-1em); }
+  to   { transform: translateY(0);    }
+}
+
+.slot-spin-up {
+  animation: slot-spin-up var(--duration-brand-slot) var(--ease-brand) both;
+}
+
+.slot-spin-down {
+  animation: slot-spin-down var(--duration-brand-slot) var(--ease-brand) both;
+}
+
+/* ── Global selection color ───────────────────────────────── */
+
+::selection {
+  background: var(--color-brand-ink);
+  color: var(--color-brand-surface);
+}

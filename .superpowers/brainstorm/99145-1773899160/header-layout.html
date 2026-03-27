@@ -1,0 +1,112 @@
+<h2>Estructura del nuevo header compartido</h2>
+<p class="subtitle">Así quedaría el componente <code>SiteHeader</code> con los 4 elementos alineados al top</p>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">SiteHeader — alineado al top</div>
+    <div class="mockup-body" style="padding: 0;">
+      <div style="
+        font-family: 'Space Grotesk', sans-serif;
+        background: white;
+        padding: 24px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
+      ">
+        <!-- Logo -->
+        <div style="display: flex; align-items: flex-start; gap: 0; min-width: 59px;">
+          <svg width="59" height="20" viewBox="0 0 58.9619 20" fill="none">
+            <text x="0" y="16" font-family="serif" font-size="16" fill="#404040">JPO</text>
+          </svg>
+        </div>
+
+        <!-- Software & Experience Designer -->
+        <div style="
+          font-size: 12px;
+          text-transform: uppercase;
+          line-height: 1.3;
+          color: #404040;
+          position: absolute;
+          left: 232px;
+        ">
+          <div>Software &amp; Experience</div>
+          <div>Designer.</div>
+        </div>
+
+        <!-- MDE, COL -->
+        <div style="
+          font-size: 12px;
+          text-transform: uppercase;
+          color: #404040;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          line-height: 1;
+        ">
+          <svg width="11" height="13" viewBox="0 0 11 13" fill="none">
+            <ellipse cx="5.5" cy="5.5" rx="5.5" ry="5.5" fill="#404040"/>
+            <line x1="5.5" y1="9" x2="5.5" y2="13" stroke="#404040" stroke-width="2"/>
+          </svg>
+          MDE, COL
+        </div>
+
+        <!-- IN BE MAIL -->
+        <div style="
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.48px;
+          display: flex;
+          gap: 24px;
+          align-items: flex-start;
+          color: #404040;
+          line-height: 1;
+        ">
+          <span>IN</span>
+          <span>BE</span>
+          <span>MAIL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Estructura del componente</h3>
+  <pre style="background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;font-size:12px;overflow:auto"><code>&lt;header style="display:flex; align-items:flex-start; padding: 24px"&gt;
+  &lt;Logo /&gt;                          {/* left-0 */}
+  &lt;SoftwareExperienceText /&gt;        {/* left-[232px] */}
+  &lt;Location /&gt;                      {/* left: 75% */}
+  &lt;SocialLinks /&gt;                   {/* right-0 */}
+&lt;/header&gt;</code></pre>
+</div>
+
+<div class="section">
+  <h3>Una pregunta antes de codear</h3>
+  <p>En <strong>Gallery (home)</strong>, el header siempre tiene texto negro sobre fondo blanco. En <strong>ProjectDetail</strong>, los colores cambian dinámicamente según el scroll (negro/blanco según la sección).</p>
+  <p>¿Cómo manejamos los colores en el componente compartido?</p>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="props" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Props de color</h3>
+      <p>El componente acepta <code>textColor</code> y <code>logoColor</code> como props. Gallery los fija en negro. ProjectDetail los pasa dinámicamente desde su scroll logic.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="context" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Siempre negro en Gallery, siempre dinámico en ProjectDetail</h3>
+      <p>El componente acepta un prop <code>variant: "light" | "dynamic"</code>. En "dynamic", ProjectDetail le pasa los colores vía props; en "light" siempre negro.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="refs" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Refs hacia afuera</h3>
+      <p>El componente expone refs para cada elemento (logoRef, textRef, etc.) igual que hoy en ProjectDetail. Gallery simplemente no los usa.</p>
+    </div>
+  </div>
+</div>
