@@ -123,11 +123,11 @@
 }
 
 .slot-spin-up {
-  animation: slot-spin-up var(--duration-brand-slot) var(--ease-brand) both;
+  animation: slot-spin-up var(--duration-brand-slot) var(--ease-brand) backwards;
 }
 
 .slot-spin-down {
-  animation: slot-spin-down var(--duration-brand-slot) var(--ease-brand) both;
+  animation: slot-spin-down var(--duration-brand-slot) var(--ease-brand) backwards;
 }
 
 /* ── Global selection color ───────────────────────────────── */

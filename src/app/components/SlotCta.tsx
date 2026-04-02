@@ -49,8 +49,7 @@ export function SlotCta({ text, as: Tag = "span", href, className = "", style, o
               style={{
                 display: "flex",
                 flexDirection: "column",
-                // Initial reel position: up-reels start at top (y=0), down-reels start at bottom (y=-3em)
-                transform: isUp ? "translateY(0)" : `translateY(${-SPINS}em)`,
+                transform: "translateY(0)",
                 animationDelay: `${i * 0.03}s`,
               }}
             >

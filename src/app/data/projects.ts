@@ -1,4 +1,8 @@
-import imgImage from "@/assets/home/project_1_better_together/c89e008f1c0974e021ee6f4e45d74cff3d25471b.png";
+import imgAndroidBeto from "../../../graphic-assets/android-beto/01_beto_hero_image.png";
+import imgCarpooling from "../../../graphic-assets/carpooling-app/01_carpooling_app_hero_image.png";
+import imgMariaHache from "../../../graphic-assets/maria-hache/01_maria_hache_hero_image.png";
+import imgModularStoryboards from "../../../graphic-assets/modular-storyboards/01_modular_storyboards_hero_image.png";
+import imgWinterCircus from "../../../graphic-assets/wintercircus/01_wintercircus_hero_image.png";
 
 export type Project = {
   id: string;
@@ -9,39 +13,33 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    id: "1",
+    id: "android-beto",
     title: "BETTER TOGETHER",
     platform: "Android",
-    image: imgImage,
+    image: imgAndroidBeto,
   },
   {
-    id: "2",
-    title: "URBAN PULSE",
-    platform: "iOS",
-    image: imgImage,
-  },
-  {
-    id: "3",
-    title: "MINIMAL SPACES",
-    platform: "Web",
-    image: imgImage,
-  },
-  {
-    id: "4",
-    title: "CREATIVE FLOW",
-    platform: "Desktop",
-    image: imgImage,
-  },
-  {
-    id: "5",
-    title: "DIGITAL DREAMS",
+    id: "carpooling-app",
+    title: "CARPOOLING APP",
     platform: "Mobile",
-    image: imgImage,
+    image: imgCarpooling,
   },
   {
-    id: "6",
-    title: "MODERN DESIGN",
-    platform: "Android",
-    image: imgImage,
+    id: "maria-hache",
+    title: "MARIA HACHE",
+    platform: "Web",
+    image: imgMariaHache,
+  },
+  {
+    id: "modular-storyboards",
+    title: "MODULAR STORYBOARDS",
+    platform: "Desktop",
+    image: imgModularStoryboards,
+  },
+  {
+    id: "wintercircus",
+    title: "WINTER CIRCUS",
+    platform: "Web",
+    image: imgWinterCircus,
   },
 ];
