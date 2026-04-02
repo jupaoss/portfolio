@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import svgPaths from "../../imports/svg-za68zag2ck";
+import svgPaths from "@/assets/iconPaths";
 import { CtaIn } from "./CtaIn";
 import { CtaBe } from "./CtaBe";
 import { CtaMail } from "./CtaMail";

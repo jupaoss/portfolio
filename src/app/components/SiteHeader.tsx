@@ -1,6 +1,6 @@
 import React from "react";
 import { SlotCta } from "./SlotCta";
-import svgPaths from "../../imports/svg-axxyf4m9e8";
+import svgPaths from "@/assets/headerPaths";
 
 interface SiteHeaderLightProps {
   variant: "light";
@@ -26,7 +26,7 @@ export function SiteHeader(props: SiteHeaderProps) {
   const isDynamic = props.variant === "dynamic";
   const d = isDynamic ? (props as SiteHeaderDynamicProps) : null;
 
-  const logoColor = isDynamic ? (d!.isDarkLogo ? "black" : "white") : "#404040";
+  const logoColor = isDynamic ? (d!.isDarkLogo ? "black" : "white") : "black";
   const textColor = isDynamic
     ? (d!.isDarkText ? "text-black" : "text-white")
     : "text-black";
@@ -35,7 +35,7 @@ export function SiteHeader(props: SiteHeaderProps) {
     : "text-black";
   const locationColor = isDynamic
     ? (d!.isDarkLocation ? "black" : "white")
-    : "#404040";
+    : "black";
   const locationTextColor = isDynamic
     ? (d!.isDarkLocation ? "text-black" : "text-white")
     : "text-black";
@@ -44,7 +44,7 @@ export function SiteHeader(props: SiteHeaderProps) {
 
   return (
     <div
-      className="fixed left-4 right-4 lg:left-6 lg:right-6 top-0 z-50 flex items-start pt-[24px] pb-[24px]"
+      className="fixed left-4 right-4 lg:left-6 lg:right-6 top-0 z-[110] flex items-start pt-[24px] pb-[24px]"
       data-name="site-header"
     >
       {/* Logo */}
@@ -81,11 +81,11 @@ export function SiteHeader(props: SiteHeaderProps) {
       {/* MDE, COL */}
       <div
         ref={d?.locationRef}
-        className="absolute hidden min-[960px]:flex items-start gap-[8px]"
+        className="absolute hidden min-[960px]:flex items-center gap-[8px]"
         style={{ left: "75%" }}
         data-name="location"
       >
-        <div className="h-[13px] w-[11px] relative shrink-0 mt-[1px]">
+        <div className="h-[13px] w-[11px] relative shrink-0">
           <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 11 13">
             <path d={svgPaths.p122a1c00} fill={locationColor} id="Ellipse 4405" className={transition} />
           </svg>
@@ -103,7 +103,6 @@ export function SiteHeader(props: SiteHeaderProps) {
       >
         <SlotCta text="IN" as="a" href="https://www.linkedin.com" />
         <SlotCta text="BE" as="a" href="https://www.behance.net" />
-        <SlotCta text="MAIL" as="a" href="mailto:julianpatinoossa@gmail.com" />
       </div>
     </div>
   );
