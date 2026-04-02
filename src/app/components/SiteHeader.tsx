@@ -26,7 +26,7 @@ export function SiteHeader(props: SiteHeaderProps) {
   const isDynamic = props.variant === "dynamic";
   const d = isDynamic ? (props as SiteHeaderDynamicProps) : null;
 
-  const logoColor = isDynamic ? (d!.isDarkLogo ? "black" : "white") : "black";
+  const logoColor = isDynamic ? (d!.isDarkLogo ? "black" : "white") : "#404040";
   const textColor = isDynamic
     ? (d!.isDarkText ? "text-black" : "text-white")
     : "text-black";
