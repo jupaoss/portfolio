@@ -8,20 +8,19 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 import { SiteHeader } from "../components/SiteHeader";
-import { SlotCta } from "../components/SlotCta";
 import { DotGrid } from "../components/DotGrid";
 import { SplitLines } from "../components/SplitLines";
 import { SiteFooter } from "../components/SiteFooter";
-import imgCollage from "../../../graphic-assets/android-beto/02_beto_collage.png";
-import imgP1_1 from "../../../graphic-assets/android-beto/03_beto_intro.png";
-import imgP1_2 from "../../../graphic-assets/android-beto/04_beto_home.png";
-import imgP1_3 from "../../../graphic-assets/android-beto/05_beto_horizontal_scroll.png";
-import imgP1_4 from "../../../graphic-assets/android-beto/06_beto_particles.png";
-import imgP1_5 from "../../../graphic-assets/android-beto/07_beto_pixel_watch.png";
-import imgP1_6 from "../../../graphic-assets/android-beto/08_beto_chromecast.png";
-import imgP1_7 from "../../../graphic-assets/android-beto/09_beto_pixel_phone.png";
-import imgP1_8 from "../../../graphic-assets/android-beto/10_beto_intro_home_mobile.png";
-import imgP1_9 from "../../../graphic-assets/android-beto/11_beto_escenas.png";
+import imgCollage from "../../../graphic-assets/project_1_better_together/02_beto_collage.png";
+import imgP1_1 from "../../../graphic-assets/project_1_better_together/03_intro_beto.mp4";
+import imgP1_2 from "../../../graphic-assets/project_1_better_together/04_beto_home.mp4";
+import imgP1_3 from "../../../graphic-assets/project_1_better_together/08_devices.mp4";
+import imgP1_4 from "../../../graphic-assets/project_1_better_together/06_beto_particles.png";
+import imgP1_5 from "../../../graphic-assets/project_1_better_together/07_beto_split_image.png";
+import imgP1_6 from "../../../graphic-assets/project_1_better_together/09_beto_chromecast.png";
+import imgP1_7 from "../../../graphic-assets/project_1_better_together/11_beto_story_detail.mp4";
+import imgP1_8 from "../../../graphic-assets/project_1_better_together/12_beto_story_detail.png";
+import imgP1_9 from "../../../graphic-assets/project_1_better_together/10_beto_devices.png";
 
 
 
@@ -62,9 +61,6 @@ export default function BetterTogether() {
   const [isDarkText, setIsDarkText] = useState(false);
   const [isDarkMenu, setIsDarkMenu] = useState(false);
   const [isDarkLocation, setIsDarkLocation] = useState(false);
-  const [isDarkFooterCopyright, setIsDarkFooterCopyright] = useState(false);
-  const [isDarkFooterAvailability, setIsDarkFooterAvailability] = useState(false);
-  const [isDarkFooterAbout, setIsDarkFooterAbout] = useState(false);
   const lightSectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageSectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -72,9 +68,6 @@ export default function BetterTogether() {
   const textRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
-  const footerCopyrightRef = useRef<HTMLDivElement>(null);
-  const footerAvailabilityRef = useRef<HTMLDivElement>(null);
-  const footerAboutRef = useRef<HTMLDivElement>(null);
   // Ref for imperative exit animation
   const heroRef = useRef<HTMLDivElement>(null);
   const nextProjectImageRef = useRef<HTMLDivElement>(null);
@@ -240,20 +233,12 @@ export default function BetterTogether() {
       const textElement = textRef.current;
       const menuElement = menuRef.current;
       const locationElement = locationRef.current;
-      const footerCopyrightElement = footerCopyrightRef.current;
-      const footerAvailabilityElement = footerAvailabilityRef.current;
-      const footerAboutElement = footerAboutRef.current;
-
-      if (!logoElement || !textElement || !menuElement || !locationElement ||
-          !footerCopyrightElement || !footerAvailabilityElement || !footerAboutElement) return;
+      if (!logoElement || !textElement || !menuElement || !locationElement) return;
 
       const logoRect = logoElement.getBoundingClientRect();
       const textRect = textElement.getBoundingClientRect();
       const menuRect = menuElement.getBoundingClientRect();
       const locationRect = locationElement.getBoundingClientRect();
-      const footerCopyrightRect = footerCopyrightElement.getBoundingClientRect();
-      const footerAvailabilityRect = footerAvailabilityElement.getBoundingClientRect();
-      const footerAboutRect = footerAboutElement.getBoundingClientRect();
 
       const overlaps = (elementRect: DOMRect, refs: (HTMLDivElement | null)[]) =>
         refs.some(ref => {
@@ -275,9 +260,6 @@ export default function BetterTogether() {
       // Other elements react to both light sections and project images
       setIsDarkText(overlaps(textRect, allContentRefs));
       setIsDarkLocation(overlaps(locationRect, allContentRefs));
-      setIsDarkFooterCopyright(overlaps(footerCopyrightRect, allContentRefs));
-      setIsDarkFooterAvailability(overlaps(footerAvailabilityRect, allContentRefs));
-      setIsDarkFooterAbout(overlaps(footerAboutRect, allContentRefs));
     };
 
     // Initial check
@@ -476,23 +458,30 @@ export default function BetterTogether() {
 
       {/* Images 1-2 */}
       <div className="flex flex-col gap-4 mt-[80px] px-4">
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_1} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_2} />
+        <video data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" src={imgP1_1} autoPlay muted loop playsInline />
+        <video data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" src={imgP1_2} autoPlay muted loop playsInline />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_8} />
+      </div>
+
+      <div className="mt-[80px] px-4">
+        <img data-scroll-img className="block w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_4} />
+      </div>
+
+      <div className="mt-[80px] overflow-hidden max-[449px]:w-full min-[450px]:px-4">
+        <img data-scroll-img alt="" className="h-auto pointer-events-none rounded-2xl max-[449px]:w-full min-[450px]:w-full" src={imgP1_5} />
       </div>
 
       {/* Images 3-6 */}
       <div className="flex flex-col gap-4 mt-[80px] px-4">
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_3} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_4} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_5} />
+        <video data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" src={imgP1_3} autoPlay muted loop playsInline />
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_6} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_9} />
       </div>
 
       {/* Images 7-9 */}
       <div className="flex flex-col gap-4 mt-4 px-4">
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_7} />
+        <video autoPlay muted loop playsInline data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" src={imgP1_7} />
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_8} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_9} />
       </div>
 
       {/* Impact / Stats */}
@@ -542,12 +531,6 @@ export default function BetterTogether() {
           <p className="font-['Space_Grotesk',sans-serif] font-medium text-[14px] uppercase text-[#eaeaea] mt-2">— {nextProject.platform}</p>
         </div>
       </div>
-
-      {/* Footer */}
-      <div className="px-4 py-6 flex justify-between items-center font-['Space_Grotesk',sans-serif] text-[14px] text-[#eaeaea] uppercase">
-        <span>©2026</span>
-        <a href="mailto:julianpatinoossa@gmail.com" className="underline [text-decoration-skip-ink:none] decoration-solid">julianpatinoossa@gmail.com</a>
-      </div>
     </>
   );
 
@@ -579,7 +562,7 @@ export default function BetterTogether() {
 
       {/* Project Name - Column 3 (left-aligned) */}
       <div className="-translate-y-1/2 absolute flex flex-col gap-2 items-start left-[256px] top-1/2 w-[451px] z-20" data-name="project name">
-        <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[0.86] text-white text-[80px] w-full">{project.title}</p>
+        <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full">{project.title}</p>
         <p className="font-['Space_Grotesk',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
       </div>
 
@@ -643,23 +626,30 @@ export default function BetterTogether() {
 
         {/* Images 1–2 */}
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[0] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_1} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_2} />
+          <video data-scroll-img className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_1} autoPlay muted loop playsInline />
+          <video data-scroll-img className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_2} autoPlay muted loop playsInline />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_8} />
+        </div>
+
+        <div className="mx-[256px]">
+          <img data-scroll-img alt="" className="block w-full h-auto pointer-events-none rounded-2xl" src={imgP1_4} />
+        </div>
+
+        <div className="mx-6">
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_5} />
         </div>
 
         {/* Images 3–6 */}
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[1] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_3} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_4} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_5} />
+          <video data-scroll-img className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_3} autoPlay muted loop playsInline />
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_6} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_9} />
         </div>
 
         {/* Images 7–9 */}
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[2] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_7} />
+          <video autoPlay muted loop playsInline data-scroll-img className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_7} />
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_8} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_9} />
         </div>
 
         {/* Impact */}
@@ -725,7 +715,7 @@ export default function BetterTogether() {
           className="absolute top-1/2 -translate-y-1/2 pointer-events-none"
           style={{ left: "256px" }}
         >
-          <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[62px] text-[80px] text-white">
+          <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[62px] text-[64px] text-white">
             {nextProject.title}
           </p>
           <div className="flex flex-col font-['Space_Grotesk',sans-serif] font-medium justify-end leading-[0] text-[#eaeaea] text-[14px] uppercase mt-[8px]">
@@ -733,26 +723,6 @@ export default function BetterTogether() {
           </div>
         </div>
       </div>
-      </div>
-
-      {/* Footer */}
-      <div className="fixed left-4 right-4 bottom-6 z-40 lg:left-6 lg:right-6" data-name="Footer">
-        {/* Available for freelance - Column 10 (left-aligned) */}
-        <div className={`absolute left-1/2 -translate-x-1/2 md:left-[232px] md:translate-x-0 flex flex-col font-['Space_Grotesk',sans-serif] font-normal justify-end leading-[normal] not-italic text-[12px] bottom-0 uppercase whitespace-nowrap transition-colors duration-300 ${isDarkFooterAvailability ? "text-black" : "text-[#eaeaea]"}`} ref={el => { footerAvailabilityRef.current = el; }}>
-          <p className="mb-0">available for freelance</p>
-          <p className="[text-decoration-skip-ink:none] decoration-solid underline">julianpatinoossa@gmail.com</p>
-        </div>
-
-        {/* Copyright - Column 3 (left-aligned with Software & Experience) */}
-        <div className={`absolute flex flex-col font-['Space_Grotesk',sans-serif] font-normal justify-end leading-[0] left-[232px] md:left-0 text-[12px] bottom-0 uppercase whitespace-nowrap transition-colors duration-300 ${isDarkFooterCopyright ? "text-black" : "text-[#eaeaea]"}`} ref={el => { footerCopyrightRef.current = el; }}>
-          <p className="leading-[normal]">©2026</p>
-        </div>
-
-        {/* About - Column 12 (right-aligned) */}
-        <div className={`absolute flex flex-col items-end justify-end right-0 bottom-0 transition-colors duration-300 ${isDarkFooterAbout ? "text-black" : "text-[#eaeaea]"}`} data-name="about" ref={el => { footerAboutRef.current = el; }}>
-          <SlotCta text="WORK" className="text-[12px]" onClick={() => navigate("/")} />
-          <SlotCta text="ABOUT" className="text-[12px]" onClick={() => navigate("/about")} />
-        </div>
       </div>
     </>
   );
@@ -765,7 +735,7 @@ export default function BetterTogether() {
     >
       <DotGrid fixed />
       {isMobile ? mobileLayout : desktopLayout}
-      <SiteFooter />
+      <SiteFooter theme="dark" onWorkClick={handleLogoClick} />
     </div>
   );
 }

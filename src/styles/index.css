@@ -1,7 +1,317 @@
-@import './fonts.css';
-@import './tailwind.css';
-@import './theme.css';
-@import './tokens.css';
+/* ═══════════════════════════════════════════════════════════════
+   Design System — Julian Patiño Portfolio
+   Single source of truth for all styles, tokens, and animations.
+   ═══════════════════════════════════════════════════════════════ */
+
+
+/* ── 1. External Imports ─────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
+@import 'tailwindcss' source(none);
+@source '../**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+
+/* ── 2. Tailwind Variants ────────────────────────────────────── */
+
+@custom-variant dark (&:is(.dark *));
+
+
+/* ── 3. Component Theme Variables (:root / .dark) ────────────── */
+/* shadcn/radix UI semantic tokens — consumed via @theme below.  */
+
+:root {
+  --font-size:                 16px;
+  --background:                #ffffff;
+  --foreground:                oklch(0.145 0 0);
+  --card:                      #ffffff;
+  --card-foreground:           oklch(0.145 0 0);
+  --popover:                   oklch(1 0 0);
+  --popover-foreground:        oklch(0.145 0 0);
+  --primary:                   #030213;
+  --primary-foreground:        oklch(1 0 0);
+  --secondary:                 oklch(0.95 0.0058 264.53);
+  --secondary-foreground:      #030213;
+  --muted:                     #ececf0;
+  --muted-foreground:          #717182;
+  --accent:                    #e9ebef;
+  --accent-foreground:         #030213;
+  --destructive:               #d4183d;
+  --destructive-foreground:    #ffffff;
+  --border:                    rgba(0, 0, 0, 0.1);
+  --input:                     transparent;
+  --input-background:          #f3f3f5;
+  --switch-background:         #cbced4;
+  --font-weight-medium:        500;
+  --font-weight-normal:        400;
+  --ring:                      oklch(0.708 0 0);
+  --chart-1:                   oklch(0.646 0.222 41.116);
+  --chart-2:                   oklch(0.6 0.118 184.704);
+  --chart-3:                   oklch(0.398 0.07 227.392);
+  --chart-4:                   oklch(0.828 0.189 84.429);
+  --chart-5:                   oklch(0.769 0.188 70.08);
+  --radius:                    0.625rem;
+  --sidebar:                   oklch(0.985 0 0);
+  --sidebar-foreground:        oklch(0.145 0 0);
+  --sidebar-primary:           #030213;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent:            oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border:            oklch(0.922 0 0);
+  --sidebar-ring:              oklch(0.708 0 0);
+}
+
+.dark {
+  --background:                oklch(0.145 0 0);
+  --foreground:                oklch(0.985 0 0);
+  --card:                      oklch(0.145 0 0);
+  --card-foreground:           oklch(0.985 0 0);
+  --popover:                   oklch(0.145 0 0);
+  --popover-foreground:        oklch(0.985 0 0);
+  --primary:                   oklch(0.985 0 0);
+  --primary-foreground:        oklch(0.205 0 0);
+  --secondary:                 oklch(0.269 0 0);
+  --secondary-foreground:      oklch(0.985 0 0);
+  --muted:                     oklch(0.269 0 0);
+  --muted-foreground:          oklch(0.708 0 0);
+  --accent:                    oklch(0.269 0 0);
+  --accent-foreground:         oklch(0.985 0 0);
+  --destructive:               oklch(0.396 0.141 25.723);
+  --destructive-foreground:    oklch(0.637 0.237 25.331);
+  --border:                    oklch(0.269 0 0);
+  --input:                     oklch(0.269 0 0);
+  --ring:                      oklch(0.439 0 0);
+  --font-weight-medium:        500;
+  --font-weight-normal:        400;
+  --chart-1:                   oklch(0.488 0.243 264.376);
+  --chart-2:                   oklch(0.696 0.17 162.48);
+  --chart-3:                   oklch(0.769 0.188 70.08);
+  --chart-4:                   oklch(0.627 0.265 303.9);
+  --chart-5:                   oklch(0.645 0.246 16.439);
+  --sidebar:                   oklch(0.205 0 0);
+  --sidebar-foreground:        oklch(0.985 0 0);
+  --sidebar-primary:           oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent:            oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border:            oklch(0.269 0 0);
+  --sidebar-ring:              oklch(0.439 0 0);
+}
+
+
+/* ── 4. Tailwind Theme ───────────────────────────────────────── */
+/* All @theme inline tokens are available as Tailwind utilities. */
+
+@theme inline {
+
+  /* ── 4a. Brand Colors ──────────────────────────────────────── */
+
+  --color-brand-ink:       #131313; /* near-black  — selection, primary text */
+  --color-brand-surface:   #ffffff; /* page background                       */
+  --color-brand-subtle:    #eaeaea; /* light gray  — footer, secondary text  */
+  --color-brand-icon:      #404040; /* dark gray   — icons, dividers         */
+  --color-brand-grid:      #aaaaaa; /* dot grid, decorative                  */
+
+  --color-brand-destructive: #d4183d;
+
+  /* ── 4b. Component Color Aliases (from shadcn tokens) ─────── */
+
+  --color-background:              var(--background);
+  --color-foreground:              var(--foreground);
+  --color-card:                    var(--card);
+  --color-card-foreground:         var(--card-foreground);
+  --color-popover:                 var(--popover);
+  --color-popover-foreground:      var(--popover-foreground);
+  --color-primary:                 var(--primary);
+  --color-primary-foreground:      var(--primary-foreground);
+  --color-secondary:               var(--secondary);
+  --color-secondary-foreground:    var(--secondary-foreground);
+  --color-muted:                   var(--muted);
+  --color-muted-foreground:        var(--muted-foreground);
+  --color-accent:                  var(--accent);
+  --color-accent-foreground:       var(--accent-foreground);
+  --color-destructive:             var(--destructive);
+  --color-destructive-foreground:  var(--destructive-foreground);
+  --color-border:                  var(--border);
+  --color-input:                   var(--input);
+  --color-input-background:        var(--input-background);
+  --color-switch-background:       var(--switch-background);
+  --color-ring:                    var(--ring);
+  --color-chart-1:                 var(--chart-1);
+  --color-chart-2:                 var(--chart-2);
+  --color-chart-3:                 var(--chart-3);
+  --color-chart-4:                 var(--chart-4);
+  --color-chart-5:                 var(--chart-5);
+  --color-sidebar:                 var(--sidebar);
+  --color-sidebar-foreground:      var(--sidebar-foreground);
+  --color-sidebar-primary:         var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:          var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border:          var(--sidebar-border);
+  --color-sidebar-ring:            var(--sidebar-ring);
+
+  /* ── 4c. Typography ────────────────────────────────────────── */
+
+  --font-brand: 'Space Grotesk', sans-serif;
+
+  /* Scale */
+  --text-brand-display: 64px; /* hero title    */
+  --text-brand-h1:      48px; /* project title */
+  --text-brand-h2:      36px; /* section title */
+  --text-brand-body:    16px; /* body copy     */
+  --text-brand-label:   14px; /* labels, roles */
+  --text-brand-caption: 12px; /* nav, footer   */
+
+  /* Weights */
+  --font-weight-brand-normal: 400;
+  --font-weight-brand-medium: 500;
+  --font-weight-brand-bold:   700;
+
+  /* Leading */
+  --leading-brand-display: 0.86; /* tight — large hero text    */
+  --leading-brand-tight:   1.1;  /* project titles             */
+  --leading-brand-body:    1.6;  /* descriptions               */
+  --leading-brand-ui:      1;    /* nav, labels (leading-none) */
+
+  /* Tracking */
+  --tracking-brand-ui: 0.48px; /* uppercase labels, nav links */
+
+  /* ── 4d. Spacing ───────────────────────────────────────────── */
+
+  --spacing-brand-1:  4px;
+  --spacing-brand-2:  8px;
+  --spacing-brand-3:  12px;
+  --spacing-brand-4:  16px;  /* image margins, inner gaps  */
+  --spacing-brand-6:  24px;  /* header padding, column gap */
+  --spacing-brand-8:  32px;  /* nav-to-hero gap            */
+  --spacing-brand-10: 40px;  /* desktop image-to-image gap */
+  --spacing-brand-20: 80px;  /* mobile section gap         */
+  --spacing-brand-30: 120px; /* desktop section gap        */
+
+  /* ── 4e. Layout ────────────────────────────────────────────── */
+
+  /* Header */
+  --size-brand-nav-desktop: 80px;
+  --size-brand-nav-mobile:  60px;
+  --size-brand-logo-h:      20px;
+  --size-brand-logo-w:      58.962px;
+
+  /* Header columns (from left edge of container) */
+  --layout-brand-col-logo:     0px;   /* logo                             */
+  --layout-brand-col-subtitle: 232px; /* "Software & Experience Designer" */
+  --layout-brand-col-location: 75%;   /* location pin                     */
+
+  /* Container inset (desktop) */
+  --layout-brand-inset: 24px;
+
+  /* Gallery carousel */
+  --size-brand-card-w: 380px;
+  --size-brand-card-h: 476px;
+
+  /* Hero mobile */
+  --size-brand-hero-mobile-top: 92px;  /* nav 60px + 32px gap */
+  --size-brand-hero-mobile-h:   410px;
+
+  /* ── 4f. Z-index ───────────────────────────────────────────── */
+
+  --z-brand-overlay: 40;
+  --z-brand-gallery: 10;
+  /* nav uses Tailwind's z-50 (50) */
+
+  /* ── 4g. Border Radius ─────────────────────────────────────── */
+
+  /* Brand */
+  --radius-brand-sm: 4px;
+  --radius-brand-md: 8px;
+  --radius-brand-lg: 10px;
+
+  /* Component (from shadcn radius scale) */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* ── 4h. Motion ────────────────────────────────────────────── */
+
+  /* Primary easing — used for all hero / carousel transitions */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Duration scale */
+  --duration-brand-fast:   0.25s; /* quick resize                              */
+  --duration-brand-short:  0.35s; /* reserved — not yet in use                 */
+  --duration-brand-base:   0.4s;  /* slider indicator, short UI transitions    */
+  --duration-brand-slot:   0.55s; /* slot-machine spin                         */
+  --duration-brand-hero:   0.58s; /* hero zoom on page enter                   */
+  --duration-brand-snap:   0.65s; /* primary — text reveals, image reveals, snap */
+  --duration-brand-colors: 0.3s;  /* header color shifts                       */
+
+}
+
+
+/* ── 5. Base Typography ──────────────────────────────────────── */
+/* Default element styles. Tailwind utilities override these.   */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
+
+
+/* ── 6. Global Styles ────────────────────────────────────────── */
 
 html {
   font-family: 'Space Grotesk', sans-serif;
@@ -19,6 +329,36 @@ body {
 #root {
   height: 100%;
   width: 100%;
+}
+
+
+/* ── 7. Animations ───────────────────────────────────────────── */
+/* Slot-machine CTA — used by SlotCta component on hover.       */
+
+@keyframes slot-spin-up {
+  from { transform: translateY(0);    }
+  to   { transform: translateY(-1em); }
+}
+
+@keyframes slot-spin-down {
+  from { transform: translateY(-1em); }
+  to   { transform: translateY(0);    }
+}
+
+.slot-spin-up {
+  animation: slot-spin-up var(--duration-brand-slot) var(--ease-brand) backwards;
+}
+
+.slot-spin-down {
+  animation: slot-spin-down var(--duration-brand-slot) var(--ease-brand) backwards;
+}
+
+
+/* ── 8. Global Utilities ─────────────────────────────────────── */
+
+::selection {
+  background: var(--color-brand-ink);
+  color:      var(--color-brand-surface);
 }
 
 /* Hide custom cursor on touch devices */

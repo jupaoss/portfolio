@@ -8,20 +8,19 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 import { SiteHeader } from "../components/SiteHeader";
-import { SlotCta } from "../components/SlotCta";
 import { DotGrid } from "../components/DotGrid";
 import { SplitLines } from "../components/SplitLines";
 import { SiteFooter } from "../components/SiteFooter";
-import imgCollage from "../../../graphic-assets/carpooling-app/02_intro_carpooling_app_image.png";
-import imgP1_1 from "../../../graphic-assets/carpooling-app/03_carpooling_app_screens.png";
-import imgP1_2 from "../../../graphic-assets/carpooling-app/05_carpooling_app_prototype.png";
-import imgP1_3 from "../../../graphic-assets/carpooling-app/06_carpooling_app_screens.png";
-import imgP1_4 from "../../../graphic-assets/carpooling-app/07_carpooling_app_screens.png";
-import imgP1_5 from "../../../graphic-assets/carpooling-app/08_carpooling_app_screens.png";
-import imgP1_6 from "../../../graphic-assets/carpooling-app/09_carpooling_app_screens.png";
-import imgP1_7 from "../../../graphic-assets/carpooling-app/10_carpooling_app_screens.png";
-import imgP1_8 from "../../../graphic-assets/carpooling-app/11_carpooling_app_screens.png";
-import imgP1_9 from "../../../graphic-assets/carpooling-app/12_carpooling_app_avatars.png";
+import imgCollage from "../../../graphic-assets/project_2_carpooling-app/02_intro_carpooling_app_image.png";
+import imgP1_1 from "../../../graphic-assets/project_2_carpooling-app/03_carpooling_app_screens.png";
+import imgP1_2 from "../../../graphic-assets/project_2_carpooling-app/05_carpooling_app_prototype.png";
+import imgP1_3 from "../../../graphic-assets/project_2_carpooling-app/06_carpooling_app_screens.png";
+import imgP1_4 from "../../../graphic-assets/project_2_carpooling-app/07_carpooling_app_screens.png";
+import imgP1_5 from "../../../graphic-assets/project_2_carpooling-app/08_carpooling_app_screens.png";
+import imgP1_6 from "../../../graphic-assets/project_2_carpooling-app/09_carpooling_app_screens.png";
+import imgP1_7 from "../../../graphic-assets/project_2_carpooling-app/10_carpooling_app_screens.png";
+import imgP1_8 from "../../../graphic-assets/project_2_carpooling-app/11_carpooling_app_screens.png";
+import imgP1_9 from "../../../graphic-assets/project_2_carpooling-app/12_carpooling_app_avatars.png";
 
 const MOBILE_HERO_TOP = 0;
 const MOBILE_HERO_HEIGHT = 502;
@@ -56,9 +55,6 @@ export default function CarpoolingApp() {
   const [isDarkText, setIsDarkText] = useState(false);
   const [isDarkMenu, setIsDarkMenu] = useState(false);
   const [isDarkLocation, setIsDarkLocation] = useState(false);
-  const [isDarkFooterCopyright, setIsDarkFooterCopyright] = useState(false);
-  const [isDarkFooterAvailability, setIsDarkFooterAvailability] = useState(false);
-  const [isDarkFooterAbout, setIsDarkFooterAbout] = useState(false);
   const lightSectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const imageSectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -66,9 +62,6 @@ export default function CarpoolingApp() {
   const textRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
-  const footerCopyrightRef = useRef<HTMLDivElement>(null);
-  const footerAvailabilityRef = useRef<HTMLDivElement>(null);
-  const footerAboutRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const nextProjectImageRef = useRef<HTMLDivElement>(null);
   const collageContainerRef = useRef<HTMLDivElement>(null);
@@ -218,20 +211,12 @@ export default function CarpoolingApp() {
       const textElement = textRef.current;
       const menuElement = menuRef.current;
       const locationElement = locationRef.current;
-      const footerCopyrightElement = footerCopyrightRef.current;
-      const footerAvailabilityElement = footerAvailabilityRef.current;
-      const footerAboutElement = footerAboutRef.current;
-
-      if (!logoElement || !textElement || !menuElement || !locationElement ||
-          !footerCopyrightElement || !footerAvailabilityElement || !footerAboutElement) return;
+      if (!logoElement || !textElement || !menuElement || !locationElement) return;
 
       const logoRect = logoElement.getBoundingClientRect();
       const textRect = textElement.getBoundingClientRect();
       const menuRect = menuElement.getBoundingClientRect();
       const locationRect = locationElement.getBoundingClientRect();
-      const footerCopyrightRect = footerCopyrightElement.getBoundingClientRect();
-      const footerAvailabilityRect = footerAvailabilityElement.getBoundingClientRect();
-      const footerAboutRect = footerAboutElement.getBoundingClientRect();
 
       const overlaps = (elementRect: DOMRect, refs: (HTMLDivElement | null)[]) =>
         refs.some(ref => {
@@ -249,9 +234,6 @@ export default function CarpoolingApp() {
       setIsDarkMenu(overlaps(menuRect, lightSectionRefs.current));
       setIsDarkText(overlaps(textRect, allContentRefs));
       setIsDarkLocation(overlaps(locationRect, allContentRefs));
-      setIsDarkFooterCopyright(overlaps(footerCopyrightRect, allContentRefs));
-      setIsDarkFooterAvailability(overlaps(footerAvailabilityRect, allContentRefs));
-      setIsDarkFooterAbout(overlaps(footerAboutRect, allContentRefs));
     };
 
     checkHeaderOverlap();
@@ -492,11 +474,6 @@ export default function CarpoolingApp() {
           <p className="font-['Space_Grotesk',sans-serif] font-medium text-[14px] uppercase text-[#eaeaea] mt-2">— {nextProject.platform}</p>
         </div>
       </div>
-
-      <div className="px-4 py-6 flex justify-between items-center font-['Space_Grotesk',sans-serif] text-[14px] text-[#eaeaea] uppercase">
-        <span>©2026</span>
-        <a href="mailto:julianpatinoossa@gmail.com" className="underline [text-decoration-skip-ink:none] decoration-solid">julianpatinoossa@gmail.com</a>
-      </div>
     </>
   );
 
@@ -525,7 +502,7 @@ export default function CarpoolingApp() {
       </motion.div>
 
       <div className="-translate-y-1/2 absolute flex flex-col gap-2 items-start left-[256px] top-1/2 w-[451px] z-20" data-name="project name">
-        <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[0.86] text-white text-[80px] w-full">{project.title}</p>
+        <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full" style={{ WebkitTextStroke: "0.5px #676767" }}>{project.title}</p>
         <p className="font-['Space_Grotesk',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
       </div>
 
@@ -658,29 +635,13 @@ export default function CarpoolingApp() {
             className="absolute top-1/2 -translate-y-1/2 pointer-events-none"
             style={{ left: "256px" }}
           >
-            <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[62px] text-[80px] text-white">
+            <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[62px] text-[64px] text-white">
               {nextProject.title}
             </p>
             <div className="flex flex-col font-['Space_Grotesk',sans-serif] font-medium justify-end leading-[0] text-[#eaeaea] text-[14px] uppercase mt-[8px]">
               <p className="leading-[normal]">— {nextProject.platform}</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="fixed left-4 right-4 bottom-6 z-40 lg:left-6 lg:right-6" data-name="Footer">
-        <div className={`absolute left-1/2 -translate-x-1/2 md:left-[232px] md:translate-x-0 flex flex-col font-['Space_Grotesk',sans-serif] font-normal justify-end leading-[normal] not-italic text-[12px] bottom-0 uppercase whitespace-nowrap transition-colors duration-300 ${isDarkFooterAvailability ? "text-black" : "text-[#eaeaea]"}`} ref={el => { footerAvailabilityRef.current = el; }}>
-          <p className="mb-0">available for freelance</p>
-          <p className="[text-decoration-skip-ink:none] decoration-solid underline">julianpatinoossa@gmail.com</p>
-        </div>
-
-        <div className={`absolute flex flex-col font-['Space_Grotesk',sans-serif] font-normal justify-end leading-[0] left-[232px] md:left-0 text-[12px] bottom-0 uppercase whitespace-nowrap transition-colors duration-300 ${isDarkFooterCopyright ? "text-black" : "text-[#eaeaea]"}`} ref={el => { footerCopyrightRef.current = el; }}>
-          <p className="leading-[normal]">©2026</p>
-        </div>
-
-        <div className={`absolute flex flex-col items-end justify-end right-0 bottom-0 transition-colors duration-300 ${isDarkFooterAbout ? "text-black" : "text-[#eaeaea]"}`} data-name="about" ref={el => { footerAboutRef.current = el; }}>
-          <SlotCta text="WORK" className="text-[12px]" onClick={() => navigate("/")} />
-          <SlotCta text="ABOUT" className="text-[12px]" onClick={() => navigate("/about")} />
         </div>
       </div>
     </>
@@ -694,7 +655,7 @@ export default function CarpoolingApp() {
     >
       <DotGrid fixed />
       {isMobile ? mobileLayout : desktopLayout}
-      <SiteFooter />
+      <SiteFooter theme="dark" onWorkClick={handleLogoClick} />
     </div>
   );
 }

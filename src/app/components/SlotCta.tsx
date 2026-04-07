@@ -25,6 +25,7 @@ export function SlotCta({ text, as: Tag = "span", href, className = "", style, o
   const sharedProps = {
     className: `inline-flex items-center cursor-pointer ${className}`,
     style: { lineHeight: 1, ...style },
+    "data-interactive": "true",
     onMouseEnter: () => setAnimKey(k => k + 1),
     onClick,
     ...(Tag === "a" ? { href } : {}),

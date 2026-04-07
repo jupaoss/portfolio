@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -28,6 +28,42 @@ import logoAvon from "../../../graphic-assets/about/logos/avon.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Word-by-word reveal matching the Home hero title animation.
+// Uses useLayoutEffect to hide words before first paint — no flash.
+function HeroReveal({ lines, className, delay = 0.1, stagger = 0.12 }: {
+  lines: string[];
+  className?: string;
+  delay?: number;
+  stagger?: number;
+}) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+    const ctx = gsap.context(() => {
+      const els = wrapper.querySelectorAll<HTMLElement>("p");
+      gsap.set(els, { clipPath: "inset(100% 0 0 0)", y: 40 });
+      gsap.timeline({ delay }).to(els, {
+        clipPath: "inset(0% 0 0 0)",
+        y: 0,
+        duration: 0.65,
+        stagger,
+        ease: "power2.out",
+      });
+    }, wrapper);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div ref={wrapperRef}>
+      {lines.map((line, i) => (
+        <p key={i} className={className}>{line}</p>
+      ))}
+    </div>
+  );
+}
+
 const BRANDS = [
   { name: "Google",        logo: logoGoogle },
   { name: "Android",       logo: logoAndroid },
@@ -50,7 +86,7 @@ const BRANDS = [
 ];
 
 const EXPERIENCE = [
-  { role: "SR EXPERIENCE DESIGNER", company: "PUBLICIS SAPIENT", period: "2023 — PRESENT" },
+  { role: "SR. EXPERIENCE DESIGNER", company: "PUBLICIS SAPIENT", period: "2023 — PRESENT" },
   { role: "SR. VISUAL DESIGNER",    company: "HUGE",              period: "2020 — 2023" },
   { role: "UX/UI DESIGNER",         company: "PROPELLAND (CDMX)", period: "2018 — 2020" },
   { role: "UXCO SPECIALIST",        company: "CHEF COMPANY",      period: "2015 — 2017" },
@@ -103,7 +139,7 @@ export default function About() {
       <div className="px-4 sm:px-[120px] flex flex-col sm:flex-row sm:gap-[80px] justify-end sm:items-end" style={{ height: 600 }}>
         <div className="hidden sm:block sm:flex-1" />
         <div className="sm:flex-1 pb-[40px]">
-          <SplitLines scroller={scrollRef} stagger={0.12} text="JULIÁN PATIÑO OSSA" className="font-['Space_Grotesk',sans-serif] font-bold text-[56px] leading-[0.9] text-white uppercase" />
+          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} className="font-['Space_Grotesk',sans-serif] font-bold text-[56px] leading-[0.9] text-white uppercase" />
         </div>
       </div>
 
@@ -114,7 +150,7 @@ export default function About() {
           <p className="font-bold text-[40px] leading-[0.9] text-white uppercase">MDE, COL</p>
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-6 mt-[48px] sm:mt-0">
-          <SplitLines scroller={scrollRef} stagger={0.12} text="SOFTWARE & EXPERIENCE DESIGNER" className="font-['Space_Grotesk',sans-serif] font-bold text-[32px] leading-[1.0] text-white uppercase" />
+          <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.2} className="font-['Space_Grotesk',sans-serif] font-bold text-[32px] leading-[1.0] text-white uppercase" />
           <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.5] tracking-[-0.12px]">
             <SplitLines scroller={scrollRef} text="During my career I've had the opportunity to work in projects that span from pure upstream concept work to ready to ship products." />
             <SplitLines scroller={scrollRef} text="I've also worked in UX/UI projects in different global agencies and startups focused on building innovative strategies and product engineering, where I've been involved in the entire building process." />
@@ -164,12 +200,6 @@ export default function About() {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <div className="fixed left-4 right-4 bottom-6 z-40 flex justify-between items-center font-['Space_Grotesk',sans-serif] text-[12px] text-[#eaeaea] uppercase">
-        <span>©2026</span>
-        <a href="mailto:julianpatinoossa@gmail.com" className="underline [text-decoration-skip-ink:none]">julianpatinoossa@gmail.com</a>
-      </div>
     </>
   );
 
@@ -182,7 +212,7 @@ export default function About() {
       <div className="flex items-center" style={{ height: 600, paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
         <div className="w-[333px]" />
         <div className="w-[444px]">
-          <SplitLines scroller={scrollRef} stagger={0.12} text="JULIÁN PATIÑO OSSA" className="font-['Space_Grotesk',sans-serif] font-bold text-[80px] leading-[0.86] text-white uppercase" />
+          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} className="font-['Space_Grotesk',sans-serif] font-bold text-[64px] leading-[0.86] text-white uppercase" />
         </div>
       </div>
 
@@ -198,7 +228,7 @@ export default function About() {
           </div>
           {/* Right — pt matches label height (12px) + gap (16px) to align heading with MDE, COL */}
           <div className="flex flex-col gap-[24px] w-[444px] font-['Space_Grotesk',sans-serif] text-[#eaeaea] pt-[28px]">
-            <SplitLines scroller={scrollRef} stagger={0.12} text="SOFTWARE & EXPERIENCE DESIGNER" className="font-['Space_Grotesk',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
+            <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.2} className="font-['Space_Grotesk',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
             <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.6] tracking-[-0.12px]">
               <SplitLines scroller={scrollRef} text="Over the course of my career, I’ve worked on a wide range of projects — from early-stage concept exploration to fully designed, ready-to-ship products." />
               <SplitLines scroller={scrollRef} text="I’ve collaborated with global agencies and startups across UX and product design initiatives, helping shape strategies and build thoughtful, scalable experiences. Throughout these engagements, I’ve been involved across the full product lifecycle, working closely with cross-functional teams from discovery and definition to design and delivery." />
@@ -254,12 +284,6 @@ export default function About() {
         </div>
 
       </div>
-
-      {/* Footer */}
-      <div className="fixed left-6 right-6 bottom-6 z-40 flex justify-between items-center font-['Space_Grotesk',sans-serif] text-[12px] text-[#eaeaea] uppercase">
-        <span>©2026</span>
-        <a href="mailto:julianpatinoossa@gmail.com" className="underline [text-decoration-skip-ink:none]">julianpatinoossa@gmail.com</a>
-      </div>
     </>
   );
 
@@ -271,7 +295,7 @@ export default function About() {
     >
       <DotGrid fixed />
       {isMobile ? mobileLayout : desktopLayout}
-      <SiteFooter />
+      <SiteFooter theme="dark" onWorkClick={() => navigate("/", { state: { fromProjectId: projects[0].id, fromAbout: true, fromHeroBounds: { width: window.innerWidth, height: window.innerHeight } } })} />
     </div>
   );
 }

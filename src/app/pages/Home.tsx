@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, anima
 import { gsap } from "gsap";
 import { DotGrid } from "../components/DotGrid";
 import { SiteHeader } from "../components/SiteHeader";
-import { CardStack } from "../components/CardStack";
+import { IntroOverlay } from "../components/IntroOverlay";
 import { SiteFooter } from "../components/SiteFooter";
 import { projects } from "../data/projects";
 import svgPaths from "@/assets/iconPaths";
@@ -76,27 +76,23 @@ function CarouselItem({ containerY, virtualPos, virtualIndex, project, isCurrent
   // Once the return-from-detail animation finishes, switch to the tilt-enabled branch
   const [fromFullDone, setFromFullDone] = useState(false);
 
-  // ─── 3-D tilt + parallax on hover ─────────────────────────────────────────
+  // ─── 3-D tilt on hover ────────────────────────────────────────────────────
   const wrapperRef = useRef<HTMLDivElement>(null);
   const tiltRef    = useRef<HTMLDivElement>(null);
-  const imgRef     = useRef<HTMLImageElement>(null);
   const hitRef     = useRef<HTMLDivElement>(null); // transparent zone 50px larger on every side
 
   useEffect(() => {
     if (!isCurrent) return;
     const wrapper = wrapperRef.current;
     const outer   = tiltRef.current;
-    const img     = imgRef.current;
     const hit     = hitRef.current;
-    if (!wrapper || !outer || !img || !hit) return;
+    if (!wrapper || !outer || !hit) return;
 
     const ctx = gsap.context(() => {
       gsap.set(outer.parentElement, { perspective: 650 });
 
       const rotX = gsap.quickTo(outer, "rotationX", { ease: "power3", duration: 0.5 });
       const rotY = gsap.quickTo(outer, "rotationY", { ease: "power3", duration: 0.5 });
-      const posX = gsap.quickTo(img,   "x",         { ease: "power3", duration: 0.5 });
-      const posY = gsap.quickTo(img,   "y",         { ease: "power3", duration: 0.5 });
 
       const onMove = (e: PointerEvent) => {
         // nx/ny relative to the actual image bounds (not the extended hit area)
@@ -105,11 +101,9 @@ function CarouselItem({ containerY, virtualPos, virtualIndex, project, isCurrent
         const ny = Math.max(0, Math.min(1, (e.clientY - top)  / height));
         rotX(gsap.utils.interpolate(15, -15, ny));
         rotY(gsap.utils.interpolate(-15, 15, nx));
-        posX(gsap.utils.interpolate(-30, 30, nx));
-        posY(gsap.utils.interpolate(-30, 30, ny));
       };
 
-      const onLeave = () => { rotX(0); rotY(0); posX(0); posY(0); };
+      const onLeave = () => { rotX(0); rotY(0); };
 
       // wrapper receives pointermove bubbled from both the image and the extended hitRef zone
       // hitRef pointerleave fires when cursor exits the full extended area (not just the image)
@@ -224,20 +218,26 @@ function CarouselItem({ containerY, virtualPos, virtualIndex, project, isCurrent
         <div ref={wrapperRef} style={{ position: "relative", width: imgW, height: imgH, marginLeft: imageOffset }}>
           {/* Transparent zone 50px larger on every side so tilt starts before cursor enters image */}
           <div ref={hitRef} style={{ position: "absolute", inset: "-50px" }} />
+          {/* Outer: rotation container — extends 24px beyond the image on each side so
+              rotating corners never reach the wrapper edge. No clip here. */}
           <div
             ref={tiltRef}
-            className="overflow-hidden will-change-transform rounded-2xl"
-            style={{ width: "100%", height: "100%" }}
+            className="will-change-transform"
+            style={{ position: "absolute", inset: "-24px" }}
           >
-            <img
-              ref={imgRef}
-              alt={project.title}
-              src={project.image}
-              draggable={false}
-              data-gallery-image={isCurrent ? "true" : undefined}
-              className="object-cover object-top select-none will-change-transform block"
-              style={{ width: imgW + 60, height: imgH + 60, margin: -30 }}
-            />
+            {/* Inner: clips the image with rounded corners in local (non-transformed) space */}
+            <div
+              className="overflow-hidden rounded-2xl"
+              style={{ position: "absolute", inset: "24px" }}
+            >
+              <img
+                alt={project.title}
+                src={project.image}
+                draggable={false}
+                data-gallery-image={isCurrent ? "true" : undefined}
+                className="object-cover object-top select-none block w-full h-full"
+              />
+            </div>
           </div>
         </div>
       )}
@@ -254,9 +254,10 @@ interface TitleRevealProps {
   isMobile: boolean;
   /** false on initial load (parent timeline handles it); true on project switch */
   animate: boolean;
+  stroke?: boolean;
 }
 
-function TitleReveal({ title, platform, isMobile, animate }: TitleRevealProps) {
+function TitleReveal({ title, platform, isMobile, animate, stroke }: TitleRevealProps) {
   useLayoutEffect(() => {
     if (!animate) return;
     const ctx = gsap.context(() => {
@@ -290,8 +291,9 @@ function TitleReveal({ title, platform, isMobile, animate }: TitleRevealProps) {
           key={i}
           data-name={`project-title-word-${i}`}
           className={`font-['Space_Grotesk',sans-serif] font-bold text-[#131313] leading-[0.86] m-0 ${
-            isMobile ? "text-[48px]" : "text-[80px]"
+            isMobile ? "text-[48px]" : "text-[64px]"
           }`}
+          style={stroke ? { WebkitTextStroke: "0.5px #676767" } : undefined}
         >
           {word}
         </p>
@@ -335,8 +337,8 @@ const isMobile = screenW < 640;
 
   const [virtualIndex, setVirtualIndex] = useState(initialIdx);
   const [isDragging, setIsDragging] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isOverInteractive, setIsOverInteractive] = useState(false);
+  const [isNearLink, setIsNearLink] = useState(false);
 
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
@@ -383,9 +385,24 @@ const isMobile = screenW < 640;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
     const target = e.target as HTMLElement;
-    setIsOverInteractive(!!target.closest('a, button, [data-gallery-image="true"]'));
+    const overInteractive = !!target.closest('a, button, [data-interactive], [data-gallery-image="true"]');
+    setIsOverInteractive(overInteractive);
+
+    // Proximity check: is cursor within LINK_PROXIMITY px of any interactive element?
+    const LINK_PROXIMITY = 20;
+    let nearLink = false;
+    if (!overInteractive) {
+      const els = document.querySelectorAll<HTMLElement>('a, button, [data-interactive]');
+      for (const el of els) {
+        const r = el.getBoundingClientRect();
+        const dx = Math.max(r.left - e.clientX, 0, e.clientX - r.right);
+        const dy = Math.max(r.top  - e.clientY, 0, e.clientY - r.bottom);
+        if (Math.sqrt(dx * dx + dy * dy) <= LINK_PROXIMITY) { nearLink = true; break; }
+      }
+    }
+    setIsNearLink(nearLink);
+
     if (!isDragging) return;
     const delta = e.clientY - dragStartY.current;
     if (Math.abs(delta) > 5) wasDragging.current = true;
@@ -403,6 +420,7 @@ const isMobile = screenW < 640;
 
   const handleMouseLeave = () => {
     setIsOverInteractive(false);
+    setIsNearLink(false);
     if (isDragging) {
       const snappedIndex = -Math.round(containerY.get() / spacing);
       snapTo(snappedIndex);
@@ -461,6 +479,7 @@ const isMobile = screenW < 640;
   useLayoutEffect(() => {
     if (isReturning) return;
     const textEls = [
+      '[data-name="logo"]',
       '[data-name="subtitle"]',
       '[data-name="location"]',
       '[data-name="options"]',
@@ -479,20 +498,21 @@ const isMobile = screenW < 640;
   useLayoutEffect(() => {
     if (!revealStarted || isReturning) return;
     const ctx = gsap.context(() => {
-      // Exit ends ~1.62s after onRevealStart — header/footer start at 1.20 (just before exit finishes)
+      // Logo reveals first; other header/footer elements follow in quick succession.
+      // onRevealStart fires as the intro overlay begins fading (0.45s), so timing starts from 0.
       gsap.timeline()
-        .to('[data-name="subtitle"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.20)
-        .to('[data-name="location"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.24)
-        .to('[data-name="options"]',               { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.28)
-        .to('[data-name="footer-year"]',           { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.22)
-        .to('[data-name="footer-freelance"]',      { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.26)
-        .to('[data-name="footer-mobile"]',         { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.24)
-        .to('[data-name="about"]',                 { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.30)
-        .to('[data-name="mobile-title"]',          { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, ease: "power2.in" }, 1.26)
-        // Title words start at 1.70 — each line rises independently with 0.12s stagger
-        .to('[data-name^="project-title-word-"]',  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.65, stagger: 0.12, ease: "power2.out" }, 1.70)
-        // Platform 0.15s after last title word starts (at 1.82)
-        .to('[data-name="project-platform-line"]', { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power2.out" }, 1.97);
+        .to('[data-name="logo"]',                  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.5,  ease: "power2.out" }, 0.05)
+        .to('[data-name="subtitle"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.20)
+        .to('[data-name="location"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.25)
+        .to('[data-name="options"]',               { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.30)
+        .to('[data-name="footer-year"]',           { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.20)
+        .to('[data-name="footer-freelance"]',      { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.25)
+        .to('[data-name="footer-mobile"]',         { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.22)
+        .to('[data-name="about"]',                 { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.32)
+        .to('[data-name="mobile-title"]',          { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.22)
+        // Title words start once the overlay has faded
+        .to('[data-name^="project-title-word-"]',  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, stagger: 0.12, ease: "power2.out" }, 0.50)
+        .to('[data-name="project-platform-line"]', { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.50, ease: "power2.out" }, 0.74);
     });
     return () => ctx.revert();
   }, [revealStarted]);
@@ -528,7 +548,7 @@ const isMobile = screenW < 640;
   return (
     <div
       ref={containerRef}
-      className={`bg-white relative size-full overflow-hidden select-none ${isOverInteractive ? "cursor-default" : "cursor-grab active:cursor-grabbing"}`}
+      className={`bg-white relative size-full overflow-hidden select-none ${isOverInteractive || isNearLink ? "cursor-pointer" : "cursor-grab active:cursor-grabbing"}`}
       data-name="Home"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -607,6 +627,7 @@ const isMobile = screenW < 640;
               platform={currentProject.platform}
               isMobile={isMobile}
               animate={cardStackDone && (!isReturning || fromAbout)}
+              stroke={currentProject.id === "carpooling-app"}
             />
           </motion.div>
         </AnimatePresence>
@@ -648,17 +669,12 @@ const isMobile = screenW < 640;
         })}
       </div>}
 
-      {/* ── Card stack loading overlay ── */}
+      {/* ── Intro overlay ── */}
       {!isReturning && !cardStackDone && (
-        <div className="fixed inset-0 flex items-center justify-center z-[100] pointer-events-none bg-white">
-          <CardStack
-            cards={projects.map((p) => ({ id: p.id, image: p.image }))}
-            width={imgW}
-            height={imgH}
-            onRevealStart={() => setRevealStarted(true)}
-            onComplete={() => setCardStackDone(true)}
-          />
-        </div>
+        <IntroOverlay
+          onRevealStart={() => setRevealStarted(true)}
+          onComplete={() => setCardStackDone(true)}
+        />
       )}
 
       {/* ── Custom cursor — desktop only ── */}
@@ -666,14 +682,17 @@ const isMobile = screenW < 640;
         <motion.div
           className="fixed overflow-clip size-[76px] pointer-events-none z-[60]"
           style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
-          animate={{ opacity: isOverInteractive ? 0 : 1 }}
+          animate={{ opacity: isOverInteractive || isNearLink ? 0 : 1 }}
           transition={{ duration: 0.2 }}
           data-name="Dragger"
         >
           {/* Ring */}
           <motion.div
             className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 top-1/2"
-            animate={{ width: isDragging ? 76 : 68, height: isDragging ? 76 : 68 }}
+            animate={{
+              width:  isDragging ? 76 : isNearLink ? 48 : 68,
+              height: isDragging ? 76 : isNearLink ? 48 : 68,
+            }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 76 76">
