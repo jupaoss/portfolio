@@ -4,9 +4,39 @@
    ═══════════════════════════════════════════════════════════════ */
 
 
-/* ── 1. External Imports ─────────────────────────────────────── */
+/* ── 1. Font Faces ───────────────────────────────────────────── */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+@font-face {
+  font-family: 'Avantt';
+  src: url('../../graphic-assets/fonts/avantt-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avantt';
+  src: url('../../graphic-assets/fonts/avantt-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avantt';
+  src: url('../../graphic-assets/fonts/avantt-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avantt';
+  src: url('../../graphic-assets/fonts/avantt-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 @import 'tailwindcss' source(none);
 @source '../**/*.{js,ts,jsx,tsx}';
@@ -155,7 +185,7 @@
 
   /* ── 4c. Typography ────────────────────────────────────────── */
 
-  --font-brand: 'Space Grotesk', sans-serif;
+  --font-brand: 'Avantt', sans-serif;
 
   /* Scale */
   --text-brand-display: 64px; /* hero title    */
@@ -314,7 +344,7 @@
 /* ── 6. Global Styles ────────────────────────────────────────── */
 
 html {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Avantt', sans-serif;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -11,9 +11,13 @@ import { SiteHeader } from "../components/SiteHeader";
 import { DotGrid } from "../components/DotGrid";
 import { SplitLines } from "../components/SplitLines";
 import { SiteFooter } from "../components/SiteFooter";
+import { GridDistortionImage } from "../components/GridDistortionImage";
 import imgCollage from "../../../graphic-assets/project_2_carpooling-app/02_intro_carpooling_app_image.png";
+import videoIntro from "../../../graphic-assets/project_2_carpooling-app/02_intro_carpooling_app.mp4";
 import imgP1_1 from "../../../graphic-assets/project_2_carpooling-app/03_carpooling_app_screens.png";
-import imgP1_2 from "../../../graphic-assets/project_2_carpooling-app/05_carpooling_app_prototype.png";
+import imgPrototype from "../../../graphic-assets/project_2_carpooling-app/05_carpooling_app_prototype.png";
+import videoPrototype from "../../../graphic-assets/project_2_carpooling-app/05_carpooling_app_prototype.mp4";
+import imgIcons from "../../../graphic-assets/project_2_carpooling-app/04_carpooling_app_icons.png";
 import imgP1_3 from "../../../graphic-assets/project_2_carpooling-app/06_carpooling_app_screens.png";
 import imgP1_4 from "../../../graphic-assets/project_2_carpooling-app/07_carpooling_app_screens.png";
 import imgP1_5 from "../../../graphic-assets/project_2_carpooling-app/08_carpooling_app_screens.png";
@@ -64,8 +68,7 @@ export default function CarpoolingApp() {
   const locationRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const nextProjectImageRef = useRef<HTMLDivElement>(null);
-  const collageContainerRef = useRef<HTMLDivElement>(null);
-  const collageImgRef = useRef<HTMLImageElement>(null);
+
   const isExitingRef = useRef(false);
   const isNavigatingRef = useRef(false);
 
@@ -274,48 +277,6 @@ export default function CarpoolingApp() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nextProject.id]);
 
-  useEffect(() => {
-    if (window.innerWidth > 449) return;
-    const container = collageContainerRef.current;
-    const img = collageImgRef.current;
-    const scroller = scrollContainerRef.current;
-    if (!container || !img || !scroller) return;
-
-    const setup = () => {
-      const containerW = container.offsetWidth;
-      const imgW = img.naturalWidth * (220 / img.naturalHeight);
-      const startX = 100;
-      const endX = containerW - imgW;
-
-      gsap.set(img, { x: startX });
-
-      const ctx = gsap.context(() => {
-        gsap.to(img, {
-          x: endX,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: container,
-            scroller,
-            start: "bottom bottom",
-            end: "top top",
-            scrub: 1,
-          },
-        });
-      });
-
-      return () => ctx.revert();
-    };
-
-    let cleanup: (() => void) | undefined;
-    if (img.complete && img.naturalWidth) {
-      cleanup = setup();
-    } else {
-      img.addEventListener("load", () => { cleanup = setup(); }, { once: true });
-    }
-
-    return () => cleanup?.();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (!project) {
     return null;
@@ -355,106 +316,117 @@ export default function CarpoolingApp() {
         >
           <img
             alt={project.title}
-            className="w-full h-full object-cover object-top pointer-events-none"
+            className="w-full h-full object-cover object-center pointer-events-none"
             src={project.image}
           />
         </motion.div>
       </div>
 
       <div className="px-4 -mt-5 relative z-10">
-        <p className="font-['Space_Grotesk',sans-serif] font-bold text-[48px] leading-[0.86] text-white">
+        <p className="font-['Avantt',sans-serif] font-bold text-[48px] leading-[0.86] text-white">
           {project.title}
         </p>
       </div>
 
-      <div className="px-4 mt-3 flex items-start gap-20 font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+      <div className="px-4 mt-3 flex items-start gap-20 font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="shrink-0">
-          <p className="text-[14px] uppercase font-medium tracking-[0.48px]">— {project.platform}</p>
+          <p className="text-[14px] uppercase font-semibold tracking-[0.48px]">— {project.platform}</p>
         </div>
         <div className="flex flex-col gap-6 w-[70%]">
           <div className="flex flex-col gap-1">
-            <p data-name="detail-text-line-0" className="text-[14px] uppercase font-medium tracking-[0.48px]">My role</p>
+            <p data-name="detail-text-line-0" className="text-[14px] uppercase font-semibold tracking-[0.48px]">My role</p>
             <p data-name="detail-text-line-1" className="text-[14px] font-normal tracking-[-0.12px]">UX/UI Designer</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p data-name="detail-text-line-2" className="text-[14px] uppercase font-medium tracking-[0.48px]">Description</p>
+            <p data-name="detail-text-line-2" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
             <SplitLines
-              text="When Android needed to show the world that their devices aren't just products — they're an ecosystem — they needed more than a spec sheet. For CES, we built an immersive web experience that turned the technical story of device connectivity into something visitors could feel, not just read."
-              className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full"
+              text="Internal mobility app for Huge’s Medellín office that turns parking into a shared, data-driven experience—letting employees reserve spots and connect with colleagues for ride-sharing, reducing commute friction and environmental impact."
+              className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full"
               animationDelay={descriptionDelay}
             />
           </div>
         </div>
       </div>
 
-      <div
-        ref={collageContainerRef}
-        className="mt-[80px] overflow-hidden max-[449px]:w-full min-[450px]:px-4"
-      >
-        <img
-          ref={collageImgRef}
-          alt=""
-          className="h-auto pointer-events-none rounded-2xl max-[449px]:w-auto max-[449px]:max-w-none max-[449px]:h-[220px] max-[449px]:object-cover min-[450px]:w-full"
-          src={imgCollage}
-        />
+      <div className="mt-[80px] px-4">
+        <div className="relative">
+          <img
+            alt=""
+            className="w-full h-auto pointer-events-none rounded-lg"
+            src={imgCollage}
+          />
+          <div className="absolute inset-0 flex items-center justify-center py-[80px] max-md:py-[32px]">
+            <video
+              className="h-full w-auto rounded-[8px] max-md:rounded-[4px] border-4 border-black pointer-events-none"
+              autoPlay
+              loop
+              muted
+              playsInline
+              src={videoIntro}
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="px-4 sm:px-[120px] mt-[80px] font-['Space_Grotesk',sans-serif] text-[#eaeaea] flex flex-col sm:flex-row sm:gap-[80px]">
+      <div className="px-4 sm:px-[120px] mt-[80px] font-['Avantt',sans-serif] text-[#eaeaea] flex flex-col sm:flex-row sm:gap-[80px]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
-          <p data-name="scroll-label"className="font-medium text-[14px] uppercase tracking-[0.48px]">THE CHALLENGE.</p>
-          <SplitLines scroller={scrollContainerRef} text="CES is the noisiest room in tech. Every brand on the floor is fighting for the same three seconds of attention. Our job was to take a complex, multi‑device ecosystem and make it immediately intuitive — to build a digital experience that didn't explain connectivity but demonstrated it, holding attention long enough for the story to land." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
+          <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE CHALLENGE.</p>
+          <SplitLines scroller={scrollContainerRef} text="CES is the noisiest room in tech. Every brand on the floor is fighting for the same three seconds of attention. Our job was to take a complex, multi‑device ecosystem and make it immediately intuitive — to build a digital experience that didn't explain connectivity but demonstrated it, holding attention long enough for the story to land." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-4 mt-[48px] sm:pt-[120px] sm:mt-0">
-          <p data-name="scroll-label"className="font-medium text-[14px] uppercase tracking-[0.48px]">THE APPROACH: PARTICLES BECOME OUR DESIGN LANGUAGE</p>
-          <SplitLines scroller={scrollContainerRef} text="We recognized that Android devices and Google products, like individual particles, are impressive on their own. But when they come together, they create something fundamentally different — seamless, end-to-end experiences that are greater than the sum of their parts." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
-          <SplitLines scroller={scrollContainerRef} text="The particle system wasn't just a visual motif — it was the structural metaphor. Scattered elements unifying on screen mirrored the core product truth: everything is better together. This concept drove every design decision: motion that mimicked particles converging, transitions that connected isolated product stories into a unified narrative, and interactions that let users discover these connections organically." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
+          <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH: PARTICLES BECOME OUR DESIGN LANGUAGE</p>
+          <SplitLines scroller={scrollContainerRef} text="We recognized that Android devices and Google products, like individual particles, are impressive on their own. But when they come together, they create something fundamentally different — seamless, end-to-end experiences that are greater than the sum of their parts." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="The particle system wasn't just a visual motif — it was the structural metaphor. Scattered elements unifying on screen mirrored the core product truth: everything is better together. This concept drove every design decision: motion that mimicked particles converging, transitions that connected isolated product stories into a unified narrative, and interactions that let users discover these connections organically." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
       </div>
 
       <div className="flex flex-col gap-4 mt-[80px] px-4">
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_1} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_2} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_1} />
+      </div>
+
+      <div className="flex flex-col gap-4 mt-[80px]">
+        <video className="w-full pointer-events-none rounded-lg" autoPlay loop muted playsInline src={videoPrototype} />
       </div>
 
       <div className="flex flex-col gap-4 mt-[80px] px-4">
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_3} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_4} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_5} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_6} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_3} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_4} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_5} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_6} />
       </div>
 
       <div className="flex flex-col gap-4 mt-4 px-4">
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_7} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_8} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-2xl" alt="" src={imgP1_9} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_7} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_8} />
+        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_9} />
       </div>
 
-      <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+      <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
-          <p data-name="scroll-label" className="font-medium text-[14px] uppercase tracking-[0.48px]">IMPACT</p>
-          <SplitLines scroller={scrollContainerRef} text="Showcase how Android devices and Google products form an interconnected ecosystem that enhances seamless connectivity. It will delightfully demonstrate their connections, promote effective synchronization and an end-to-end experience." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
+          <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">IMPACT</p>
+          <SplitLines scroller={scrollContainerRef} text="Showcase how Android devices and Google products form an interconnected ecosystem that enhances seamless connectivity. It will delightfully demonstrate their connections, promote effective synchronization and an end-to-end experience." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
         <div className="w-full sm:flex-1 grid grid-cols-2 gap-x-8 gap-y-8 mt-[48px] sm:mt-0 sm:pt-[120px]">
           <div data-scroll-stat className="flex flex-col gap-2">
-            <p className="text-[14px] font-normal uppercase tracking-[0.48px] leading-[1.4]">Unique visitors<br />during CES</p>
-            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">287<span className="text-[20px] mt-[4px]">+</span></p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Unique visitors<br />during CES</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">287<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
           </div>
           <div data-scroll-stat className="flex flex-col gap-2">
-            <p className="text-[14px] font-normal uppercase tracking-[0.48px] leading-[1.4]">Avg. session<br />duration</p>
-            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">3<span className="text-[24px] mt-[2px]">'</span>42<span className="text-[24px] mt-[2px]">"</span></p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Avg. session<br />duration</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">3<span className="text-[24px] mt-[2px] tracking-[0px]">'</span>42<span className="text-[24px] mt-[2px] tracking-[0px]">"</span></p>
           </div>
           <div data-scroll-stat className="flex flex-col gap-2">
-            <p className="text-[14px] font-normal uppercase tracking-[0.48px] leading-[1.4]">User delight<br />score</p>
-            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">9.1<span className="flex items-baseline text-[20px] mt-[4px]">/<span className="text-[14px]">10</span></span></p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">User delight<br />score</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">9.1<span className="flex items-baseline text-[20px] mt-[4px] tracking-[0px]">/<span className="text-[14px]">10</span></span></p>
           </div>
         </div>
       </div>
 
       <div className="px-4 py-[80px] flex flex-col items-center gap-6">
-        <p className="font-['Space_Grotesk',sans-serif] text-[14px] uppercase tracking-[0.48px] text-[#eaeaea]">NEXT PROJECT</p>
+        <p className="font-['Avantt',sans-serif] text-[14px] uppercase tracking-[0.48px] text-[#eaeaea]">NEXT PROJECT</p>
         <div
           ref={nextProjectImageRef}
-          className="cursor-pointer overflow-hidden rounded-2xl"
+          className="cursor-pointer overflow-hidden rounded-lg"
           style={{ width: 240, height: 300 }}
           onClick={() => {
             if (isNavigatingRef.current) return;
@@ -470,8 +442,8 @@ export default function CarpoolingApp() {
           <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
         </div>
         <div className="text-center">
-          <p className="font-['Space_Grotesk',sans-serif] font-bold text-[32px] text-white leading-[1.1]">{nextProject.title}</p>
-          <p className="font-['Space_Grotesk',sans-serif] font-medium text-[14px] uppercase text-[#eaeaea] mt-2">— {nextProject.platform}</p>
+          <p className="font-['Avantt',sans-serif] font-bold text-[32px] text-white leading-[1.1]">{nextProject.title}</p>
+          <p className="font-['Avantt',sans-serif] font-medium text-[14px] uppercase text-[#eaeaea] mt-2">— {nextProject.platform}</p>
         </div>
       </div>
     </>
@@ -481,10 +453,10 @@ export default function CarpoolingApp() {
     <>
       <SiteHeader
         variant="dynamic"
-        isDarkLogo={isDarkLogo}
-        isDarkText={isDarkText}
-        isDarkMenu={isDarkMenu}
-        isDarkLocation={isDarkLocation}
+        isDarkLogo={false}
+        isDarkText={false}
+        isDarkMenu={false}
+        isDarkLocation={false}
         logoRef={logoRef}
         textRef={textRef}
         menuRef={menuRef}
@@ -494,16 +466,22 @@ export default function CarpoolingApp() {
 
       <motion.div
         ref={heroRef}
-        className="absolute top-0 left-1/2 z-10 overflow-hidden rounded-2xl"
+        className="absolute top-0 left-1/2 z-10 overflow-hidden rounded-lg"
         data-name="hero image"
         style={{ width: heroWidth, height: heroHeight, translateX: "-50%", y: heroY }}
       >
-        <img alt={project.title} className="absolute inset-0 w-full h-full object-cover object-top" src={project.image} />
+        <GridDistortionImage
+          src={project.image}
+          alt={project.title}
+          imgClassName="object-cover object-top"
+          className="w-full h-full"
+          enabled={!isMobile}
+        />
       </motion.div>
 
       <div className="-translate-y-1/2 absolute flex flex-col gap-2 items-start left-[256px] top-1/2 w-[451px] z-20" data-name="project name">
-        <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full" style={{ WebkitTextStroke: "0.5px #676767" }}>{project.title}</p>
-        <p className="font-['Space_Grotesk',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
+        <p className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full" style={{ WebkitTextStroke: "0.5px #676767" }}>{project.title}</p>
+        <p className="font-['Avantt',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
       </div>
 
       <div
@@ -512,18 +490,18 @@ export default function CarpoolingApp() {
         data-name="right"
       >
         <div className="content-stretch flex flex-col gap-[16px] items-start text-[14px] w-[215px] text-[#eaeaea]" data-name="role">
-          <div className="flex flex-col font-['Space_Grotesk',sans-serif] font-medium justify-end leading-[0] uppercase w-full">
-            <p data-name="detail-text-line-0" className="leading-[normal]">My role</p>
+          <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] uppercase w-full">
+            <p data-name="detail-text-line-0" className="font-semibold leading-[1.6]">My role</p>
           </div>
-          <p data-name="detail-text-line-1" className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] tracking-[-0.14px] w-full">UX/UI Designer</p>
+          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal leading-[1.6] tracking-[-0.14px] w-full">UX/UI Designer</p>
         </div>
         <div className="content-stretch flex flex-col gap-[16px] items-start w-[215px] text-[#eaeaea]" data-name="team">
-          <div className="flex flex-col font-['Space_Grotesk',sans-serif] font-medium justify-end leading-[0] text-[14px] uppercase w-full">
-            <p data-name="detail-text-line-2" className="leading-[normal]">Description</p>
+          <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[14px] uppercase w-full">
+            <p data-name="detail-text-line-2" className="font-semibold leading-[1.6]">Description</p>
           </div>
           <SplitLines
             text="When Android needed to show the world that their devices aren't just products — they're an ecosystem — they needed more than a spec sheet. For CES, we built an immersive web experience that turned the technical story of device connectivity into something visitors could feel, not just read."
-            className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full"
+            className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full"
             animationDelay={descriptionDelay}
           />
         </div>
@@ -532,7 +510,7 @@ export default function CarpoolingApp() {
       <div className="-translate-y-1/2 absolute content-stretch flex flex-col items-end left-[24px] top-[calc(50%-874.5px)] w-[24px] z-20" data-name="slider">
         <div className="content-stretch flex gap-[10px] h-[16px] items-center relative shrink-0 w-full" data-name="Selected">
           <div className="bg-white h-[2px] shrink-0 w-[24px]" />
-          <p className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] relative shrink-0 text-[12px] text-white uppercase whitespace-nowrap">ABOUT</p>
+          <p className="font-['Avantt',sans-serif] font-normal leading-[1.6] relative shrink-0 text-[12px] text-white uppercase whitespace-nowrap">ABOUT</p>
         </div>
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="content-stretch flex flex-col h-[16px] items-end justify-center relative shrink-0 w-full" data-name="Inactive">
@@ -543,57 +521,84 @@ export default function CarpoolingApp() {
 
       <div className="absolute left-0 right-0 flex flex-col gap-[180px]" style={{ top: "calc(100vh + 120px)" }}>
 
-        <div className="mx-6" data-name="collage" ref={el => { lightSectionRefs.current[2] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgCollage} />
+        <div className="mx-6 relative" data-name="collage" ref={el => { lightSectionRefs.current[2] = el; }}>
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgCollage} />
+          <div className="absolute inset-0 flex items-center justify-center py-[200px] max-md:py-[32px]">
+            <video
+              className="h-full w-auto rounded-[8px] max-md:rounded-[4px] border-4 border-black pointer-events-none"
+              autoPlay
+              loop
+              muted
+              playsInline
+              src={videoIntro}
+            />
+          </div>
         </div>
 
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
-          <div className="flex flex-col gap-[16px] w-[333px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
-            <p data-name="scroll-label"className="font-medium text-[14px] uppercase tracking-[-0.12px]">THE CHALLENGE.</p>
-            <SplitLines scroller={scrollContainerRef} text="CES is the noisiest room in tech. Every brand on the floor is fighting for the same three seconds of attention. Our job was to take a complex, multi‑device ecosystem and make it immediately intuitive — to build a digital experience that didn't explain connectivity but demonstrated it, holding attention long enough for the story to land." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
+          <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
+            <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE CHALLENGE.</p>
+            <SplitLines scroller={scrollContainerRef} text="Huge’s Medellín office faced a recurring issue: limited parking spots far exceeding demand. A monthly lottery system felt arbitrary and unfair, giving everyone equal odds regardless of commute difficulty—leading to frustration, inefficiency, and missed opportunities for a more connected, sustainable workplace." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
-          <div className="flex flex-col gap-[16px] w-[333px] font-['Space_Grotesk',sans-serif] text-[#eaeaea] pt-[180px]">
-            <p data-name="scroll-label"className="font-medium text-[14px] uppercase tracking-[-0.12px]">THE APPROACH: PARTICLES BECOME OUR DESIGN LANGUAGE</p>
-            <SplitLines scroller={scrollContainerRef} text="We recognized that Android devices and Google products, like individual particles, are impressive on their own. But when they come together, they create something fundamentally different — seamless, end-to-end experiences that are greater than the sum of their parts." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
-            <SplitLines scroller={scrollContainerRef} text="The particle system wasn't just a visual motif — it was the structural metaphor. Scattered elements unifying on screen mirrored the core product truth: everything is better together. This concept drove every design decision: motion that mimicked particles converging, transitions that connected isolated product stories into a unified narrative, and interactions that let users discover these connections organically." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
+          <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[180px]">
+            <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE APPROACH: WE STOPPED ALLOCATING SPOTS AND STARTED CONNECTING PEOPLE</p>
+            <SplitLines scroller={scrollContainerRef} text="Every employee's commute carries its own rhythm, distance, and daily friction. But when those routes converge, they create something fundamentally different — shared journeys that are more efficient, more equitable, and more human." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="The app was built around two interconnected flows: Park and Share. Park lets employees reserve spots through a transparent, distance-weighted system that replaces randomness with fairness. Share turns commutes into real-time matchmaking — drivers post available seats, riders browse and request, and the platform handles the rest." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
         </div>
 
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[0] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_1} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_2} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_1} />
+        </div>
+
+        <div className="mx-[256px] flex flex-col gap-[40px]">
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgIcons} />
+        </div>
+
+        <div className="mx-6 relative" data-name="prototype">
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgPrototype} />
+          <div className="absolute inset-0 flex items-center justify-center py-[200px] max-md:py-[32px]">
+            <video
+              className="h-full w-auto rounded-[8px] max-md:rounded-[4px] border-4 border-white pointer-events-none"
+              autoPlay
+              loop
+              muted
+              playsInline
+              src={videoPrototype}
+            />
+          </div>
         </div>
 
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[1] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_3} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_4} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_5} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_6} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_3} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_4} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_5} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_6} />
         </div>
 
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[2] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_7} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_8} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-2xl" src={imgP1_9} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_7} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_8} />
+          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_9} />
         </div>
 
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
-          <div className="flex flex-col gap-[24px] w-[333px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
-            <p data-name="scroll-label"className="font-medium text-[14px] uppercase tracking-[-0.12px]">IMPACT</p>
-            <SplitLines scroller={scrollContainerRef} text="Showcase how Android devices and Google products form an interconnected ecosystem that enhances seamless connectivity. It will delightfully demonstrate their connections, promote effective synchronization and an end-to-end experience." className="font-['Space_Grotesk',sans-serif] font-normal leading-[normal] text-[12px] tracking-[-0.12px] w-full" />
+          <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
+            <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[-0.12px]">IMPACT</p>
+            <SplitLines scroller={scrollContainerRef} text="We set out to solve a parking problem, but what we actually redesigned was the relationship between 120+ employees and their daily commute. The impact extended well beyond logistics, it shifted mindsets around sharing, fairness, and what it means to show up to work." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
-          <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px] w-[333px] font-['Space_Grotesk',sans-serif] text-[#eaeaea] pt-[120px]">
+          <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[120px]">
             <div data-scroll-stat className="flex flex-col gap-[8px]">
-              <p className="text-[12px] font-normal uppercase tracking-[0.48px] leading-[1.4]">Unique visitors<br />during CES</p>
-              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">287<span className="text-[32px] lg:text-[20px] mt-[6px]">+</span></p>
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Unique visitors<br />during CES</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">287<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
             </div>
             <div data-scroll-stat className="flex flex-col gap-[8px]">
-              <p className="text-[12px] font-normal uppercase tracking-[0.48px] leading-[1.4]">Avg. session<br />duration</p>
-              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">3<span className="text-[40px] lg:text-[20px] mt-[4px]">'</span>42<span className="text-[40px] lg:text-[20px] mt-[4px]">"</span></p>
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Avg. session<br />duration</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">3<span className="text-[40px] lg:text-[20px] mt-[4px] tracking-[0px]">'</span>42<span className="text-[40px] lg:text-[20px] mt-[4px] tracking-[0px]">"</span></p>
             </div>
             <div data-scroll-stat className="flex flex-col gap-[8px]">
-              <p className="text-[12px] font-normal uppercase tracking-[0.48px] leading-[1.4]">User delight<br />score</p>
-              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">9.1<span className="flex items-baseline text-[32px] lg:text-[20px] mt-[6px]">/<span className="text-[20px] lg:text-[14px]">10</span></span></p>
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">User delight<br />score</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">9.1<span className="flex items-baseline text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">/<span className="text-[20px] lg:text-[14px]">10</span></span></p>
             </div>
           </div>
         </div>
@@ -603,13 +608,13 @@ export default function CarpoolingApp() {
           style={{ height: "100vh" }}
           data-name="next project"
         >
-          <p className="absolute left-1/2 -translate-x-1/2 font-['Space_Grotesk',sans-serif] font-normal text-[#eaeaea] text-[12px] uppercase tracking-[0.48px] whitespace-nowrap" style={{ bottom: "calc(50% + 358px)" }}>
+          <p className="absolute left-1/2 -translate-x-1/2 font-['Avantt',sans-serif] font-normal text-[#eaeaea] text-[12px] uppercase tracking-[0.48px] whitespace-nowrap" style={{ bottom: "calc(50% + 358px)" }}>
             NEXT PROJECT
           </p>
 
           <div
             ref={nextProjectImageRef}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer overflow-hidden rounded-2xl"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer overflow-hidden rounded-lg"
             style={{ width: 380, height: 476 }}
             onClick={() => {
               if (isNavigatingRef.current) return;
@@ -635,11 +640,11 @@ export default function CarpoolingApp() {
             className="absolute top-1/2 -translate-y-1/2 pointer-events-none"
             style={{ left: "256px" }}
           >
-            <p className="font-['Space_Grotesk',sans-serif] font-bold leading-[62px] text-[64px] text-white">
+            <p className="font-['Avantt',sans-serif] font-bold leading-[62px] text-[64px] text-white">
               {nextProject.title}
             </p>
-            <div className="flex flex-col font-['Space_Grotesk',sans-serif] font-medium justify-end leading-[0] text-[#eaeaea] text-[14px] uppercase mt-[8px]">
-              <p className="leading-[normal]">— {nextProject.platform}</p>
+            <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[#eaeaea] text-[14px] uppercase mt-[8px]">
+              <p className="leading-[1.6]">— {nextProject.platform}</p>
             </div>
           </div>
         </div>

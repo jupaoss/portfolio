@@ -7,7 +7,8 @@ import { SiteHeader } from "../components/SiteHeader";
 import { IntroOverlay } from "../components/IntroOverlay";
 import { SiteFooter } from "../components/SiteFooter";
 import { projects } from "../data/projects";
-import svgPaths from "@/assets/iconPaths";
+import { GridDistortionImage } from "../components/GridDistortionImage";
+import svgPaths from "../../../graphic-assets/iconPaths";
 
 const N = projects.length;
 const DOWN_ARROW = "M4 8L2.26795 5H5.73205L4 8Z";
@@ -65,10 +66,11 @@ interface CarouselItemProps {
   spacing: number;
   xRadius: number;
   yRadius: number;
+  isMobile: boolean;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-function CarouselItem({ containerY, virtualPos, virtualIndex, project, isCurrent, isReturning, fromHeroBounds, imgW, imgH, containerW, spacing, xRadius, yRadius, onClick }: CarouselItemProps) {
+function CarouselItem({ containerY, virtualPos, virtualIndex, project, isCurrent, isReturning, fromHeroBounds, imgW, imgH, containerW, spacing, xRadius, yRadius, isMobile, onClick }: CarouselItemProps) {
   const halfImg = imgH / 2;
   const itemTop = virtualPos * spacing - halfImg;
   const imageOffset = (containerW - imgW) / 2;
@@ -195,7 +197,7 @@ function CarouselItem({ containerY, virtualPos, virtualIndex, project, isCurrent
         const heroH    = fromHeroBounds!.height;
         return (
           <motion.div
-            className="overflow-hidden absolute rounded-2xl"
+            className="overflow-hidden absolute rounded-lg"
             data-gallery-image={isCurrent ? "true" : undefined}
             initial={{ width: heroW, height: heroH, y: -(heroH - imgH) / 2, marginLeft: (containerW - heroW) / 2 }}
             animate={{ width: imgW, height: imgH, y: 0, marginLeft: imageOffset }}
@@ -226,18 +228,15 @@ function CarouselItem({ containerY, virtualPos, virtualIndex, project, isCurrent
             style={{ position: "absolute", inset: "-24px" }}
           >
             {/* Inner: clips the image with rounded corners in local (non-transformed) space */}
-            <div
-              className="overflow-hidden rounded-2xl"
+            <GridDistortionImage
+              src={project.image}
+              alt={project.title}
+              className="rounded-lg"
               style={{ position: "absolute", inset: "24px" }}
-            >
-              <img
-                alt={project.title}
-                src={project.image}
-                draggable={false}
-                data-gallery-image={isCurrent ? "true" : undefined}
-                className="object-cover object-top select-none block w-full h-full"
-              />
-            </div>
+              imgClassName="object-cover object-top select-none block"
+              enabled={isCurrent && !isMobile}
+              data-gallery-image={isCurrent ? "true" : undefined}
+            />
           </div>
         </div>
       )}
@@ -269,16 +268,15 @@ function TitleReveal({ title, platform, isMobile, animate, stroke }: TitleReveal
         .to('[data-name^="project-title-word-"]', {
           clipPath: "inset(0% 0 0 0)",
           y: 0,
-          duration: 0.65,
+          duration: 0.55,
           stagger: 0.12,
-          ease: "power2.out",
+          ease: "power3.out",
         })
-        // platform starts 0.15s after the last title word (word 1 starts at 0.12s)
         .to('[data-name="project-platform-line"]', {
           clipPath: "inset(0% 0 0 0)",
           y: 0,
-          duration: 0.55,
-          ease: "power2.out",
+          duration: 0.50,
+          ease: "power3.out",
         }, 0.27);
     });
     return () => ctx.revert();
@@ -290,7 +288,7 @@ function TitleReveal({ title, platform, isMobile, animate, stroke }: TitleReveal
         <p
           key={i}
           data-name={`project-title-word-${i}`}
-          className={`font-['Space_Grotesk',sans-serif] font-bold text-[#131313] leading-[0.86] m-0 ${
+          className={`font-['Avantt',sans-serif] font-bold text-[#131313] leading-[0.86] m-0 ${
             isMobile ? "text-[48px]" : "text-[64px]"
           }`}
           style={stroke ? { WebkitTextStroke: "0.5px #676767" } : undefined}
@@ -300,7 +298,7 @@ function TitleReveal({ title, platform, isMobile, animate, stroke }: TitleReveal
       ))}
       <div
         data-name="project-platform-line"
-        className="mt-2 font-['Space_Grotesk',sans-serif] font-medium text-[14px] text-black uppercase"
+        className="mt-2 font-['Avantt',sans-serif] font-bold text-[14px] text-black uppercase"
       >
         <p>— {platform}</p>
       </div>
@@ -489,7 +487,7 @@ const isMobile = screenW < 640;
       '[data-name="about"]',
       '[data-name="mobile-title"]',
     ];
-    gsap.set(textEls, { clipPath: "inset(100% 0 0 0)", y: 10 });
+    gsap.set(textEls, { clipPath: "inset(100% 0 0 0)", y: 18 });
     // Per-word: y on inner elements is safe — the -translate-y-1/2 lives on the outer container, not here
     gsap.set('[data-name^="project-title-word-"], [data-name="project-platform-line"]', { clipPath: "inset(100% 0 0 0)", y: 40 });
   }, []);
@@ -498,21 +496,24 @@ const isMobile = screenW < 640;
   useLayoutEffect(() => {
     if (!revealStarted || isReturning) return;
     const ctx = gsap.context(() => {
-      // Logo reveals first; other header/footer elements follow in quick succession.
-      // onRevealStart fires as the intro overlay begins fading (0.45s), so timing starts from 0.
+      // Reveal sequence — matches intro easing (power3.out) for a unified motion language.
+      // Order: logo → header left→right → footer left→right → project title.
       gsap.timeline()
-        .to('[data-name="logo"]',                  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.5,  ease: "power2.out" }, 0.05)
-        .to('[data-name="subtitle"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.20)
-        .to('[data-name="location"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.25)
-        .to('[data-name="options"]',               { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.30)
-        .to('[data-name="footer-year"]',           { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.20)
-        .to('[data-name="footer-freelance"]',      { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.25)
-        .to('[data-name="footer-mobile"]',         { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.22)
-        .to('[data-name="about"]',                 { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.32)
-        .to('[data-name="mobile-title"]',          { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.45, ease: "power2.in" }, 0.22)
-        // Title words start once the overlay has faded
-        .to('[data-name^="project-title-word-"]',  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, stagger: 0.12, ease: "power2.out" }, 0.50)
-        .to('[data-name="project-platform-line"]', { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.50, ease: "power2.out" }, 0.74);
+        // 1. Logo
+        .to('[data-name="logo"]',                  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0)
+        // 2. Header elements, left → right
+        .to('[data-name="subtitle"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.07)
+        .to('[data-name="location"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.14)
+        .to('[data-name="options"]',               { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.21)
+        // 3. Footer elements, left → right
+        .to('[data-name="footer-year"]',           { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.30)
+        .to('[data-name="footer-mobile"]',         { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.30)
+        .to('[data-name="mobile-title"]',          { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.30)
+        .to('[data-name="footer-freelance"]',      { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.37)
+        .to('[data-name="about"]',                 { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.44)
+        // 4. Project title — last
+        .to('[data-name^="project-title-word-"]',  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, stagger: 0.10, ease: "power3.out" }, 0.54)
+        .to('[data-name="project-platform-line"]', { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.50, ease: "power3.out" }, 0.77);
     });
     return () => ctx.revert();
   }, [revealStarted]);
@@ -548,7 +549,7 @@ const isMobile = screenW < 640;
   return (
     <div
       ref={containerRef}
-      className={`bg-white relative size-full overflow-hidden select-none ${isOverInteractive || isNearLink ? "cursor-pointer" : "cursor-grab active:cursor-grabbing"}`}
+      className={`bg-[#ebebeb] relative size-full overflow-hidden select-none ${isOverInteractive || isNearLink ? "cursor-pointer" : "cursor-grab active:cursor-grabbing"}`}
       data-name="Home"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
@@ -565,14 +566,14 @@ const isMobile = screenW < 640;
 
       {/* ── Designer title — mobile only ── */}
       {isMobile && (
-        <div className="absolute left-4 top-[68px] font-['Space_Grotesk',sans-serif] font-normal text-[12px] text-black uppercase leading-normal z-10 pointer-events-none" data-name="mobile-title">
+        <div className="absolute left-4 top-[68px] font-['Avantt',sans-serif] font-semibold text-[12px] text-black uppercase leading-normal z-10 pointer-events-none" data-name="mobile-title">
           <p className="mb-0">Software &amp; Experience</p>
           <p>Designer.</p>
         </div>
       )}
 
       {/* ── Footer ── */}
-      <SiteFooter onWorkClick={() => navigate(`/project/${currentProject.id}`)} />
+      <SiteFooter />
 
       {/* ── Carousel ── */}
       <div
@@ -599,6 +600,7 @@ const isMobile = screenW < 640;
                 spacing={spacing}
                 xRadius={xRadius}
                 yRadius={yRadius}
+                isMobile={isMobile}
                 onClick={isCurrent ? handleImageClick : undefined}
               />
             );
@@ -635,7 +637,7 @@ const isMobile = screenW < 640;
 
       {/* ── Slider — desktop/tablet only ── */}
       {!isMobile && <div
-        className="absolute flex flex-col items-end gap-[0px] z-10 right-6 top-1/2 -translate-y-1/2 w-[80px]"
+        className="absolute flex flex-col items-end gap-[0px] z-10 right-6 lg:right-8 top-1/2 -translate-y-1/2 w-[80px]"
         data-name="slider"
       >
         {projects.map((_, index) => {
@@ -649,7 +651,7 @@ const isMobile = screenW < 640;
             >
               {isActive ? (
                 <div className="flex gap-[10px] h-[10px] items-center justify-end">
-                  <p className="font-['Space_Grotesk',sans-serif] text-[12px] text-black uppercase">
+                  <p className="font-['Avantt',sans-serif] font-semibold text-[12px] text-black uppercase tracking-[0.48px]">
                     {String(index + 1).padStart(2, "0")}
                   </p>
                   <motion.div
@@ -729,23 +731,6 @@ const isMobile = screenW < 640;
               </>
             )}
           </AnimatePresence>
-        </motion.div>
-      )}
-
-      {/* ── Smiley — desktop only ── */}
-      {!isMobile && !isTablet && (
-        <motion.div
-          className="absolute flex items-center justify-center size-[78px] z-[3]"
-          style={{ left: "calc(66.67% - 1px)", top: 394 }}
-          initial={{ opacity: 0, rotate: 0 }}
-          animate={{ opacity: 1, rotate: 15 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-        >
-          <div className="relative size-[64px]" data-name="face">
-            <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 64 64">
-              <path clipRule="evenodd" d={svgPaths.p10d67600} fill="var(--fill-0, #131313)" fillRule="evenodd" />
-            </svg>
-          </div>
         </motion.div>
       )}
     </div>

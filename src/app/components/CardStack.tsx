@@ -77,14 +77,14 @@ export const CardStack = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl ${className}`}
+      className={`relative overflow-hidden rounded-lg ${className}`}
       style={{ width, height }}
     >
       {cards.map((card, i) => (
         <div
           key={card.id}
           ref={(el) => { cardRefs.current[i] = el; }}
-          className="absolute inset-0 will-change-transform overflow-hidden rounded-2xl"
+          className="absolute inset-0 will-change-transform overflow-hidden rounded-lg"
           style={{ zIndex: cards.length - i }}
         >
           <img

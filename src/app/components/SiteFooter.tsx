@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router";
 import { SlotCta } from "./SlotCta";
-import headerPaths from "@/assets/headerPaths";
+import headerPaths from "../../../graphic-assets/headerPaths";
 
 interface SiteFooterProps {
   onWorkClick?: () => void;
@@ -26,12 +26,12 @@ export function SiteFooter({ onWorkClick, theme = "light" }: SiteFooterProps) {
   const textColor = theme === "dark" ? "text-[#eaeaea]" : "text-black";
 
   return (
-    <div className={`fixed left-4 right-4 bottom-6 z-[110] lg:left-6 lg:right-6 ${textColor}`} data-name="Footer">
-      <div className="hidden min-[768px]:block absolute left-0 bottom-0 font-['Space_Grotesk',sans-serif] text-[12px] uppercase" data-name="footer-year">
+    <div className={`fixed left-4 right-4 bottom-6 z-[110] lg:left-8 lg:right-8 ${textColor}`} data-name="Footer">
+      <div className="hidden min-[768px]:block absolute left-0 bottom-0 font-['Avantt',sans-serif] font-semibold text-[12px] uppercase" data-name="footer-year">
         <p>©2026</p>
       </div>
       {/* Mobile: available for freelance + email + location */}
-      <div className="md:hidden absolute left-0 bottom-0 font-['Space_Grotesk',sans-serif] text-[12px] uppercase leading-normal" data-name="footer-mobile">
+      <div className="md:hidden absolute left-0 bottom-0 font-['Avantt',sans-serif] font-semibold text-[12px] uppercase leading-[1.3]" data-name="footer-mobile">
         <p className="mb-0">available for freelance</p>
         <a href="mailto:julianpatinoossa@gmail.com" className="underline hover:opacity-60 transition-opacity duration-300">julianpatinoossa@gmail.com</a>
         <div className="flex items-center gap-[8px] mt-6">
@@ -44,18 +44,18 @@ export function SiteFooter({ onWorkClick, theme = "light" }: SiteFooterProps) {
         </div>
       </div>
       {/* Desktop: available for freelance + email */}
-      <div className="hidden md:block absolute left-[232px] bottom-0 font-['Space_Grotesk',sans-serif] text-[12px] uppercase leading-normal" data-name="footer-freelance">
+      <div className="hidden md:block absolute left-[232px] bottom-0 font-['Avantt',sans-serif] font-semibold text-[12px] uppercase leading-[1.3]" data-name="footer-freelance">
         <p className="mb-0">available for freelance</p>
         <a href="mailto:julianpatinoossa@gmail.com" className="underline hover:opacity-60 transition-opacity duration-300">julianpatinoossa@gmail.com</a>
       </div>
-      <div className="absolute flex flex-col items-end right-0 bottom-0 gap-[8px] pb-[3px]" data-name="about">
+      <div className="absolute flex flex-col items-end right-0 bottom-0 gap-[4px] pb-[3px]" data-name="about">
         <div className="flex items-center gap-[4px]">
           {activePage === "work" && <NavArrow color={theme === "dark" ? "#eaeaea" : "black"} />}
-          <SlotCta text="WORK" className="text-[12px]" onClick={handleWorkClick} />
+          <SlotCta text="WORK" className="text-[12px] font-semibold" onClick={handleWorkClick} />
         </div>
         <div className="flex items-center gap-[4px]">
           {activePage === "about" && <NavArrow color={theme === "dark" ? "#eaeaea" : "black"} />}
-          <SlotCta text="ABOUT" className="text-[12px]" onClick={() => navigate("/about")} />
+          <SlotCta text="ABOUT" className="text-[12px] font-semibold" onClick={() => navigate("/about")} />
         </div>
       </div>
     </div>

@@ -1,17 +1,23 @@
 import { useRef, useLayoutEffect } from "react";
 import { gsap } from "gsap";
-import svgPaths from "@/assets/headerPaths";
+import svgPaths from "../../../graphic-assets/headerPaths";
 
-const GREETINGS = ["Hello", "你好", "Hola"];
+const GREETINGS = ["WELCOME"];
 
 // Timing and easing match header/footer text reveal in Home.tsx
-const SPIN    = 0.45;
-const STAGGER = 0.06;
-const HOLD    = 0.72;
-const EASE    = "power2.in";
+const SPIN           = 0.55;
+const STAGGER_AMOUNT = 0.18;
+const HOLD           = 0.65;
+const EASE_ENTER     = "power3.out";
+const EASE_EXIT      = "power3.in";
 
 // Logo height in px — must match the container's h-[20px]
-const LOGO_H = 20;
+const LOGO_H = 19;
+
+// Total duration until overlay fade begins
+const STAGGER_TOTAL = STAGGER_AMOUNT + SPIN;
+const WORD_CYCLE    = STAGGER_TOTAL * 2 + HOLD;
+const TOTAL_DUR     = (GREETINGS.length + 1) * WORD_CYCLE;
 
 interface IntroOverlayProps {
   onRevealStart: () => void;
@@ -22,20 +28,19 @@ export function IntroOverlay({ onRevealStart, onComplete }: IntroOverlayProps) {
   const overlayRef   = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const logoRef      = useRef<SVGSVGElement>(null);
+  const barRef       = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const container = containerRef.current!;
     const logo      = logoRef.current!;
     const overlay   = overlayRef.current!;
+    const bar       = barRef.current!;
 
-    // Alive flag prevents new tweens starting after unmount
     let alive = true;
 
-    // All letters enter from bottom, exit to top
     const EXIT_Y  = "-2em";
     const ENTER_Y = "2em";
 
-    // Build per-letter DOM: each letter is an overflow:hidden clip with an inner span
     const setLetters = (text: string, startY: string) => {
       if (!alive) return;
       container.innerHTML = "";
@@ -55,38 +60,47 @@ export function IntroOverlay({ onRevealStart, onComplete }: IntroOverlayProps) {
     const getInners = () =>
       Array.from(container.querySelectorAll<HTMLElement>("[data-letter]"));
 
-    // Each logo character group starts below the viewport (clipped by parent overflow-hidden)
     const getLogoChars = () =>
       Array.from(logo.querySelectorAll<SVGGElement>("[data-logo-char]"));
 
     gsap.set(getLogoChars(), { y: LOGO_H });
 
     const ctx = gsap.context(() => {
+      // Progress bar — smooth linear fill over the full sequence duration
+      const proxy = { value: 0 };
+      gsap.to(proxy, {
+        value: 100,
+        duration: TOTAL_DUR,
+        ease: "none",
+        onUpdate() {
+          if (!alive) return;
+          bar.style.width = `${proxy.value}%`;
+        },
+      });
+
       const showLogo = () => {
         if (!alive) return;
         const chars = getLogoChars();
-        // Enter each character from bottom — same stagger as greeting text
         gsap.to(chars, {
           y: 0,
           duration: SPIN,
-          stagger: STAGGER,
-          ease: EASE,
+          stagger: { amount: STAGGER_AMOUNT },
+          ease: EASE_ENTER,
           onComplete: () => {
             if (!alive) return;
             gsap.delayedCall(HOLD, () => {
               if (!alive) return;
-              // Exit each character to top
               gsap.to(chars, {
                 y: -LOGO_H,
                 duration: SPIN,
-                stagger: STAGGER,
-                ease: EASE,
+                stagger: { amount: STAGGER_AMOUNT },
+                ease: EASE_EXIT,
                 onComplete: () => {
                   if (!alive) return;
                   onRevealStart();
                   gsap.to(overlay, {
                     opacity: 0,
-                    duration: 0.45,
+                    duration: 0.55,
                     ease: "power2.inOut",
                     onComplete,
                   });
@@ -101,22 +115,20 @@ export function IntroOverlay({ onRevealStart, onComplete }: IntroOverlayProps) {
         if (!alive) return;
         setLetters(GREETINGS[index], ENTER_Y);
 
-        // Spin letters in
         gsap.to(getInners(), {
           y: 0,
           duration: SPIN,
-          stagger: STAGGER,
-          ease: EASE,
+          stagger: { amount: STAGGER_AMOUNT },
+          ease: EASE_ENTER,
           onComplete: () => {
             if (!alive) return;
             gsap.delayedCall(HOLD, () => {
               if (!alive) return;
-              // Spin letters out
               gsap.to(getInners(), {
                 y: EXIT_Y,
                 duration: SPIN,
-                stagger: STAGGER,
-                ease: EASE,
+                stagger: { amount: STAGGER_AMOUNT },
+                ease: EASE_EXIT,
                 onComplete: () => {
                   if (!alive) return;
                   if (index + 1 < GREETINGS.length) {
@@ -144,42 +156,47 @@ export function IntroOverlay({ onRevealStart, onComplete }: IntroOverlayProps) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[100] bg-white pointer-events-none"
+      className="fixed inset-0 z-[100] bg-[#ebebeb] pointer-events-none"
     >
+      {/* Full-width 2px bar pinned to top edge */}
+      <div className="absolute top-0 left-0 w-full h-[2px]">
+        <div ref={barRef} className="h-full bg-black" style={{ width: "0%" }} />
+      </div>
+
+      {/* Centered greeting / logo area */}
       <div className="absolute inset-0 flex items-center justify-center">
         {/* Letter-by-letter slot container — built dynamically by GSAP */}
         <div
           ref={containerRef}
-          className="absolute font-['Space_Grotesk',sans-serif] font-medium text-[20px] leading-none text-black uppercase"
+          className="absolute font-['Avantt',sans-serif] font-bold text-[20px] leading-none text-black uppercase"
         />
 
         {/* Logo — each character group animates independently like greeting letters.
             Parent overflow-hidden clips the y-movement; SVG viewport does the same. */}
-        <div className="absolute h-[20px] w-[58.962px] overflow-hidden">
+        <div className="absolute h-[19px] w-[59px] overflow-hidden">
           <svg
             ref={logoRef}
             className="block size-full"
             fill="none"
             preserveAspectRatio="none"
-            viewBox="0 0 58.9619 20"
+            viewBox="0 0 59 19"
           >
-            {/* Char 0 — J (x: 0–12) */}
+            {/* Char 0 — J */}
             <g data-logo-char="0">
-              <path d={svgPaths.p79ef5c0} fill="#404040" />
+              <path d={svgPaths.p79ef5c0} fill="#000000" fillRule="evenodd" clipRule="evenodd" />
             </g>
-            {/* Char 1 — diagonal stroke character (x: 11–25) */}
+            {/* Char 1 — diagonal + dot */}
             <g data-logo-char="1">
-              <path d={svgPaths.p3f2ef180} fill="#404040" />
-              <path d={svgPaths.p3d018e00} fill="#404040" />
-              <path d={svgPaths.p35174f00} fill="#404040" />
+              <path d={svgPaths.p3f2ef180} fill="#000000" />
+              <path d={svgPaths.p35174f00} fill="#000000" />
             </g>
-            {/* Char 2 — P (x: 26–40) */}
+            {/* Char 2 — P */}
             <g data-logo-char="2">
-              <path d={svgPaths.p23e9dd00} fill="#404040" />
+              <path d={svgPaths.p23e9dd00} fill="#000000" />
             </g>
-            {/* Char 3 — O (x: 42–59) */}
+            {/* Char 3 — O */}
             <g data-logo-char="3">
-              <path d={svgPaths.p37f5c380} fill="#404040" />
+              <path d={svgPaths.p37f5c380} fill="#000000" />
             </g>
           </svg>
         </div>

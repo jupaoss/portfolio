@@ -58,7 +58,7 @@ function HeroReveal({ lines, className, delay = 0.1, stagger = 0.12 }: {
   return (
     <div ref={wrapperRef}>
       {lines.map((line, i) => (
-        <p key={i} className={className}>{line}</p>
+        <p key={i} className={className} style={{ paddingTop: '0.15em', marginTop: '-0.15em' }}>{line}</p>
       ))}
     </div>
   );
@@ -139,34 +139,34 @@ export default function About() {
       <div className="px-4 sm:px-[120px] flex flex-col sm:flex-row sm:gap-[80px] justify-end sm:items-end" style={{ height: 600 }}>
         <div className="hidden sm:block sm:flex-1" />
         <div className="sm:flex-1 pb-[40px]">
-          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} className="font-['Space_Grotesk',sans-serif] font-bold text-[56px] leading-[0.9] text-white uppercase" />
+          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.1} className="font-['Avantt',sans-serif] font-bold text-[56px] leading-[0.9] text-white uppercase" />
         </div>
       </div>
 
       {/* Based on + Role/Bio */}
-      <div className="px-4 sm:px-[120px] mt-[48px] flex flex-col sm:flex-row sm:gap-[80px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+      <div className="px-4 sm:px-[120px] mt-[48px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
-          <p className="text-[12px] uppercase tracking-[0.48px]">Based on</p>
-          <p className="font-bold text-[40px] leading-[0.9] text-white uppercase">MDE, COL</p>
+          <HeroReveal lines={["Based on"]} delay={0.22} className="text-[12px] uppercase tracking-[0.48px]" />
+          <HeroReveal lines={["MDE, COL"]} delay={0.28} className="font-bold text-[40px] leading-[0.9] text-white uppercase" />
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-6 mt-[48px] sm:mt-0">
-          <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.2} className="font-['Space_Grotesk',sans-serif] font-bold text-[32px] leading-[1.0] text-white uppercase" />
+          <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[32px] leading-[1.0] text-white uppercase" />
           <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.5] tracking-[-0.12px]">
             <SplitLines scroller={scrollRef} text="During my career I've had the opportunity to work in projects that span from pure upstream concept work to ready to ship products." />
             <SplitLines scroller={scrollRef} text="I've also worked in UX/UI projects in different global agencies and startups focused on building innovative strategies and product engineering, where I've been involved in the entire building process." />
             <SplitLines scroller={scrollRef} text="These are some key principles I always look for when designing:" />
-            <ul data-scroll-fade className="flex flex-col gap-1 pl-4 list-disc">
-              <li>Make people's life easier</li>
-              <li>Create delightful experiences</li>
-              <li>Generate emotional connections</li>
-              <li>Build accessible productos for everyone.</li>
+            <ul className="flex flex-col gap-1 pl-4 list-disc">
+              <li data-scroll-fade>Make people's life easier</li>
+              <li data-scroll-fade>Create delightful experiences</li>
+              <li data-scroll-fade>Generate emotional connections</li>
+              <li data-scroll-fade>Build accessible productos for everyone.</li>
             </ul>
           </div>
         </div>
       </div>
 
       {/* Experience */}
-      <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+      <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p className="text-[12px] uppercase tracking-[0.48px]">Prior Experience</p>
           <p className="flex items-start font-bold text-[48px] leading-[1] tracking-[-2px] text-white">5</p>
@@ -185,7 +185,7 @@ export default function About() {
       </div>
 
       {/* Brands */}
-      <div className="px-4 sm:px-[120px] mt-[80px] pb-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+      <div className="px-4 sm:px-[120px] mt-[80px] pb-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p className="text-[12px] uppercase tracking-[0.48px]">Brands &amp; Organizations</p>
           <p className="flex items-start font-bold text-[48px] leading-[1] tracking-[-2px] text-white">18<span className="text-[20px] mt-[4px]">+</span></p>
@@ -212,7 +212,7 @@ export default function About() {
       <div className="flex items-center" style={{ height: 600, paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
         <div className="w-[333px]" />
         <div className="w-[444px]">
-          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} className="font-['Space_Grotesk',sans-serif] font-bold text-[64px] leading-[0.86] text-white uppercase" />
+          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.1} className="font-['Avantt',sans-serif] font-bold text-[64px] leading-[0.86] text-white uppercase" />
         </div>
       </div>
 
@@ -222,22 +222,22 @@ export default function About() {
         {/* Based on + Role/Bio row */}
         <div className="flex items-start" style={{ paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
           {/* Left */}
-          <div className="flex flex-col gap-[16px] w-[333px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
-            <p data-scroll-label className="text-[12px] uppercase tracking-[0.48px] font-medium">Based on</p>
-            <p className="font-bold text-[56px] leading-[0.9] text-white uppercase" data-scroll-fade>MDE, COL</p>
+          <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
+            <HeroReveal lines={["Based on"]} delay={0.22} className="text-[12px] uppercase tracking-[0.48px] font-medium" />
+            <HeroReveal lines={["MDE, COL"]} delay={0.28} className="font-bold text-[56px] leading-[0.9] text-white uppercase" />
           </div>
           {/* Right — pt matches label height (12px) + gap (16px) to align heading with MDE, COL */}
-          <div className="flex flex-col gap-[24px] w-[444px] font-['Space_Grotesk',sans-serif] text-[#eaeaea] pt-[28px]">
-            <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.2} className="font-['Space_Grotesk',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
+          <div className="flex flex-col gap-[24px] w-[444px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[28px]">
+            <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
             <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.6] tracking-[-0.12px]">
               <SplitLines scroller={scrollRef} text="Over the course of my career, I’ve worked on a wide range of projects — from early-stage concept exploration to fully designed, ready-to-ship products." />
               <SplitLines scroller={scrollRef} text="I’ve collaborated with global agencies and startups across UX and product design initiatives, helping shape strategies and build thoughtful, scalable experiences. Throughout these engagements, I’ve been involved across the full product lifecycle, working closely with cross-functional teams from discovery and definition to design and delivery." />
               <SplitLines scroller={scrollRef} text="These are some key principles I always look for when designing:" />
-              <ul data-scroll-fade className="flex flex-col gap-1 pl-4 list-disc">
-                <li>Make people’s lives easier</li>
-                <li>Create thoughtful, delightful experiences</li>
-                <li>Foster meaningful emotional connections</li>
-                <li>Design accessible products for everyone</li>
+              <ul className="flex flex-col gap-1 pl-4 list-disc">
+                <li data-scroll-fade>Make people’s lives easier</li>
+                <li data-scroll-fade>Create thoughtful, delightful experiences</li>
+                <li data-scroll-fade>Foster meaningful emotional connections</li>
+                <li data-scroll-fade>Design accessible products for everyone</li>
               </ul>
             </div>
           </div>
@@ -246,12 +246,12 @@ export default function About() {
         {/* Experience */}
         <div className="flex items-start" style={{ paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
           {/* Left */}
-          <div className="flex flex-col gap-[24px] w-[333px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+          <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
             <p data-scroll-label className="text-[12px] uppercase tracking-[0.48px] font-medium">Prior Experience</p>
             <p className="flex items-start font-bold text-[56px] leading-[1] tracking-[-2px] text-white" data-scroll-fade>5</p>
           </div>
           {/* Right */}
-          <div className="flex flex-col w-[444px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+          <div className="flex flex-col w-[444px] font-['Avantt',sans-serif] text-[#eaeaea]">
             {EXPERIENCE.map((item, i) => (
               <div key={i} data-scroll-fade className="py-5 flex flex-col gap-1">
                 <div className="flex justify-between items-start">
@@ -267,7 +267,7 @@ export default function About() {
         {/* Brands */}
         <div className="flex items-start" style={{ paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
           {/* Left */}
-          <div className="flex flex-col gap-[24px] w-[333px] font-['Space_Grotesk',sans-serif] text-[#eaeaea]">
+          <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
             <p data-scroll-label className="text-[12px] uppercase tracking-[0.48px] font-medium">Brands &amp; Organizations</p>
             <p className="flex items-start font-bold text-[56px] leading-[1] tracking-[-2px] text-white" data-scroll-fade>
               18<span className="text-[20px] mt-[4px]">+</span>
