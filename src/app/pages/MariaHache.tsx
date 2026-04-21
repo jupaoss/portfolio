@@ -239,6 +239,17 @@ export default function MariaHache() {
     });
   };
 
+  // Intercept trackpad swipe-right (browser back) to use the same transition as logo click
+  useEffect(() => {
+    window.history.pushState({ backGuard: true }, "");
+    const onPopState = () => {
+      window.history.pushState({ backGuard: true }, "");
+      handleLogoClick();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   const mobileLayout = (
     <>
       <SiteHeader variant="dynamic" isDarkLogo={isDarkLogo} isDarkText={isDarkText} isDarkMenu={isDarkMenu}
@@ -257,16 +268,16 @@ export default function MariaHache() {
 
       <div className="px-4 mt-3 flex items-start gap-20 font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="shrink-0">
-          <p className="text-[14px] uppercase font-semibold tracking-[0.48px]">— {project.platform}</p>
+          <p className="text-[14px] uppercase font-bold">— {project.platform}</p>
         </div>
         <div className="flex flex-col gap-6 w-[70%]">
           <div className="flex flex-col gap-1">
             <p data-name="detail-text-line-0" className="text-[14px] uppercase font-semibold tracking-[0.48px]">My role</p>
-            <p data-name="detail-text-line-1" className="text-[14px] font-normal tracking-[-0.12px]">UX/UI Designer</p>
+            <p data-name="detail-text-line-1" className="text-[12px] font-normal leading-[1.6] tracking-[-0.12px]">Art Director. <br/> In collaboration with <a href="https://www.behance.net/Duvan" target="_blank" rel="noopener noreferrer" style={{ color: "#FF4800", textDecoration: "none" }}>Duván Lopera</a></p>
           </div>
           <div className="flex flex-col gap-3">
-            <p data-name="detail-text-line-2" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
-            <SplitLines text="María Hache is a cultural platform born from rebellion — a space where personal expression meets collective movement. We built an experience that embodied the spirit of radical self-determination: raw, honest, and deeply human." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
+            <p data-name="detail-text-line-3" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
+            <SplitLines text="María Hache was a community-driven brand and visual identity built to shift the conversation around cannabis. More than a media project, it was a cultural movement — a group of friends using design as a tool to challenge decades of stigma, celebrate the plant's real benefits, and invite people into a culture rooted in knowledge, connection, and harmony." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
           </div>
         </div>
       </div>
@@ -278,11 +289,12 @@ export default function MariaHache() {
       <div className="px-4 sm:px-[120px] mt-[80px] font-['Avantt',sans-serif] text-[#eaeaea] flex flex-col sm:flex-row sm:gap-[80px]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE CHALLENGE.</p>
-          <SplitLines scroller={scrollContainerRef} text="How do you design for a movement that resists definition? María Hache needed a digital presence that could hold contradictions — fierce and tender, structured and free — without losing the raw energy that made it real." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="Cannabis heals, builds, connects — but decades of political interests and prohibition have buried its benefits under stigma. The challenge was to demystify it — to create a movement that felt welcoming and culturally rich. Not counterculture for the sake of rebellion, but a genuine invitation to explore the plant, understand the culture around it, and join a community built on friendship and shared values." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-4 mt-[48px] sm:pt-[120px] sm:mt-0">
-          <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH</p>
-          <SplitLines scroller={scrollContainerRef} text="We let the characters lead. Each illustration became a portal — distinct personalities that pulled users into the world rather than explaining it. The design system was built around emotional honesty: typography that feels spoken, color that feels lived-in, interactions that feel chosen." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH: WE REFUSED TO PLAY INTO STEREOTYPES</p>
+          <SplitLines scroller={scrollContainerRef} text="We built a visual identity that refuses to play into stereotypes. No tie-dye, no clichés — María Hache speaks with clarity, warmth, and confidence. The design language positions cannabis where it belongs: alongside any other plant that heals, connects, and inspires." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="Every piece of content was crafted to educate first and engage second. Social posts unpacked the science. Editorial pieces explored the culture. The visual system balanced accessibility with credibility, making the conversation feel approachable for the curious and substantive for the committed." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
       </div>
 
@@ -309,12 +321,25 @@ export default function MariaHache() {
       <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">IMPACT</p>
-          <SplitLines scroller={scrollContainerRef} text="A platform that became a home for a generation of creators who had never seen themselves reflected in digital spaces — and finally did." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="The result was a brand that people didn't just follow — they joined. María Hache became a space where friendships formed around the plant, not just consumption of it." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+        </div>
+        <div className="w-full sm:flex-1 grid grid-cols-2 gap-x-8 gap-y-8 mt-[48px] sm:mt-0 sm:pt-[120px]">
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Joined the movement<br />in five months</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">2K<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
+          </div>
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Social media<br />impressions</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">850K<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
+          </div>
         </div>
       </div>
 
       <div className="px-4 py-[80px] flex flex-col items-center gap-6">
-        <p className="font-['Avantt',sans-serif] text-[14px] uppercase tracking-[0.48px] text-[#eaeaea]">NEXT PROJECT</p>
+        <div className="flex flex-col items-center gap-[10px]">
+          <p className="font-['Avantt',sans-serif] font-bold text-[24px] leading-[1.1] uppercase text-[#eaeaea]">NEXT PROJECT</p>
+          <div className="w-[1px] h-[40px] bg-white" />
+        </div>
         <div ref={nextProjectImageRef} className="cursor-pointer overflow-hidden rounded-lg" style={{ width: 240, height: 300 }}
           onClick={() => {
             if (isNavigatingRef.current) return;
@@ -353,21 +378,21 @@ export default function MariaHache() {
         {project.title.split(' ').map((word, i) => (
           <p key={i} className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full">{word}</p>
         ))}
-        <p className="font-['Avantt',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
+        <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
       </div>
 
-      <div className="absolute top-0 z-20 flex flex-col justify-end gap-[45px] pb-6" style={{ left: "75%", height: "100vh" }} data-name="right">
+      <div className="absolute top-0 z-20 flex flex-col justify-end gap-[45px] pb-6" style={{ left: "calc(75% - 16px)", height: "100vh" }} data-name="right">
         <div className="content-stretch flex flex-col gap-[16px] items-start text-[14px] w-[215px] text-[#eaeaea]" data-name="role">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] uppercase w-full">
             <p data-name="detail-text-line-0" className="font-semibold leading-[1.6]">My role</p>
           </div>
-          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal leading-[1.6] tracking-[-0.14px] w-full">UX/UI Designer</p>
+          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal text-[12px] leading-[1.6] tracking-[-0.12px] w-full">Designer.<br />In collaboration with <a href="https://www.behance.net/Duvan" target="_blank" rel="noopener noreferrer" style={{ color: "#FF4800", textDecoration: "none" }}>Duván Lopera</a></p>
         </div>
         <div className="content-stretch flex flex-col gap-[16px] items-start w-[215px] text-[#eaeaea]" data-name="team">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[14px] uppercase w-full">
-            <p data-name="detail-text-line-2" className="font-semibold leading-[1.6]">Description</p>
+            <p data-name="detail-text-line-3" className="font-semibold leading-[1.6]">Description</p>
           </div>
-          <SplitLines text="María Hache is a cultural platform born from rebellion — a space where personal expression meets collective movement. We built an experience that embodied the spirit of radical self-determination: raw, honest, and deeply human." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
+          <SplitLines text="María Hache was a community-driven brand and visual identity built to shift the conversation around cannabis. More than a media project, it was a cultural movement — a group of friends using design as a tool to challenge decades of stigma, celebrate the plant's real benefits, and invite people into a culture rooted in knowledge, connection, and harmony." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
         </div>
       </div>
 
@@ -392,11 +417,12 @@ export default function MariaHache() {
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
           <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
             <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE CHALLENGE.</p>
-            <SplitLines scroller={scrollContainerRef} text="How do you design for a movement that resists definition? María Hache needed a digital presence that could hold contradictions — fierce and tender, structured and free — without losing the raw energy that made it real." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="Cannabis heals, builds, connects — but decades of political interests and prohibition have buried its benefits under stigma. The challenge was to demystify it — to create a movement that felt welcoming and culturally rich. Not counterculture for the sake of rebellion, but a genuine invitation to explore the plant, understand the culture around it, and join a community built on friendship and shared values." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
           <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[180px]">
-            <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE APPROACH</p>
-            <SplitLines scroller={scrollContainerRef} text="We let the characters lead. Each illustration became a portal — distinct personalities that pulled users into the world rather than explaining it. The design system was built around emotional honesty: typography that feels spoken, color that feels lived-in, interactions that feel chosen." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE APPROACH: WE REFUSED TO PLAY INTO STEREOTYPES</p>
+            <SplitLines scroller={scrollContainerRef} text="We built a visual identity that refuses to play into stereotypes. No tie-dye, no clichés — María Hache speaks with clarity, warmth, and confidence. The design language positions cannabis where it belongs: alongside any other plant that heals, connects, and inspires." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="Every piece of content was crafted to educate first and engage second. Social posts unpacked the science. Editorial pieces explored the culture. The visual system balanced accessibility with credibility, making the conversation feel approachable for the curious and substantive for the committed." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
         </div>
 
@@ -423,14 +449,25 @@ export default function MariaHache() {
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
           <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
             <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">IMPACT</p>
-            <SplitLines scroller={scrollContainerRef} text="A platform that became a home for a generation of creators who had never seen themselves reflected in digital spaces — and finally did." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="The result was a brand that people didn't just follow — they joined. María Hache became a space where friendships formed around the plant, not just consumption of it." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          </div>
+          <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[120px]">
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Joined the movement<br />in five months</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">2K<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
+            </div>
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Social media<br />impressions</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">850K<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
+            </div>
           </div>
         </div>
 
         <div className="relative w-full" style={{ height: "100vh" }} data-name="next project">
-          <p className="absolute left-1/2 -translate-x-1/2 font-['Avantt',sans-serif] font-normal text-[#eaeaea] text-[12px] uppercase tracking-[0.48px] whitespace-nowrap" style={{ bottom: "calc(50% + 358px)" }}>
-            NEXT PROJECT
-          </p>
+          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-[10px]" style={{ bottom: "calc(50% + 358px)" }}>
+            <p className="font-['Avantt',sans-serif] font-bold text-[28px] leading-[1.1] text-[#eaeaea] uppercase whitespace-nowrap">NEXT PROJECT</p>
+            <div className="w-[1px] h-[40px] bg-white" />
+          </div>
           <div ref={nextProjectImageRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer overflow-hidden rounded-lg" style={{ width: 380, height: 476 }}
             onClick={() => {
               if (isNavigatingRef.current) return;

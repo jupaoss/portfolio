@@ -281,16 +281,16 @@ export default function ModularStoryboards() {
 
       <div className="px-4 mt-3 flex items-start gap-20 font-['Avantt',sans-serif] text-black">
         <div className="shrink-0">
-          <p className="text-[14px] uppercase font-semibold tracking-[0.48px]">— {project.platform}</p>
+          <p className="text-[14px] uppercase font-bold">— {project.platform}</p>
         </div>
         <div className="flex flex-col gap-6 w-[70%]">
           <div className="flex flex-col gap-1">
             <p data-name="detail-text-line-0" className="text-[14px] uppercase font-semibold tracking-[0.48px]">My role</p>
-            <p data-name="detail-text-line-1" className="text-[14px] font-normal tracking-[-0.12px]">UX/UI Designer</p>
+            <p data-name="detail-text-line-1" className="text-[12px] font-normal leading-[1.6] tracking-[-0.12px]">Design System Lead & Illustration Support</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p data-name="detail-text-line-2" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
-            <SplitLines text="A design system for animation — built so storytellers could compose complex scenes from reusable character parts, backgrounds, and objects without losing creative control or visual consistency." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
+            <p data-name="detail-text-line-3" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
+            <SplitLines text="A modular illustration library built in Figma that empowers anyone at Google to craft compelling storyboards for new product concepts. The system provides a flexible kit of characters, scenes, objects, and devices that snap together like building blocks, turning the pitch process from a production bottleneck into a creative accelerator." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
           </div>
         </div>
       </div>
@@ -302,11 +302,12 @@ export default function ModularStoryboards() {
       <div className="px-4 sm:px-[120px] mt-[80px] font-['Avantt',sans-serif] text-black flex flex-col sm:flex-row sm:gap-[80px]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE CHALLENGE.</p>
-          <SplitLines scroller={scrollContainerRef} text="Animation production is slow because assets don't talk to each other. Every new scene means rebuilding from scratch. We needed to change the fundamental relationship between components — making them composable without making them generic." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="Our team supported Google in creating storyboards for new product concepts and ideas. The existing workflow was entirely sequential: Google shared an idea, we sketched a first draft by hand, presented it, received feedback, revised, and only then moved to final digitization. End to end, this process took approximately two weeks per storyboard — too slow for an environment where ideas move fast and momentum matters." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-4 mt-[48px] sm:pt-[120px] sm:mt-0">
-          <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH</p>
-          <SplitLines scroller={scrollContainerRef} text="We designed a modular character system where bodies, expressions, skins, and props snap together like a grammar. Each element was drawn to work in combination — not just in isolation — so the system generates variety without sacrificing coherence." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH: WE MADE STORYTELLING DRAG-AND-DROP</p>
+          <SplitLines scroller={scrollContainerRef} text="Instead of redesigning the workflow, we replaced it entirely. We built a modular illustration library in Figma around four core categories: People (with interchangeable expressions, poses, accessories, hairstyles, and skin tones), Scenes, Objects, and Google Devices." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="Every component was designed to be mix-and-match — swap a pose, change a background, place a device in any context, all in one click. The system wasn't just a library; it was a visual grammar that anyone could speak fluently." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
       </div>
 
@@ -329,7 +330,25 @@ export default function ModularStoryboards() {
       <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-black">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">IMPACT</p>
-          <SplitLines scroller={scrollContainerRef} text="Production time for new scenes dropped significantly. The system gave animators creative freedom while keeping the visual world consistent across every story." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="The library didn't just speed up storyboard production — it democratized visual storytelling across teams. What once required a two-week design cycle became something anyone could do in an afternoon." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+        </div>
+        <div className="w-full sm:flex-1 grid grid-cols-2 gap-x-8 gap-y-8 mt-[48px] sm:mt-0 sm:pt-[120px]">
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Reduced delivery<br />time by</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">73<span className="text-[20px] mt-[4px] tracking-[0px]">%</span></p>
+          </div>
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Product scenarios<br />covered</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">120<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
+          </div>
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Component<br />reuse rate</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">89<span className="text-[20px] mt-[4px] tracking-[0px]">%</span></p>
+          </div>
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Google teams<br />using the library</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">12</p>
+          </div>
         </div>
       </div>
 
@@ -371,7 +390,7 @@ export default function ModularStoryboards() {
 
       <div className="-translate-y-1/2 absolute flex flex-col gap-2 items-start left-[256px] top-1/2 w-[451px] z-20" data-name="project name">
         <p className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-black text-[64px] w-full">{project.title}</p>
-        <p className="font-['Avantt',sans-serif] font-medium text-[14px] text-black uppercase">— {project.platform}</p>
+        <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-black uppercase">— {project.platform}</p>
       </div>
 
       <div className="absolute top-0 z-20 flex flex-col justify-end gap-[45px] pb-6" style={{ left: "75%", height: "100vh" }} data-name="right">
@@ -379,13 +398,13 @@ export default function ModularStoryboards() {
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] uppercase w-full">
             <p data-name="detail-text-line-0" className="font-semibold leading-[1.6]">My role</p>
           </div>
-          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal leading-[1.6] tracking-[-0.14px] w-full">UX/UI Designer</p>
+          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal text-[12px] leading-[1.6] tracking-[-0.12px] w-full">Design System Lead & Illustration Support</p>
         </div>
         <div className="content-stretch flex flex-col gap-[16px] items-start w-[215px] text-black" data-name="team">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[14px] uppercase w-full">
-            <p data-name="detail-text-line-2" className="font-semibold leading-[1.6]">Description</p>
+            <p data-name="detail-text-line-3" className="font-semibold leading-[1.6]">Description</p>
           </div>
-          <SplitLines text="A design system for animation — built so storytellers could compose complex scenes from reusable character parts, backgrounds, and objects without losing creative control or visual consistency." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
+          <SplitLines text="A modular illustration library built in Figma that empowers anyone at Google to craft compelling storyboards for new product concepts. The system provides a flexible kit of characters, scenes, objects, and devices that snap together like building blocks, turning the pitch process from a production bottleneck into a creative accelerator." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
         </div>
       </div>
 
@@ -410,11 +429,12 @@ export default function ModularStoryboards() {
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
           <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-black">
             <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE CHALLENGE.</p>
-            <SplitLines scroller={scrollContainerRef} text="Animation production is slow because assets don't talk to each other. Every new scene means rebuilding from scratch. We needed to change the fundamental relationship between components — making them composable without making them generic." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="Our team supported Google in creating storyboards for new product concepts and ideas. The existing workflow was entirely sequential: Google shared an idea, we sketched a first draft by hand, presented it, received feedback, revised, and only then moved to final digitization. End to end, this process took approximately two weeks per storyboard — too slow for an environment where ideas move fast and momentum matters." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
           <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-black pt-[180px]">
-            <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE APPROACH</p>
-            <SplitLines scroller={scrollContainerRef} text="We designed a modular character system where bodies, expressions, skins, and props snap together like a grammar. Each element was drawn to work in combination — not just in isolation — so the system generates variety without sacrificing coherence." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE APPROACH: WE MADE STORYTELLING DRAG-AND-DROP</p>
+            <SplitLines scroller={scrollContainerRef} text="Instead of redesigning the workflow, we replaced it entirely. We built a modular illustration library in Figma around four core categories: People (with interchangeable expressions, poses, accessories, hairstyles, and skin tones), Scenes, Objects, and Google Devices." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="Every component was designed to be mix-and-match — swap a pose, change a background, place a device in any context, all in one click. The system wasn't just a library; it was a visual grammar that anyone could speak fluently." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
         </div>
 
@@ -437,7 +457,25 @@ export default function ModularStoryboards() {
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
           <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-black">
             <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">IMPACT</p>
-            <SplitLines scroller={scrollContainerRef} text="Production time for new scenes dropped significantly. The system gave animators creative freedom while keeping the visual world consistent across every story." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="The library didn't just speed up storyboard production — it democratized visual storytelling across teams. What once required a two-week design cycle became something anyone could do in an afternoon." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          </div>
+          <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px] w-[333px] font-['Avantt',sans-serif] text-black pt-[120px]">
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Reduced delivery<br />time by</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">73<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">%</span></p>
+            </div>
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Product scenarios<br />covered</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">120<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
+            </div>
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Component<br />reuse rate</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">89<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">%</span></p>
+            </div>
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Google teams<br />using the library</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">12</p>
+            </div>
           </div>
         </div>
 

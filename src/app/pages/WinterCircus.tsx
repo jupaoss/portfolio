@@ -237,10 +237,21 @@ export default function WinterCircus() {
     });
   };
 
+  // Intercept trackpad swipe-right (browser back) to use the same transition as logo click
+  useEffect(() => {
+    window.history.pushState({ backGuard: true }, "");
+    const onPopState = () => {
+      window.history.pushState({ backGuard: true }, "");
+      handleLogoClick();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   const mobileLayout = (
     <>
-      <SiteHeader variant="dynamic" isDarkLogo={isDarkLogo} isDarkText={isDarkText} isDarkMenu={isDarkMenu}
-        isDarkLocation={isDarkLocation} logoRef={logoRef} textRef={textRef} menuRef={menuRef}
+      <SiteHeader variant="dynamic" isDarkLogo={true} isDarkText={true} isDarkMenu={true}
+        isDarkLocation={true} logoRef={logoRef} textRef={textRef} menuRef={menuRef}
         locationRef={locationRef} onLogoClick={handleLogoClick} />
 
       <div className="relative" style={{ height: MOBILE_HERO_TOP + MOBILE_HERO_HEIGHT }}>
@@ -250,21 +261,21 @@ export default function WinterCircus() {
       </div>
 
       <div className="px-4 -mt-5 relative z-10">
-        <p className="font-['Avantt',sans-serif] font-bold text-[48px] leading-[0.86] text-white">{project.title}</p>
+        <p className="font-['Avantt',sans-serif] font-bold text-[48px] leading-[0.86] text-black">{project.title}</p>
       </div>
 
-      <div className="px-4 mt-3 flex items-start gap-20 font-['Avantt',sans-serif] text-[#eaeaea]">
+      <div className="px-4 mt-3 flex items-start gap-20 font-['Avantt',sans-serif] text-black">
         <div className="shrink-0">
-          <p className="text-[14px] uppercase font-semibold tracking-[0.48px]">— {project.platform}</p>
+          <p className="text-[14px] uppercase font-bold">— {project.platform}</p>
         </div>
         <div className="flex flex-col gap-6 w-[70%]">
           <div className="flex flex-col gap-1">
             <p data-name="detail-text-line-0" className="text-[14px] uppercase font-semibold tracking-[0.48px]">My role</p>
-            <p data-name="detail-text-line-1" className="text-[14px] font-normal tracking-[-0.12px]">UX/UI Designer</p>
+            <p data-name="detail-text-line-1" className="text-[12px] font-normal leading-[1.6] tracking-[-0.12px]">UX/UI Designer</p>
           </div>
           <div className="flex flex-col gap-3">
             <p data-name="detail-text-line-2" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
-            <SplitLines text="Winter Circus is an immersive arts festival that lives at the edge of the expected. We built a digital experience as strange and alive as the event itself — where navigating the site felt like wandering through the festival grounds before you arrived." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
+            <SplitLines text="A website experience designed for the reopening of Wintercircus—a 125-year-old former circus and garage in the heart of Ghent, Belgium—transformed into a vibrant technology and cultural hub." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
           </div>
         </div>
       </div>
@@ -273,14 +284,16 @@ export default function WinterCircus() {
         <img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgCollage} />
       </div>
 
-      <div className="px-4 sm:px-[120px] mt-[80px] font-['Avantt',sans-serif] text-[#eaeaea] flex flex-col sm:flex-row sm:gap-[80px]">
+      <div className="px-4 sm:px-[120px] mt-[80px] font-['Avantt',sans-serif] text-black flex flex-col sm:flex-row sm:gap-[80px]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE CHALLENGE.</p>
-          <SplitLines scroller={scrollContainerRef} text="Arts festivals lose their magic in translation to screens. The challenge was to build something that didn't just inform attendees — but that made them feel like they were already inside the world of Winter Circus before they ever showed up." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="I was asked to align with the transformation of the iconic Wintercircus into a place of wonder — bringing together entrepreneurs and changemakers to forge a better future. The task: create a digital experience that matches the ambition of the space itself, a place where art, technology, and curiosity meet." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="I adopted Wintercircus' new branding and amplified it into a digital experience as bold and forward-thinking as the building it represents." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-4 mt-[48px] sm:pt-[120px] sm:mt-0">
-          <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH</p>
-          <SplitLines scroller={scrollContainerRef} text="We treated the website as a venue. Every section was a different installation space — with its own mood, pacing, and visual language. Posters became navigation. The agenda became an experience. The site rewarded curiosity the way the festival itself does." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH: HERITAGE MEETS HYPERLINK</p>
+          <SplitLines scroller={scrollContainerRef} text="The experience is meticulous in its details but never static. Every scroll, every hover, every transition is designed to make users want to reveal what comes next." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="This was intentional. The website mirrors the same feeling Wintercircus wants to spark in everyone who walks through its doors: curiosity and a passion for technology. Just as the building rewards exploration — with unexpected spaces and creative collisions around every corner — the digital experience invites users to keep discovering, keep interacting, keep going deeper." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
       </div>
 
@@ -300,15 +313,32 @@ export default function WinterCircus() {
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_9} />
       </div>
 
-      <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
+      <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-black">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">IMPACT</p>
-          <SplitLines scroller={scrollContainerRef} text="Ticket sales increased significantly in the first week after launch. The site became talked about as an extension of the festival itself — not just a promotional page." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="We delivered a digital experience that set the tone for an entirely new chapter. The site didn't just announce a reopening — it established the venue's digital identity as something as unconventional and forward-looking as the space itself." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+        </div>
+        <div className="w-full sm:flex-1 grid grid-cols-2 gap-x-8 gap-y-8 mt-[48px] sm:mt-0 sm:pt-[120px]">
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Startup inquiries<br />from the website</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">85<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
+          </div>
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Unique visitors<br />first month</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">45K<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
+          </div>
+          <div data-scroll-stat className="flex flex-col gap-2">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Event bookings<br />via platform in Q1</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">12K<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
+          </div>
         </div>
       </div>
 
       <div className="px-4 py-[80px] flex flex-col items-center gap-6">
-        <p className="font-['Avantt',sans-serif] text-[14px] uppercase tracking-[0.48px] text-[#eaeaea]">NEXT PROJECT</p>
+        <div className="flex flex-col items-center gap-[10px]">
+          <p className="font-['Avantt',sans-serif] font-bold text-[24px] leading-[1.1] uppercase text-black">NEXT PROJECT</p>
+          <div className="w-[1px] h-[40px] bg-black" />
+        </div>
         <div ref={nextProjectImageRef} className="cursor-pointer overflow-hidden rounded-lg" style={{ width: 240, height: 300 }}
           onClick={() => {
             if (isNavigatingRef.current) return;
@@ -319,8 +349,8 @@ export default function WinterCircus() {
           <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
         </div>
         <div className="text-center">
-          <p className="font-['Avantt',sans-serif] font-bold text-[32px] text-white leading-[1.1]">{nextProject.title}</p>
-          <p className="font-['Avantt',sans-serif] font-medium text-[14px] uppercase text-[#eaeaea] mt-2">— {nextProject.platform}</p>
+          <p className="font-['Avantt',sans-serif] font-bold text-[32px] text-black leading-[1.1]">{nextProject.title}</p>
+          <p className="font-['Avantt',sans-serif] font-medium text-[14px] uppercase text-black mt-2">— {nextProject.platform}</p>
         </div>
       </div>
     </>
@@ -328,8 +358,8 @@ export default function WinterCircus() {
 
   const desktopLayout = (
     <>
-      <SiteHeader variant="dynamic" isDarkLogo={isDarkLogo} isDarkText={isDarkText} isDarkMenu={isDarkMenu}
-        isDarkLocation={isDarkLocation} logoRef={logoRef} textRef={textRef} menuRef={menuRef}
+      <SiteHeader variant="dynamic" isDarkLogo={true} isDarkText={true} isDarkMenu={true}
+        isDarkLocation={true} logoRef={logoRef} textRef={textRef} menuRef={menuRef}
         locationRef={locationRef} onLogoClick={handleLogoClick} />
 
       <motion.div ref={heroRef} className="absolute top-0 left-1/2 z-10 overflow-hidden rounded-lg" data-name="hero image"
@@ -344,33 +374,33 @@ export default function WinterCircus() {
       </motion.div>
 
       <div className="-translate-y-1/2 absolute flex flex-col gap-2 items-start left-[256px] top-1/2 w-[451px] z-20" data-name="project name">
-        <p className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full">{project.title}</p>
-        <p className="font-['Avantt',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
+        <p className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-black text-[64px] w-full">{project.title}</p>
+        <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-black uppercase">— {project.platform}</p>
       </div>
 
-      <div className="absolute top-0 z-20 flex flex-col justify-end gap-[45px] pb-6" style={{ left: "75%", height: "100vh" }} data-name="right">
-        <div className="content-stretch flex flex-col gap-[16px] items-start text-[14px] w-[215px] text-[#eaeaea]" data-name="role">
+      <div className="absolute top-0 z-20 flex flex-col justify-end gap-[45px] pb-6" style={{ left: "calc(75% - 16px)", height: "100vh" }} data-name="right">
+        <div className="content-stretch flex flex-col gap-[16px] items-start text-[14px] w-[215px] text-black" data-name="role">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] uppercase w-full">
             <p data-name="detail-text-line-0" className="font-semibold leading-[1.6]">My role</p>
           </div>
-          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal leading-[1.6] tracking-[-0.14px] w-full">UX/UI Designer</p>
+          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal text-[12px] leading-[1.6] tracking-[-0.12px] w-full">UX/UI Designer</p>
         </div>
-        <div className="content-stretch flex flex-col gap-[16px] items-start w-[215px] text-[#eaeaea]" data-name="team">
+        <div className="content-stretch flex flex-col gap-[16px] items-start w-[215px] text-black" data-name="team">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[14px] uppercase w-full">
             <p data-name="detail-text-line-2" className="font-semibold leading-[1.6]">Description</p>
           </div>
-          <SplitLines text="Winter Circus is an immersive arts festival that lives at the edge of the expected. We built a digital experience as strange and alive as the event itself — where navigating the site felt like wandering through the festival grounds before you arrived." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
+          <SplitLines text="A website experience designed for the reopening of Wintercircus—a 125-year-old former circus and garage in the heart of Ghent, Belgium—transformed into a vibrant technology and cultural hub." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" animationDelay={descriptionDelay} />
         </div>
       </div>
 
       <div className="-translate-y-1/2 absolute content-stretch flex flex-col items-end left-[24px] top-[calc(50%-874.5px)] w-[24px] z-20" data-name="slider">
         <div className="content-stretch flex gap-[10px] h-[16px] items-center relative shrink-0 w-full" data-name="Selected">
-          <div className="bg-white h-[2px] shrink-0 w-[24px]" />
-          <p className="font-['Avantt',sans-serif] font-normal leading-[1.6] relative shrink-0 text-[12px] text-white uppercase whitespace-nowrap">ABOUT</p>
+          <div className="bg-black h-[2px] shrink-0 w-[24px]" />
+          <p className="font-['Avantt',sans-serif] font-normal leading-[1.6] relative shrink-0 text-[12px] text-black uppercase whitespace-nowrap">ABOUT</p>
         </div>
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="content-stretch flex flex-col h-[16px] items-end justify-center relative shrink-0 w-full" data-name="Inactive">
-            <div className="bg-white h-[2px] shrink-0 w-[6px]" />
+            <div className="bg-black h-[2px] shrink-0 w-[6px]" />
           </div>
         ))}
       </div>
@@ -382,13 +412,15 @@ export default function WinterCircus() {
         </div>
 
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
-          <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
+          <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-black">
             <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE CHALLENGE.</p>
-            <SplitLines scroller={scrollContainerRef} text="Arts festivals lose their magic in translation to screens. The challenge was to build something that didn't just inform attendees — but that made them feel like they were already inside the world of Winter Circus before they ever showed up." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="I was asked to align with the transformation of the iconic Wintercircus into a place of wonder — bringing together entrepreneurs and changemakers to forge a better future. The task: create a digital experience that matches the ambition of the space itself, a place where art, technology, and curiosity meet." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="I adopted Wintercircus' new branding and amplified it into a digital experience as bold and forward-thinking as the building it represents." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
-          <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[180px]">
-            <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE APPROACH</p>
-            <SplitLines scroller={scrollContainerRef} text="We treated the website as a venue. Every section was a different installation space — with its own mood, pacing, and visual language. Posters became navigation. The agenda became an experience. The site rewarded curiosity the way the festival itself does." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-black pt-[180px]">
+            <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">THE APPROACH: HERITAGE MEETS HYPERLINK</p>
+            <SplitLines scroller={scrollContainerRef} text="The experience is meticulous in its details but never static. Every scroll, every hover, every transition is designed to make users want to reveal what comes next." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="This was intentional. The website mirrors the same feeling Wintercircus wants to spark in everyone who walks through its doors: curiosity and a passion for technology. Just as the building rewards exploration — with unexpected spaces and creative collisions around every corner — the digital experience invites users to keep discovering, keep interacting, keep going deeper." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
           </div>
         </div>
 
@@ -409,16 +441,31 @@ export default function WinterCircus() {
         </div>
 
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
-          <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
+          <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-black">
             <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[-0.12px]">IMPACT</p>
-            <SplitLines scroller={scrollContainerRef} text="Ticket sales increased significantly in the first week after launch. The site became talked about as an extension of the festival itself — not just a promotional page." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+            <SplitLines scroller={scrollContainerRef} text="We delivered a digital experience that set the tone for an entirely new chapter. The site didn't just announce a reopening — it established the venue's digital identity as something as unconventional and forward-looking as the space itself." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          </div>
+          <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px] w-[333px] font-['Avantt',sans-serif] text-black pt-[120px]">
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Startup inquiries<br />from the website</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">85<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
+            </div>
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Unique visitors<br />first month</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">45K<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
+            </div>
+            <div data-scroll-stat className="flex flex-col gap-[8px]">
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Event bookings<br />via platform in Q1</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">12K<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
+            </div>
           </div>
         </div>
 
         <div className="relative w-full" style={{ height: "100vh" }} data-name="next project">
-          <p className="absolute left-1/2 -translate-x-1/2 font-['Avantt',sans-serif] font-normal text-[#eaeaea] text-[12px] uppercase tracking-[0.48px] whitespace-nowrap" style={{ bottom: "calc(50% + 358px)" }}>
-            NEXT PROJECT
-          </p>
+          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-[10px]" style={{ bottom: "calc(50% + 358px)" }}>
+            <p className="font-['Avantt',sans-serif] font-bold text-[28px] leading-[1.1] text-black uppercase whitespace-nowrap">NEXT PROJECT</p>
+            <div className="w-[1px] h-[40px] bg-black" />
+          </div>
           <div ref={nextProjectImageRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer overflow-hidden rounded-lg" style={{ width: 380, height: 476 }}
             onClick={() => {
               if (isNavigatingRef.current) return;
@@ -429,8 +476,8 @@ export default function WinterCircus() {
             <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
           </div>
           <div className="absolute top-1/2 -translate-y-1/2 pointer-events-none" style={{ left: "256px" }}>
-            <p className="font-['Avantt',sans-serif] font-bold leading-[62px] text-[64px] text-white">{nextProject.title}</p>
-            <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[#eaeaea] text-[14px] uppercase mt-[8px]">
+            <p className="font-['Avantt',sans-serif] font-bold leading-[62px] text-[64px] text-black">{nextProject.title}</p>
+            <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-black text-[14px] uppercase mt-[8px]">
               <p className="leading-[1.6]">— {nextProject.platform}</p>
             </div>
           </div>
@@ -443,7 +490,7 @@ export default function WinterCircus() {
     <div ref={scrollContainerRef} className={`bg-[#E73C3E] relative overflow-y-auto overflow-x-hidden${isMobile ? " h-screen" : " min-h-screen min-w-[1020px]"}`} data-name={isMobile ? "Project - Mobile" : "Project - Desktop"}>
       <DotGrid fixed />
       {isMobile ? mobileLayout : desktopLayout}
-      <SiteFooter theme="dark" onWorkClick={handleLogoClick} />
+      <SiteFooter theme="light" onWorkClick={handleLogoClick} />
     </div>
   );
 }

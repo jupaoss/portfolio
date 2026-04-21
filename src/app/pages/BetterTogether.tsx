@@ -368,6 +368,17 @@ export default function BetterTogether() {
     });
   };
 
+  // Intercept trackpad swipe-right (browser back) to use the same transition as logo click
+  useEffect(() => {
+    window.history.pushState({ backGuard: true }, "");
+    const onPopState = () => {
+      window.history.pushState({ backGuard: true }, "");
+      handleLogoClick();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   const mobileLayout = (
     <>
       {/* Fixed Header */}
@@ -410,7 +421,7 @@ export default function BetterTogether() {
       <div className="px-4 mt-3 flex items-start gap-20 font-['Avantt',sans-serif] text-[#eaeaea]">
         {/* Left: platform */}
         <div className="shrink-0">
-          <p className="text-[14px] uppercase font-semibold tracking-[0.48px]">— {project.platform}</p>
+          <p className="text-[14px] uppercase font-bold">— {project.platform}</p>
         </div>
         {/* Right: role + description */}
         <div className="flex flex-col gap-6 w-[70%]">
@@ -509,7 +520,10 @@ export default function BetterTogether() {
 
       {/* Next Project */}
       <div className="px-4 py-[80px] flex flex-col items-center gap-6">
-        <p className="font-['Avantt',sans-serif] text-[14px] uppercase tracking-[0.48px] text-[#eaeaea]">NEXT PROJECT</p>
+        <div className="flex flex-col items-center gap-[10px]">
+          <p className="font-['Avantt',sans-serif] font-bold text-[24px] leading-[1.1] uppercase text-[#eaeaea]">NEXT PROJECT</p>
+          <div className="w-[1px] h-[40px] bg-white" />
+        </div>
         <div
           ref={nextProjectImageRef}
           className="cursor-pointer overflow-hidden rounded-lg"
@@ -570,13 +584,13 @@ export default function BetterTogether() {
       {/* Project Name - Column 3 (left-aligned) */}
       <div className="-translate-y-1/2 absolute flex flex-col gap-2 items-start left-[256px] top-1/2 w-[451px] z-20" data-name="project name">
         <p className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full">{project.title}</p>
-        <p className="font-['Avantt',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
+        <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
       </div>
 
       {/* Right Info - Column 10, bottom-aligned with hero image */}
       <div
         className="absolute top-0 z-20 flex flex-col justify-end gap-[45px] pb-6"
-        style={{ left: "75%", height: "100vh" }}
+        style={{ left: "calc(75% - 16px)", height: "100vh" }}
         data-name="right"
       >
         <div className="content-stretch flex flex-col gap-[16px] items-start text-[14px] w-[215px] text-[#eaeaea]" data-name="role">
@@ -688,9 +702,10 @@ export default function BetterTogether() {
           data-name="next project"
         >
         {/* Label */}
-        <p className="absolute left-1/2 -translate-x-1/2 font-['Avantt',sans-serif] font-normal text-[#eaeaea] text-[12px] uppercase tracking-[0.48px] whitespace-nowrap" style={{ bottom: "calc(50% + 358px)" }}>
-          NEXT PROJECT
-        </p>
+        <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-[10px]" style={{ bottom: "calc(50% + 358px)" }}>
+          <p className="font-['Avantt',sans-serif] font-bold text-[28px] leading-[1.1] text-[#eaeaea] uppercase whitespace-nowrap">NEXT PROJECT</p>
+          <div className="w-[1px] h-[40px] bg-white" />
+        </div>
 
         {/* Centered image + overlapping title */}
         <div

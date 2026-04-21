@@ -293,6 +293,17 @@ export default function CarpoolingApp() {
     });
   };
 
+  // Intercept trackpad swipe-right (browser back) to use the same transition as logo click
+  useEffect(() => {
+    window.history.pushState({ backGuard: true }, "");
+    const onPopState = () => {
+      window.history.pushState({ backGuard: true }, "");
+      handleLogoClick();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   const mobileLayout = (
     <>
       <SiteHeader
@@ -330,15 +341,15 @@ export default function CarpoolingApp() {
 
       <div className="px-4 mt-3 flex items-start gap-20 font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="shrink-0">
-          <p className="text-[14px] uppercase font-semibold tracking-[0.48px]">— {project.platform}</p>
+          <p className="text-[14px] uppercase font-bold">— {project.platform}</p>
         </div>
         <div className="flex flex-col gap-6 w-[70%]">
           <div className="flex flex-col gap-1">
             <p data-name="detail-text-line-0" className="text-[14px] uppercase font-semibold tracking-[0.48px]">My role</p>
-            <p data-name="detail-text-line-1" className="text-[14px] font-normal tracking-[-0.12px]">UX/UI Designer</p>
+            <p data-name="detail-text-line-1" className="text-[12px] font-normal leading-[1.6] tracking-[-0.12px]">UX/UI Designer</p>
           </div>
           <div className="flex flex-col gap-3">
-            <p data-name="detail-text-line-2" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
+            <p data-name="detail-text-line-3" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
             <SplitLines
               text="Internal mobility app for Huge’s Medellín office that turns parking into a shared, data-driven experience—letting employees reserve spots and connect with colleagues for ride-sharing, reducing commute friction and environmental impact."
               className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full"
@@ -371,12 +382,12 @@ export default function CarpoolingApp() {
       <div className="px-4 sm:px-[120px] mt-[80px] font-['Avantt',sans-serif] text-[#eaeaea] flex flex-col sm:flex-row sm:gap-[80px]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE CHALLENGE.</p>
-          <SplitLines scroller={scrollContainerRef} text="CES is the noisiest room in tech. Every brand on the floor is fighting for the same three seconds of attention. Our job was to take a complex, multi‑device ecosystem and make it immediately intuitive — to build a digital experience that didn't explain connectivity but demonstrated it, holding attention long enough for the story to land." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="Huge's Medellín office faced a recurring issue: limited parking spots far exceeding demand. A monthly lottery system felt arbitrary and unfair, giving everyone equal odds regardless of commute difficulty—leading to frustration, inefficiency, and missed opportunities for a more connected, sustainable workplace." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-4 mt-[48px] sm:pt-[120px] sm:mt-0">
-          <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH: PARTICLES BECOME OUR DESIGN LANGUAGE</p>
-          <SplitLines scroller={scrollContainerRef} text="We recognized that Android devices and Google products, like individual particles, are impressive on their own. But when they come together, they create something fundamentally different — seamless, end-to-end experiences that are greater than the sum of their parts." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
-          <SplitLines scroller={scrollContainerRef} text="The particle system wasn't just a visual motif — it was the structural metaphor. Scattered elements unifying on screen mirrored the core product truth: everything is better together. This concept drove every design decision: motion that mimicked particles converging, transitions that connected isolated product stories into a unified narrative, and interactions that let users discover these connections organically." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <p data-name="scroll-label"className="font-semibold text-[14px] uppercase tracking-[0.48px]">THE APPROACH: WE STOPPED ALLOCATING SPOTS AND STARTED CONNECTING PEOPLE</p>
+          <SplitLines scroller={scrollContainerRef} text="Every employee's commute carries its own rhythm, distance, and daily friction. But when those routes converge, they create something fundamentally different — shared journeys that are more efficient, more equitable, and more human." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="The app was built around two interconnected flows: Park and Share. Park lets employees reserve spots through a transparent, distance-weighted system that replaces randomness with fairness. Share turns commutes into real-time matchmaking — drivers post available seats, riders browse and request, and the platform handles the rest." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
       </div>
 
@@ -404,26 +415,29 @@ export default function CarpoolingApp() {
       <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p data-name="scroll-label" className="font-semibold text-[14px] uppercase tracking-[0.48px]">IMPACT</p>
-          <SplitLines scroller={scrollContainerRef} text="Showcase how Android devices and Google products form an interconnected ecosystem that enhances seamless connectivity. It will delightfully demonstrate their connections, promote effective synchronization and an end-to-end experience." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
+          <SplitLines scroller={scrollContainerRef} text="We set out to solve a parking problem, but what we actually redesigned was the relationship between 120+ employees and their daily commute. The impact extended well beyond logistics, it shifted mindsets around sharing, fairness, and what it means to show up to work." className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full" />
         </div>
         <div className="w-full sm:flex-1 grid grid-cols-2 gap-x-8 gap-y-8 mt-[48px] sm:mt-0 sm:pt-[120px]">
           <div data-scroll-stat className="flex flex-col gap-2">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Unique visitors<br />during CES</p>
-            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">287<span className="text-[20px] mt-[4px] tracking-[0px]">+</span></p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Parking conflicts<br />dropped by</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">42<span className="text-[20px] mt-[4px] tracking-[0px]">%</span></p>
           </div>
           <div data-scroll-stat className="flex flex-col gap-2">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Avg. session<br />duration</p>
-            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">3<span className="text-[24px] mt-[2px] tracking-[0px]">'</span>42<span className="text-[24px] mt-[2px] tracking-[0px]">"</span></p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Employee<br />satisfaction score</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">87<span className="text-[20px] mt-[4px] tracking-[0px]">%</span></p>
           </div>
           <div data-scroll-stat className="flex flex-col gap-2">
-            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">User delight<br />score</p>
-            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">9.1<span className="flex items-baseline text-[20px] mt-[4px] tracking-[0px]">/<span className="text-[14px]">10</span></span></p>
+            <p className="text-[14px] font-semibold uppercase tracking-[0.48px] leading-[1.4]">Reduced solo<br />commutes by</p>
+            <p className="flex items-start text-[48px] font-bold leading-[1] tracking-[-1px]">28<span className="text-[20px] mt-[4px] tracking-[0px]">%</span></p>
           </div>
         </div>
       </div>
 
       <div className="px-4 py-[80px] flex flex-col items-center gap-6">
-        <p className="font-['Avantt',sans-serif] text-[14px] uppercase tracking-[0.48px] text-[#eaeaea]">NEXT PROJECT</p>
+        <div className="flex flex-col items-center gap-[10px]">
+          <p className="font-['Avantt',sans-serif] font-bold text-[24px] leading-[1.1] uppercase text-[#eaeaea]">NEXT PROJECT</p>
+          <div className="w-[1px] h-[40px] bg-white" />
+        </div>
         <div
           ref={nextProjectImageRef}
           className="cursor-pointer overflow-hidden rounded-lg"
@@ -481,26 +495,26 @@ export default function CarpoolingApp() {
 
       <div className="-translate-y-1/2 absolute flex flex-col gap-2 items-start left-[256px] top-1/2 w-[451px] z-20" data-name="project name">
         <p className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-white text-[64px] w-full" style={{ WebkitTextStroke: "0.5px #676767" }}>{project.title}</p>
-        <p className="font-['Avantt',sans-serif] font-medium text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
+        <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-[#eaeaea] uppercase">— {project.platform}</p>
       </div>
 
       <div
         className="absolute top-0 z-20 flex flex-col justify-end gap-[45px] pb-6"
-        style={{ left: "75%", height: "100vh" }}
+        style={{ left: "calc(75% - 16px)", height: "100vh" }}
         data-name="right"
       >
         <div className="content-stretch flex flex-col gap-[16px] items-start text-[14px] w-[215px] text-[#eaeaea]" data-name="role">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] uppercase w-full">
             <p data-name="detail-text-line-0" className="font-semibold leading-[1.6]">My role</p>
           </div>
-          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal leading-[1.6] tracking-[-0.14px] w-full">UX/UI Designer</p>
+          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal text-[12px] leading-[1.6] tracking-[-0.12px] w-full">UX/UI Designer</p>
         </div>
         <div className="content-stretch flex flex-col gap-[16px] items-start w-[215px] text-[#eaeaea]" data-name="team">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[14px] uppercase w-full">
-            <p data-name="detail-text-line-2" className="font-semibold leading-[1.6]">Description</p>
+            <p data-name="detail-text-line-3" className="font-semibold leading-[1.6]">Description</p>
           </div>
           <SplitLines
-            text="When Android needed to show the world that their devices aren't just products — they're an ecosystem — they needed more than a spec sheet. For CES, we built an immersive web experience that turned the technical story of device connectivity into something visitors could feel, not just read."
+            text="Internal mobility app for Huge's Medellín office that turns parking into a shared, data-driven experience—letting employees reserve spots and connect with colleagues for ride-sharing, reducing commute friction and environmental impact."
             className="font-['Avantt',sans-serif] font-normal leading-[1.6] text-[12px] tracking-[-0.12px] w-full"
             animationDelay={descriptionDelay}
           />
@@ -589,16 +603,16 @@ export default function CarpoolingApp() {
           </div>
           <div className="grid grid-cols-2 gap-x-[80px] gap-y-[48px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[120px]">
             <div data-scroll-stat className="flex flex-col gap-[8px]">
-              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Unique visitors<br />during CES</p>
-              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">287<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">+</span></p>
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Parking conflicts<br />dropped by</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">42<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">%</span></p>
             </div>
             <div data-scroll-stat className="flex flex-col gap-[8px]">
-              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Avg. session<br />duration</p>
-              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">3<span className="text-[40px] lg:text-[20px] mt-[4px] tracking-[0px]">'</span>42<span className="text-[40px] lg:text-[20px] mt-[4px] tracking-[0px]">"</span></p>
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Employee<br />satisfaction score</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">87<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">%</span></p>
             </div>
             <div data-scroll-stat className="flex flex-col gap-[8px]">
-              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">User delight<br />score</p>
-              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">9.1<span className="flex items-baseline text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">/<span className="text-[20px] lg:text-[14px]">10</span></span></p>
+              <p className="text-[14px] font-semibold uppercase tracking-[-0.12px] leading-[1.4]">Reduced solo<br />commutes by</p>
+              <p className="flex items-start text-[80px] lg:text-[56px] font-bold leading-[1] tracking-[-2px]">28<span className="text-[32px] lg:text-[20px] mt-[6px] tracking-[0px]">%</span></p>
             </div>
           </div>
         </div>
@@ -608,9 +622,10 @@ export default function CarpoolingApp() {
           style={{ height: "100vh" }}
           data-name="next project"
         >
-          <p className="absolute left-1/2 -translate-x-1/2 font-['Avantt',sans-serif] font-normal text-[#eaeaea] text-[12px] uppercase tracking-[0.48px] whitespace-nowrap" style={{ bottom: "calc(50% + 358px)" }}>
-            NEXT PROJECT
-          </p>
+          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-[10px]" style={{ bottom: "calc(50% + 358px)" }}>
+            <p className="font-['Avantt',sans-serif] font-bold text-[28px] leading-[1.1] text-[#eaeaea] uppercase whitespace-nowrap">NEXT PROJECT</p>
+            <div className="w-[1px] h-[40px] bg-white" />
+          </div>
 
           <div
             ref={nextProjectImageRef}

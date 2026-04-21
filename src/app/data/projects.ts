@@ -21,25 +21,25 @@ export const projects: Project[] = [
   {
     id: "carpooling-app",
     title: "CARPOOLING APP",
-    platform: "Mobile",
+    platform: "Huge",
     image: imgCarpooling,
   },
   {
     id: "maria-hache",
     title: "MARIA HACHE",
-    platform: "Web",
+    platform: "Personal project",
     image: imgMariaHache,
   },
   {
     id: "modular-storyboards",
     title: "MODULAR STORYBOARDS",
-    platform: "Desktop",
+    platform: "Google",
     image: imgModularStoryboards,
   },
   {
     id: "wintercircus",
-    title: "WINTER CIRCUS",
-    platform: "Web",
+    title: "WINTERCIRCUS WEBSITE",
+    platform: "Wintercircus",
     image: imgWinterCircus,
   },
 ];
