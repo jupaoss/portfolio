@@ -262,21 +262,21 @@ function TitleReveal({ title, platform, isMobile, animate, stroke }: TitleReveal
     const ctx = gsap.context(() => {
       gsap.set('[data-name^="project-title-word-"], [data-name="project-platform-line"]', {
         clipPath: "inset(100% 0 0 0)",
-        y: 40,
+        y: 20,
       });
       gsap.timeline()
         .to('[data-name^="project-title-word-"]', {
           clipPath: "inset(0% 0 0 0)",
           y: 0,
-          duration: 0.55,
+          duration: 0.65,
           stagger: 0.12,
-          ease: "power3.out",
+          ease: "power2.out",
         })
         .to('[data-name="project-platform-line"]', {
           clipPath: "inset(0% 0 0 0)",
           y: 0,
-          duration: 0.50,
-          ease: "power3.out",
+          duration: 0.60,
+          ease: "power2.out",
         }, 0.27);
     });
     return () => ctx.revert();
@@ -476,44 +476,64 @@ const isMobile = screenW < 640;
   // Set initial hidden states before first paint (logo stays visible)
   useLayoutEffect(() => {
     if (isReturning) return;
-    const textEls = [
-      '[data-name="logo"]',
-      '[data-name="subtitle"]',
-      '[data-name="location"]',
-      '[data-name="options"]',
-      '[data-name="footer-year"]',
-      '[data-name="footer-freelance"]',
-      '[data-name="footer-mobile"]',
-      '[data-name="about"]',
-      '[data-name="mobile-title"]',
-    ];
-    gsap.set(textEls, { clipPath: "inset(100% 0 0 0)", y: 18 });
+    gsap.set(
+      [
+        '[data-name="logo"]',
+        '[data-name="subtitle-line-1"]',   '[data-name="subtitle-line-2"]',
+        '[data-name="location-line-1"]',   '[data-name="location-line-2"]',
+        '[data-name="options-label"]',
+        '[data-name="header-link-in"]',    '[data-name="header-link-be"]',
+        '[data-name="footer-year"]',
+        '[data-name="footer-mobile-line-1"]', '[data-name="footer-mobile-line-2"]', '[data-name="footer-mobile-line-3"]',
+        '[data-name="mobile-title-line-1"]',  '[data-name="mobile-title-line-2"]',
+        '[data-name="footer-freelance-line-1"]', '[data-name="footer-freelance-line-2"]',
+        '[data-name="footer-link-work"]',  '[data-name="footer-link-about"]',
+      ],
+      { clipPath: "inset(100% 0 0 0)", y: 8 }
+    );
     // Per-word: y on inner elements is safe — the -translate-y-1/2 lives on the outer container, not here
-    gsap.set('[data-name^="project-title-word-"], [data-name="project-platform-line"]', { clipPath: "inset(100% 0 0 0)", y: 40 });
+    gsap.set('[data-name^="project-title-word-"], [data-name="project-platform-line"]', { clipPath: "inset(100% 0 0 0)", y: 20 });
   }, []);
 
   // Reveal timeline — fires early (at CardStack hold midpoint) so text animates over the overlay
   useLayoutEffect(() => {
     if (!revealStarted || isReturning) return;
     const ctx = gsap.context(() => {
-      // Reveal sequence — matches intro easing (power3.out) for a unified motion language.
-      // Order: logo → header left→right → footer left→right → project title.
+      const D = 0.65;  // duration
+      const E = "power2.out"; // softer deceleration
+      const R = { clipPath: "inset(0% 0 0 0)", y: 0 };
+
+      // Order: logo → header left→right (line-by-line) → footer left→right (line-by-line) → title
       gsap.timeline()
         // 1. Logo
-        .to('[data-name="logo"]',                  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0)
-        // 2. Header elements, left → right
-        .to('[data-name="subtitle"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.07)
-        .to('[data-name="location"]',              { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.14)
-        .to('[data-name="options"]',               { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.21)
-        // 3. Footer elements, left → right
-        .to('[data-name="footer-year"]',           { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.30)
-        .to('[data-name="footer-mobile"]',         { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.30)
-        .to('[data-name="mobile-title"]',          { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.30)
-        .to('[data-name="footer-freelance"]',      { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.37)
-        .to('[data-name="about"]',                 { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, ease: "power3.out" }, 0.44)
-        // 4. Project title — last
-        .to('[data-name^="project-title-word-"]',  { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.55, stagger: 0.10, ease: "power3.out" }, 0.54)
-        .to('[data-name="project-platform-line"]', { clipPath: "inset(0% 0 0 0)", y: 0, duration: 0.50, ease: "power3.out" }, 0.77);
+        .to('[data-name="logo"]',                    { ...R, duration: D, ease: E }, 0)
+        // 2. Subtitle — top line, then bottom line
+        .to('[data-name="subtitle-line-1"]',         { ...R, duration: D, ease: E }, 0.07)
+        .to('[data-name="subtitle-line-2"]',         { ...R, duration: D, ease: E }, 0.14)
+        // 3. Location — top line, then bottom line
+        .to('[data-name="location-line-1"]',         { ...R, duration: D, ease: E }, 0.14)
+        .to('[data-name="location-line-2"]',         { ...R, duration: D, ease: E }, 0.21)
+        // 4. Social: label, then IN, then BE
+        .to('[data-name="options-label"]',           { ...R, duration: D, ease: E }, 0.21)
+        .to('[data-name="header-link-in"]',          { ...R, duration: D, ease: E }, 0.28)
+        .to('[data-name="header-link-be"]',          { ...R, duration: D, ease: E }, 0.35)
+        // 5. Footer left — year / mobile line 1 / mobile title line 1 (all at same column)
+        .to('[data-name="footer-year"]',             { ...R, duration: D, ease: E }, 0.32)
+        .to('[data-name="footer-mobile-line-1"]',    { ...R, duration: D, ease: E }, 0.32)
+        .to('[data-name="mobile-title-line-1"]',     { ...R, duration: D, ease: E }, 0.32)
+        // 6. Second lines of footer-left blocks
+        .to('[data-name="footer-mobile-line-2"]',    { ...R, duration: D, ease: E }, 0.39)
+        .to('[data-name="mobile-title-line-2"]',     { ...R, duration: D, ease: E }, 0.39)
+        .to('[data-name="footer-mobile-line-3"]',    { ...R, duration: D, ease: E }, 0.44)
+        // 7. Freelance — line 1, then email
+        .to('[data-name="footer-freelance-line-1"]', { ...R, duration: D, ease: E }, 0.39)
+        .to('[data-name="footer-freelance-line-2"]', { ...R, duration: D, ease: E }, 0.46)
+        // 8. Nav links — Work, then About
+        .to('[data-name="footer-link-work"]',        { ...R, duration: D, ease: E }, 0.46)
+        .to('[data-name="footer-link-about"]',       { ...R, duration: D, ease: E }, 0.53)
+        // 9. Project title — last
+        .to('[data-name^="project-title-word-"]',    { ...R, duration: D, stagger: 0.10, ease: E }, 0.57)
+        .to('[data-name="project-platform-line"]',   { ...R, duration: D, ease: E }, 0.80);
     });
     return () => ctx.revert();
   }, [revealStarted]);
@@ -567,8 +587,8 @@ const isMobile = screenW < 640;
       {/* ── Designer title — mobile only ── */}
       {isMobile && (
         <div className="absolute left-4 top-[68px] font-['Avantt',sans-serif] font-semibold text-[12px] text-black uppercase leading-normal z-10 pointer-events-none" data-name="mobile-title">
-          <p className="mb-0">Software &amp; Experience</p>
-          <p>Designer.</p>
+          <p className="mb-0" data-name="mobile-title-line-1">Software &amp; Experience</p>
+          <p data-name="mobile-title-line-2">Designer.</p>
         </div>
       )}
 

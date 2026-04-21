@@ -362,27 +362,6 @@ body {
 }
 
 
-/* ── 7. Animations ───────────────────────────────────────────── */
-/* Slot-machine CTA — used by SlotCta component on hover.       */
-
-@keyframes slot-spin-up {
-  from { transform: translateY(0);    }
-  to   { transform: translateY(-1em); }
-}
-
-@keyframes slot-spin-down {
-  from { transform: translateY(-1em); }
-  to   { transform: translateY(0);    }
-}
-
-.slot-spin-up {
-  animation: slot-spin-up var(--duration-brand-slot) var(--ease-brand) backwards;
-}
-
-.slot-spin-down {
-  animation: slot-spin-down var(--duration-brand-slot) var(--ease-brand) backwards;
-}
-
 
 /* ── 8. Global Utilities ─────────────────────────────────────── */
 

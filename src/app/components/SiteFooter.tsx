@@ -32,9 +32,11 @@ export function SiteFooter({ onWorkClick, theme = "light" }: SiteFooterProps) {
       </div>
       {/* Mobile: available for freelance + email + location */}
       <div className="md:hidden absolute left-0 bottom-0 font-['Avantt',sans-serif] font-semibold text-[12px] uppercase leading-[1.3]" data-name="footer-mobile">
-        <p className="mb-0">available for freelance</p>
-        <a href="mailto:julianpatinoossa@gmail.com" className="underline hover:opacity-60 transition-opacity duration-300">julianpatinoossa@gmail.com</a>
-        <div className="flex items-center gap-[8px] mt-6">
+        <p className="mb-0" data-name="footer-mobile-line-1">available for freelance</p>
+        <span data-name="footer-mobile-line-2" style={{ display: "inline-block" }}>
+          <SlotCta text="julianpatinoossa@gmail.com" as="a" href="mailto:julianpatinoossa@gmail.com" className="underline" />
+        </span>
+        <div className="flex items-center gap-[8px] mt-6" data-name="footer-mobile-line-3">
           <div className="h-[13px] w-[11px] relative shrink-0">
             <svg className="absolute block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 11 13">
               <path d={headerPaths.p122a1c00} fill="currentColor" />
@@ -45,15 +47,17 @@ export function SiteFooter({ onWorkClick, theme = "light" }: SiteFooterProps) {
       </div>
       {/* Desktop: available for freelance + email */}
       <div className="hidden md:block absolute left-[232px] bottom-0 font-['Avantt',sans-serif] font-semibold text-[12px] uppercase leading-[1.3]" data-name="footer-freelance">
-        <p className="mb-0">available for freelance</p>
-        <a href="mailto:julianpatinoossa@gmail.com" className="underline hover:opacity-60 transition-opacity duration-300">julianpatinoossa@gmail.com</a>
+        <p className="mb-0" data-name="footer-freelance-line-1">available for freelance</p>
+        <span data-name="footer-freelance-line-2" style={{ display: "inline-block" }}>
+          <SlotCta text="julianpatinoossa@gmail.com" as="a" href="mailto:julianpatinoossa@gmail.com" className="underline" />
+        </span>
       </div>
       <div className="absolute flex flex-col items-end right-0 bottom-0 gap-[4px] pb-[3px]" data-name="about">
-        <div className="flex items-center gap-[4px]">
+        <div className="flex items-center gap-[4px]" data-name="footer-link-work">
           {activePage === "work" && <NavArrow color={theme === "dark" ? "#eaeaea" : "black"} />}
           <SlotCta text="WORK" className="text-[12px] font-semibold" onClick={handleWorkClick} />
         </div>
-        <div className="flex items-center gap-[4px]">
+        <div className="flex items-center gap-[4px]" data-name="footer-link-about">
           {activePage === "about" && <NavArrow color={theme === "dark" ? "#eaeaea" : "black"} />}
           <SlotCta text="ABOUT" className="text-[12px] font-semibold" onClick={() => navigate("/about")} />
         </div>

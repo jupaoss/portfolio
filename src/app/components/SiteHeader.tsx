@@ -71,8 +71,8 @@ export function SiteHeader(props: SiteHeaderProps) {
         className={`absolute left-[232px] hidden sm:block font-['Avantt',sans-serif] font-semibold leading-[1.3] text-[12px] uppercase whitespace-nowrap ${textColor} ${transition}`}
         data-name="subtitle"
       >
-        <p className="mb-0">Software &amp; Experience</p>
-        <p>Designer.</p>
+        <p className="mb-0" data-name="subtitle-line-1">Software &amp; Experience</p>
+        <p data-name="subtitle-line-2">Designer.</p>
       </div>
 
       {/* LOCATION / MDE, COL */}
@@ -88,8 +88,8 @@ export function SiteHeader(props: SiteHeaderProps) {
           </svg>
         </div>
         <div className={`font-['Avantt',sans-serif] font-semibold leading-[1.3] text-[12px] uppercase whitespace-nowrap ${locationTextColor} ${transition}`}>
-          <p className="mb-0">Location:</p>
-          <p>MEDELLÍN, COL</p>
+          <p className="mb-0" data-name="location-line-1">Location:</p>
+          <p data-name="location-line-2">MEDELLÍN, COL</p>
         </div>
       </div>
 
@@ -99,10 +99,14 @@ export function SiteHeader(props: SiteHeaderProps) {
         className={`absolute right-0 flex flex-col font-['Avantt',sans-serif] font-semibold leading-[1.3] text-[12px] tracking-[0.48px] uppercase whitespace-nowrap ${menuColor} ${transition}`}
         data-name="options"
       >
-        <p className="mb-0">Social:</p>
+        <p className="mb-0" data-name="options-label">Social:</p>
         <div className="flex gap-[16px]">
-          <SlotCta text="IN" as="a" href="https://www.linkedin.com" />
-          <SlotCta text="BE" as="a" href="https://www.behance.net" />
+          <span data-name="header-link-in" style={{ display: "inline-block" }}>
+            <SlotCta text="IN" as="a" href="https://www.linkedin.com" />
+          </span>
+          <span data-name="header-link-be" style={{ display: "inline-block" }}>
+            <SlotCta text="BE" as="a" href="https://www.behance.net" />
+          </span>
         </div>
       </div>
     </div>
