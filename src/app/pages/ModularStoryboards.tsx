@@ -14,7 +14,8 @@ import { SiteFooter } from "../components/SiteFooter";
 import { GridDistortionImage } from "../components/GridDistortionImage";
 import imgCollage from "../../../graphic-assets/project_4_modular_story_boards/02_modular_storyboards_collage.png";
 import imgP1_1 from "../../../graphic-assets/project_4_modular_story_boards/03_modular_storyboards_intro.png";
-import imgP1_2 from "../../../graphic-assets/project_4_modular_story_boards/04_modular_storyboards_scene.png";
+import vid04 from "../../../graphic-assets/project_4_modular_story_boards/04_modular_storyboards_scene.mp4";
+import vid12 from "../../../graphic-assets/project_4_modular_story_boards/12_modular_storyboards_expressions_animated.mp4";
 import imgP1_3 from "../../../graphic-assets/project_4_modular_story_boards/05_modular_storyboards_bodys.png";
 import imgP1_4 from "../../../graphic-assets/project_4_modular_story_boards/06_modular_storyboards_expressions.png";
 import imgP1_5 from "../../../graphic-assets/project_4_modular_story_boards/07_modular_storyboards_skins.png";
@@ -313,7 +314,7 @@ export default function ModularStoryboards() {
 
       <div className="flex flex-col gap-4 mt-[80px] px-4">
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_1} />
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_2} />
+        <video data-scroll-img className="w-full object-cover rounded-lg" src={vid04} autoPlay muted loop playsInline />
       </div>
       <div className="flex flex-col gap-4 mt-[80px] px-4">
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_3} />
@@ -325,6 +326,10 @@ export default function ModularStoryboards() {
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_7} />
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_8} />
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_9} />
+      </div>
+
+      <div className="flex flex-col gap-4 mt-4 px-4">
+        <video data-scroll-img className="w-full object-cover rounded-lg" src={vid12} autoPlay muted loop playsInline />
       </div>
 
       <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-black">
@@ -353,7 +358,10 @@ export default function ModularStoryboards() {
       </div>
 
       <div className="px-4 py-[80px] flex flex-col items-center gap-6">
-        <p className="font-['Avantt',sans-serif] text-[14px] uppercase tracking-[0.48px] text-black">NEXT PROJECT</p>
+        <div className="flex flex-col items-center gap-[10px]">
+          <p className="font-['Avantt',sans-serif] font-bold text-[24px] leading-[1.1] uppercase text-black">NEXT PROJECT</p>
+          <div className="w-[1px] h-[40px] bg-[#000000]" />
+        </div>
         <div ref={nextProjectImageRef} className="cursor-pointer overflow-hidden rounded-lg" style={{ width: 240, height: 300 }}
           onClick={() => {
             if (isNavigatingRef.current) return;
@@ -363,9 +371,9 @@ export default function ModularStoryboards() {
           }}>
           <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
         </div>
-        <div className="text-center">
+        <div className="w-full">
           <p className="font-['Avantt',sans-serif] font-bold text-[32px] text-black leading-[1.1]">{nextProject.title}</p>
-          <p className="font-['Avantt',sans-serif] font-medium text-[14px] uppercase text-black mt-2">— {nextProject.platform}</p>
+          <p className="font-['Avantt',sans-serif] font-bold text-[14px] uppercase text-black mt-2">— {nextProject.platform}</p>
         </div>
       </div>
     </>
@@ -440,7 +448,7 @@ export default function ModularStoryboards() {
 
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[0] = el; }}>
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_1} />
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_2} />
+          <video data-scroll-img className="w-full h-auto rounded-lg" src={vid04} autoPlay muted loop playsInline />
         </div>
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[1] = el; }}>
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_3} />
@@ -452,6 +460,10 @@ export default function ModularStoryboards() {
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_7} />
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_8} />
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_9} />
+        </div>
+
+        <div className="mx-[256px]">
+          <video data-scroll-img className="w-full h-auto rounded-lg" src={vid12} autoPlay muted loop playsInline />
         </div>
 
         <div className="flex items-start justify-center" style={{ paddingLeft: 256, paddingRight: 256, gap: 'clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)' }}>
@@ -480,9 +492,10 @@ export default function ModularStoryboards() {
         </div>
 
         <div className="relative w-full" style={{ height: "100vh" }} data-name="next project">
-          <p className="absolute left-1/2 -translate-x-1/2 font-['Avantt',sans-serif] font-normal text-black text-[12px] uppercase tracking-[0.48px] whitespace-nowrap" style={{ bottom: "calc(50% + 358px)" }}>
-            NEXT PROJECT
-          </p>
+          <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-[10px]" style={{ bottom: "calc(50% + 358px)" }}>
+            <p className="font-['Avantt',sans-serif] font-bold text-[28px] leading-[1.1] text-black uppercase whitespace-nowrap">NEXT PROJECT</p>
+            <div className="w-[1px] h-[40px] bg-[#000000]" />
+          </div>
           <div ref={nextProjectImageRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer overflow-hidden rounded-lg" style={{ width: 380, height: 476 }}
             onClick={() => {
               if (isNavigatingRef.current) return;
@@ -492,11 +505,11 @@ export default function ModularStoryboards() {
             }}>
             <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
           </div>
-          <div className="absolute top-1/2 -translate-y-1/2 pointer-events-none" style={{ left: "256px" }}>
-            <p className="font-['Avantt',sans-serif] font-bold leading-[62px] text-[64px] text-black">{nextProject.title}</p>
-            <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-black text-[14px] uppercase mt-[8px]">
-              <p className="leading-[1.6]">— {nextProject.platform}</p>
-            </div>
+          <div className="absolute top-1/2 -translate-y-1/2 pointer-events-none w-[451px]" style={{ left: "256px" }}>
+            {nextProject.title.split(' ').map((word, i) => (
+              <p key={i} className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-[64px] text-black m-0">{word}</p>
+            ))}
+            <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-black uppercase mt-2">— {nextProject.platform}</p>
           </div>
         </div>
       </div>

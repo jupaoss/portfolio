@@ -72,7 +72,7 @@ export function SiteHeader(props: SiteHeaderProps) {
         data-name="subtitle"
       >
         <p className="mb-0" data-name="subtitle-line-1">Software &amp; Experience</p>
-        <p data-name="subtitle-line-2">Designer.</p>
+        <p data-name="subtitle-line-2">Designer</p>
       </div>
 
       {/* LOCATION / MDE, COL */}

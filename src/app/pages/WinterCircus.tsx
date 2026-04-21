@@ -13,7 +13,7 @@ import { SplitLines } from "../components/SplitLines";
 import { SiteFooter } from "../components/SiteFooter";
 import { GridDistortionImage } from "../components/GridDistortionImage";
 import imgCollage from "../../../graphic-assets/project_5_wintercircus/02_wintercircus_intro.png";
-import imgP1_1 from "../../../graphic-assets/project_5_wintercircus/03_wintercircus_home.png";
+import imgP1_1 from "../../../graphic-assets/project_5_wintercircus/03_wintercircus_home.mp4";
 import imgP1_2 from "../../../graphic-assets/project_5_wintercircus/03_wintercircus_home_menu_mobile.png";
 import imgP1_3 from "../../../graphic-assets/project_5_wintercircus/04_wintercircus_agenda.png";
 import imgP1_4 from "../../../graphic-assets/project_5_wintercircus/05_wintercircus_agenda_mobile.png";
@@ -298,7 +298,7 @@ export default function WinterCircus() {
       </div>
 
       <div className="flex flex-col gap-4 mt-[80px] px-4">
-        <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_1} />
+        <video data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" src={imgP1_1} autoPlay muted loop playsInline />
         <img data-scroll-img className="w-full object-cover pointer-events-none rounded-lg" alt="" src={imgP1_2} />
       </div>
       <div className="flex flex-col gap-4 mt-[80px] px-4">
@@ -348,9 +348,9 @@ export default function WinterCircus() {
           }}>
           <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
         </div>
-        <div className="text-center">
+        <div className="w-full">
           <p className="font-['Avantt',sans-serif] font-bold text-[32px] text-black leading-[1.1]">{nextProject.title}</p>
-          <p className="font-['Avantt',sans-serif] font-medium text-[14px] uppercase text-black mt-2">— {nextProject.platform}</p>
+          <p className="font-['Avantt',sans-serif] font-bold text-[14px] uppercase text-black mt-2">— {nextProject.platform}</p>
         </div>
       </div>
     </>
@@ -425,7 +425,7 @@ export default function WinterCircus() {
         </div>
 
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[0] = el; }}>
-          <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_1} />
+          <video data-scroll-img className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_1} autoPlay muted loop playsInline />
           <img data-scroll-img alt="" className="w-full h-auto pointer-events-none rounded-lg" src={imgP1_2} />
         </div>
         <div className="mx-[256px] flex flex-col gap-[40px]" ref={el => { imageSectionRefs.current[1] = el; }}>
@@ -475,11 +475,11 @@ export default function WinterCircus() {
             }}>
             <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
           </div>
-          <div className="absolute top-1/2 -translate-y-1/2 pointer-events-none" style={{ left: "256px" }}>
-            <p className="font-['Avantt',sans-serif] font-bold leading-[62px] text-[64px] text-black">{nextProject.title}</p>
-            <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-black text-[14px] uppercase mt-[8px]">
-              <p className="leading-[1.6]">— {nextProject.platform}</p>
-            </div>
+          <div className="absolute top-1/2 -translate-y-1/2 pointer-events-none w-[451px]" style={{ left: "256px" }}>
+            {nextProject.title.split(' ').map((word, i) => (
+              <p key={i} className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-[64px] text-black m-0">{word}</p>
+            ))}
+            <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-black uppercase mt-2">— {nextProject.platform}</p>
           </div>
         </div>
       </div>

@@ -541,9 +541,9 @@ export default function BetterTogether() {
         >
           <img alt={nextProject.title} className="w-full h-full object-cover" src={nextProject.image} />
         </div>
-        <div className="text-center">
+        <div className="w-full">
           <p className="font-['Avantt',sans-serif] font-bold text-[32px] text-white leading-[1.1]">{nextProject.title}</p>
-          <p className="font-['Avantt',sans-serif] font-medium text-[14px] uppercase text-[#eaeaea] mt-2">— {nextProject.platform}</p>
+          <p className="font-['Avantt',sans-serif] font-bold text-[14px] uppercase text-[#eaeaea] mt-2">— {nextProject.platform}</p>
         </div>
       </div>
     </>
@@ -734,15 +734,13 @@ export default function BetterTogether() {
 
         {/* Title overlapping left edge of image — mirrors gallery style */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 pointer-events-none"
+          className="absolute top-1/2 -translate-y-1/2 pointer-events-none w-[451px]"
           style={{ left: "256px" }}
         >
-          <p className="font-['Avantt',sans-serif] font-bold leading-[62px] text-[64px] text-white">
-            {nextProject.title}
-          </p>
-          <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[#eaeaea] text-[14px] uppercase mt-[8px]">
-            <p className="leading-[1.6]">— {nextProject.platform}</p>
-          </div>
+          {nextProject.title.split(' ').map((word, i) => (
+            <p key={i} className="font-['Avantt',sans-serif] font-bold leading-[0.86] text-[64px] text-white m-0">{word}</p>
+          ))}
+          <p className="font-['Avantt',sans-serif] font-bold text-[14px] text-[#eaeaea] uppercase mt-2">— {nextProject.platform}</p>
         </div>
       </div>
       </div>

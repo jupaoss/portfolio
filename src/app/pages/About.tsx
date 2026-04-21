@@ -28,6 +28,14 @@ import logoAvon from "../../../graphic-assets/about/logos/avon.svg";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function TriangleBullet() {
+  return (
+    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" style={{ transform: "rotate(90deg)", flexShrink: 0 }}>
+      <path d="M4 0L5.73205 3H2.26795L4 0Z" fill="currentColor" transform="scale(1.2) translate(-0.667 -0.667)" />
+    </svg>
+  );
+}
+
 // Word-by-word reveal matching the Home hero title animation.
 // Uses useLayoutEffect to hide words before first paint — no flash.
 function HeroReveal({ lines, className, delay = 0.1, stagger = 0.12 }: {
@@ -43,10 +51,11 @@ function HeroReveal({ lines, className, delay = 0.1, stagger = 0.12 }: {
     if (!wrapper) return;
     const ctx = gsap.context(() => {
       const els = wrapper.querySelectorAll<HTMLElement>("p");
-      gsap.set(els, { clipPath: "inset(100% 0 0 0)", y: 40 });
+      gsap.set(els, { clipPath: "inset(100% 0 0 0)", y: 20, opacity: 0 });
       gsap.timeline({ delay }).to(els, {
         clipPath: "inset(0% 0 0 0)",
         y: 0,
+        opacity: 1,
         duration: 0.65,
         stagger,
         ease: "power2.out",
@@ -97,11 +106,27 @@ export default function About() {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const bioListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const handler = () => setIsMobile(window.innerWidth < 1024);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
+  }, []);
+
+  const handleLogoClick = () => {
+    navigate("/", { state: { fromProjectId: projects[0].id, fromAbout: true, fromHeroBounds: { width: window.innerWidth, height: window.innerHeight } } });
+  };
+
+  // Intercept trackpad swipe-right (browser back) to use the same transition as logo click
+  useEffect(() => {
+    window.history.pushState({ backGuard: true }, "");
+    const onPopState = () => {
+      window.history.pushState({ backGuard: true }, "");
+      handleLogoClick();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
   // Scroll-triggered reveal for labels + paragraphs
@@ -111,12 +136,12 @@ export default function About() {
 
     const ctx = gsap.context(() => {
       scroller.querySelectorAll<HTMLElement>("[data-scroll-label], [data-scroll-fade]").forEach((el, i) => {
-        gsap.set(el, { clipPath: "inset(0 0 100% 0)", y: 40, opacity: 0.5 });
+        gsap.set(el, { clipPath: "inset(100% 0 0 0)", y: 8, opacity: 0 });
         ScrollTrigger.create({
           trigger: el, scroller,
           start: "top 90%",
           onEnter: () => gsap.to(el, {
-            clipPath: "inset(0 0 0% 0)",
+            clipPath: "inset(0% 0 0 0)",
             y: 0,
             opacity: 1,
             duration: 0.65,
@@ -130,10 +155,44 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
+  // Animate bio list items: large init delay (wait for paragraphs) vs. small scroll delay
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    const list = bioListRef.current;
+    if (!scroller || !list) return;
+
+    let isInit = true;
+    requestAnimationFrame(() => { isInit = false; });
+
+    const ctx = gsap.context(() => {
+      const items = Array.from(list.querySelectorAll<HTMLElement>('li'));
+      gsap.set(items, { clipPath: 'inset(100% 0 0 0)', y: 8, opacity: 0 });
+      ScrollTrigger.create({
+        trigger: list,
+        scroller,
+        start: 'top 90%',
+        onEnter: () => {
+          items.forEach((item, idx) => {
+            gsap.to(item, {
+              clipPath: 'inset(0% 0 0 0)',
+              y: 0,
+              opacity: 1,
+              duration: 0.65,
+              ease: 'power2.out',
+              delay: isInit ? 2.8 + idx * 0.2 : idx * 0.15,
+            });
+          });
+        },
+      });
+    }, list);
+
+    return () => ctx.revert();
+  }, []);
+
   // ─── Mobile ────────────────────────────────────────────────────────────────
   const mobileLayout = (
     <>
-      <SiteHeader variant="dynamic" isDarkLogo={false} isDarkText={false} isDarkMenu={false} isDarkLocation={false} onLogoClick={() => navigate("/", { state: { fromProjectId: projects[0].id, fromAbout: true, fromHeroBounds: { width: window.innerWidth, height: window.innerHeight } } })} />
+      <SiteHeader variant="dynamic" isDarkLogo={false} isDarkText={false} isDarkMenu={false} isDarkLocation={false} onLogoClick={handleLogoClick} />
 
       {/* Name */}
       <div className="px-4 sm:px-[120px] flex flex-col sm:flex-row sm:gap-[80px] justify-end sm:items-end" style={{ height: 600 }}>
@@ -152,14 +211,14 @@ export default function About() {
         <div className="w-full sm:flex-1 flex flex-col gap-6 mt-[48px] sm:mt-0">
           <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[32px] leading-[1.0] text-white uppercase" />
           <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.5] tracking-[-0.12px]">
-            <SplitLines scroller={scrollRef} text="During my career I've had the opportunity to work in projects that span from pure upstream concept work to ready to ship products." />
-            <SplitLines scroller={scrollRef} text="I've also worked in UX/UI projects in different global agencies and startups focused on building innovative strategies and product engineering, where I've been involved in the entire building process." />
-            <SplitLines scroller={scrollRef} text="These are some key principles I always look for when designing:" />
-            <ul className="flex flex-col gap-1 pl-4 list-disc">
-              <li data-scroll-fade>Make people's life easier</li>
-              <li data-scroll-fade>Create delightful experiences</li>
-              <li data-scroll-fade>Generate emotional connections</li>
-              <li data-scroll-fade>Build accessible productos for everyone.</li>
+            <SplitLines scroller={scrollRef} animationDelay={0} text="During my career I've had the opportunity to work in projects that span from pure upstream concept work to ready to ship products." />
+            <SplitLines scroller={scrollRef} animationDelay={0.9} text="I've also worked in UX/UI projects in different global agencies and startups focused on building innovative strategies and product engineering, where I've been involved in the entire building process." />
+            <SplitLines scroller={scrollRef} animationDelay={1.9} text="These are some key principles I always look for when designing:" />
+            <ul ref={bioListRef} className="flex flex-col gap-1">
+              <li className="flex items-center gap-[6px]"><TriangleBullet />Make people's life easier</li>
+              <li className="flex items-center gap-[6px]"><TriangleBullet />Create delightful experiences</li>
+              <li className="flex items-center gap-[6px]"><TriangleBullet />Generate emotional connections</li>
+              <li className="flex items-center gap-[6px]"><TriangleBullet />Build accessible productos for everyone.</li>
             </ul>
           </div>
         </div>
@@ -188,7 +247,7 @@ export default function About() {
       <div className="px-4 sm:px-[120px] mt-[80px] pb-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p className="text-[12px] uppercase tracking-[0.48px]">Brands &amp; Organizations</p>
-          <p className="flex items-start font-bold text-[48px] leading-[1] tracking-[-2px] text-white">18<span className="text-[20px] mt-[4px]">+</span></p>
+          <p className="flex items-start font-bold text-[48px] leading-[1] tracking-[-2px] text-white">22<span className="text-[20px] mt-[4px]">+</span></p>
         </div>
         <div className="w-full sm:flex-1 mt-[48px] sm:mt-0">
           <div className="grid grid-cols-3 gap-x-4 gap-y-8">
@@ -206,7 +265,7 @@ export default function About() {
   // ─── Desktop ───────────────────────────────────────────────────────────────
   const desktopLayout = (
     <>
-      <SiteHeader variant="dynamic" isDarkLogo={false} isDarkText={false} isDarkMenu={false} isDarkLocation={false} onLogoClick={() => navigate("/", { state: { fromProjectId: projects[0].id, fromAbout: true, fromHeroBounds: { width: window.innerWidth, height: window.innerHeight } } })} />
+      <SiteHeader variant="dynamic" isDarkLogo={false} isDarkText={false} isDarkMenu={false} isDarkLocation={false} onLogoClick={handleLogoClick} />
 
       {/* Name — 800px hero, vertically centered */}
       <div className="flex items-center" style={{ height: 600, paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
@@ -230,14 +289,14 @@ export default function About() {
           <div className="flex flex-col gap-[24px] w-[444px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[28px]">
             <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
             <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.6] tracking-[-0.12px]">
-              <SplitLines scroller={scrollRef} text="Over the course of my career, I’ve worked on a wide range of projects — from early-stage concept exploration to fully designed, ready-to-ship products." />
-              <SplitLines scroller={scrollRef} text="I’ve collaborated with global agencies and startups across UX and product design initiatives, helping shape strategies and build thoughtful, scalable experiences. Throughout these engagements, I’ve been involved across the full product lifecycle, working closely with cross-functional teams from discovery and definition to design and delivery." />
-              <SplitLines scroller={scrollRef} text="These are some key principles I always look for when designing:" />
-              <ul className="flex flex-col gap-1 pl-4 list-disc">
-                <li data-scroll-fade>Make people’s lives easier</li>
-                <li data-scroll-fade>Create thoughtful, delightful experiences</li>
-                <li data-scroll-fade>Foster meaningful emotional connections</li>
-                <li data-scroll-fade>Design accessible products for everyone</li>
+              <SplitLines scroller={scrollRef} animationDelay={0} text="Over the course of my career, I’ve worked on a wide range of projects — from early-stage concept exploration to fully designed, ready-to-ship products." />
+              <SplitLines scroller={scrollRef} animationDelay={0.9} text="I’ve collaborated with global agencies and startups across UX and product design initiatives, helping shape strategies and build thoughtful, scalable experiences. Throughout these engagements, I’ve been involved across the full product lifecycle, working closely with cross-functional teams from discovery and definition to design and delivery." />
+              <SplitLines scroller={scrollRef} animationDelay={2.0} text="These are some key principles I always look for when designing:" />
+              <ul ref={bioListRef} className="flex flex-col gap-1">
+                <li className="flex items-center gap-[6px]"><TriangleBullet />Make people’s lives easier</li>
+                <li className="flex items-center gap-[6px]"><TriangleBullet />Create thoughtful, delightful experiences</li>
+                <li className="flex items-center gap-[6px]"><TriangleBullet />Foster meaningful emotional connections</li>
+                <li className="flex items-center gap-[6px]"><TriangleBullet />Design accessible products for everyone</li>
               </ul>
             </div>
           </div>
@@ -270,7 +329,7 @@ export default function About() {
           <div className="flex flex-col gap-[24px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
             <p data-scroll-label className="text-[12px] uppercase tracking-[0.48px] font-medium">Brands &amp; Organizations</p>
             <p className="flex items-start font-bold text-[56px] leading-[1] tracking-[-2px] text-white" data-scroll-fade>
-              18<span className="text-[20px] mt-[4px]">+</span>
+              22<span className="text-[20px] mt-[4px]">+</span>
             </p>
           </div>
           {/* Right */}
@@ -295,7 +354,7 @@ export default function About() {
     >
       <DotGrid fixed />
       {isMobile ? mobileLayout : desktopLayout}
-      <SiteFooter theme="dark" onWorkClick={() => navigate("/", { state: { fromProjectId: projects[0].id, fromAbout: true, fromHeroBounds: { width: window.innerWidth, height: window.innerHeight } } })} />
+      <SiteFooter theme="dark" onWorkClick={handleLogoClick} />
     </div>
   );
 }

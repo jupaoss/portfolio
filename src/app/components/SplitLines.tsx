@@ -7,12 +7,13 @@ gsap.registerPlugin(ScrollTrigger);
 // Per-line reveal for multi-line paragraphs.
 // Measures real browser line breaks, wraps each line in its own mask, then
 // animates line-by-line so each reveals independently (no single big mask).
-export function SplitLines({ text, className, animationDelay = 0, stagger = 0.07, scroller }: {
+export function SplitLines({ text, className, animationDelay = 0, stagger = 0.07, scroller, triggerStart = 'top 88%' }: {
   text: string;
   className?: string;
   animationDelay?: number;
   stagger?: number;
   scroller?: React.RefObject<HTMLElement | null>;
+  triggerStart?: string;
 }) {
   const containerRef = useRef<HTMLParagraphElement>(null);
   const revealedRef = useRef(false);
@@ -23,6 +24,7 @@ export function SplitLines({ text, className, animationDelay = 0, stagger = 0.07
     if (!container) return;
 
     let scrollTriggerInstance: ScrollTrigger | null = null;
+    let delayedCallTween: gsap.core.Tween | null = null;
 
     const split = () => {
       container.innerHTML = '';
@@ -67,6 +69,8 @@ export function SplitLines({ text, className, animationDelay = 0, stagger = 0.07
     const attachAnimation = (innerSpans: HTMLSpanElement[]) => {
       scrollTriggerInstance?.kill();
       scrollTriggerInstance = null;
+      delayedCallTween?.kill();
+      delayedCallTween = null;
 
       const revealTween = () => {
         revealedRef.current = true;
@@ -82,22 +86,23 @@ export function SplitLines({ text, className, animationDelay = 0, stagger = 0.07
 
       if (scroller?.current) {
         const scrollerEl = scroller.current;
-        // If the element is already above the 88% threshold at init, fire immediately
         const scrollerBounds = scrollerEl.getBoundingClientRect();
         const elemBounds = container.getBoundingClientRect();
         const relTop = elemBounds.top - scrollerBounds.top;
-        if (relTop < scrollerEl.clientHeight * 0.88) {
-          revealTween();
+        const thresholdPct = parseFloat(triggerStart.split(' ')[1] ?? '88') / 100;
+        if (relTop < scrollerEl.clientHeight * thresholdPct) {
+          // Already in viewport at init — respect animationDelay to enforce ordering
+          delayedCallTween = gsap.delayedCall(animationDelay, revealTween);
         } else {
           scrollTriggerInstance = ScrollTrigger.create({
             trigger: container,
             scroller: scrollerEl,
-            start: 'top 88%',
+            start: triggerStart,
             onEnter: revealTween,
           });
         }
       } else {
-        gsap.delayedCall(animationDelay, revealTween);
+        delayedCallTween = gsap.delayedCall(animationDelay, revealTween);
       }
     };
 
@@ -113,6 +118,7 @@ export function SplitLines({ text, className, animationDelay = 0, stagger = 0.07
     return () => {
       ro.disconnect();
       scrollTriggerInstance?.kill();
+      delayedCallTween?.kill();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

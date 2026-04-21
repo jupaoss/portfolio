@@ -489,10 +489,11 @@ const isMobile = screenW < 640;
         '[data-name="footer-freelance-line-1"]', '[data-name="footer-freelance-line-2"]',
         '[data-name="footer-link-work"]',  '[data-name="footer-link-about"]',
       ],
-      { clipPath: "inset(100% 0 0 0)", y: 8 }
+      { clipPath: "inset(100% 0 0 0)", y: 8, opacity: 0 }
     );
+    gsap.set('[data-name="slider-item"]', { clipPath: "inset(100% 0 0 0)", y: 8, opacity: 0 });
     // Per-word: y on inner elements is safe — the -translate-y-1/2 lives on the outer container, not here
-    gsap.set('[data-name^="project-title-word-"], [data-name="project-platform-line"]', { clipPath: "inset(100% 0 0 0)", y: 20 });
+    gsap.set('[data-name^="project-title-word-"], [data-name="project-platform-line"]', { clipPath: "inset(100% 0 0 0)", y: 20, opacity: 0 });
   }, []);
 
   // Reveal timeline — fires early (at CardStack hold midpoint) so text animates over the overlay
@@ -501,7 +502,7 @@ const isMobile = screenW < 640;
     const ctx = gsap.context(() => {
       const D = 0.65;  // duration
       const E = "power2.out"; // softer deceleration
-      const R = { clipPath: "inset(0% 0 0 0)", y: 0 };
+      const R = { clipPath: "inset(0% 0 0 0)", y: 0, opacity: 1 };
 
       // Order: logo → header left→right (line-by-line) → footer left→right (line-by-line) → title
       gsap.timeline()
@@ -531,8 +532,9 @@ const isMobile = screenW < 640;
         // 8. Nav links — Work, then About
         .to('[data-name="footer-link-work"]',        { ...R, duration: D, ease: E }, 0.46)
         .to('[data-name="footer-link-about"]',       { ...R, duration: D, ease: E }, 0.53)
-        // 9. Project title — last
+        // 9. Project title + slider — simultaneous, both staggered top-to-bottom
         .to('[data-name^="project-title-word-"]',    { ...R, duration: D, stagger: 0.10, ease: E }, 0.57)
+        .to('[data-name="slider-item"]',             { ...R, duration: D, stagger: 0.07, ease: E }, 0.57)
         .to('[data-name="project-platform-line"]',   { ...R, duration: D, ease: E }, 0.80);
     });
     return () => ctx.revert();
@@ -668,6 +670,7 @@ const isMobile = screenW < 640;
               onClick={(e) => { e.stopPropagation(); handleSliderClick(index); }}
               className="w-full flex justify-end group focus:outline-none pointer-events-auto"
               aria-label={`Go to project ${index + 1}`}
+              data-name="slider-item"
             >
               {isActive ? (
                 <div className="flex gap-[10px] h-[10px] items-center justify-end">
