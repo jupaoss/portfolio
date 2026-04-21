@@ -6,13 +6,15 @@ interface SlotCtaProps {
   /** Wrapping element — defaults to a plain span */
   as?: "span" | "a";
   href?: string;
+  target?: string;
+  rel?: string;
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
 }
 
 /** Whole-word bottom→top reveal on hover. Reverses smoothly on leave. */
-export function SlotCta({ text, as: Tag = "span", href, className = "", style, onClick }: SlotCtaProps) {
+export function SlotCta({ text, as: Tag = "span", href, target, rel, className = "", style, onClick }: SlotCtaProps) {
   const reelRef = useRef<HTMLSpanElement>(null);
   const tlRef   = useRef<gsap.core.Timeline | null>(null);
 
@@ -33,7 +35,7 @@ export function SlotCta({ text, as: Tag = "span", href, className = "", style, o
     onMouseEnter: () => tlRef.current?.play(),
     onMouseLeave: () => tlRef.current?.reverse(),
     onClick,
-    ...(Tag === "a" ? { href } : {}),
+    ...(Tag === "a" ? { href, target, rel } : {}),
   };
 
   return (

@@ -102,10 +102,10 @@ export function SiteHeader(props: SiteHeaderProps) {
         <p className="mb-0" data-name="options-label">Social:</p>
         <div className="flex gap-[16px]">
           <span data-name="header-link-in" style={{ display: "inline-block" }}>
-            <SlotCta text="IN" as="a" href="https://www.linkedin.com" />
+            <SlotCta text="IN" as="a" href="https://www.linkedin.com/in/jupaoss/" target="_blank" rel="noopener noreferrer" />
           </span>
           <span data-name="header-link-be" style={{ display: "inline-block" }}>
-            <SlotCta text="BE" as="a" href="https://www.behance.net" />
+            <SlotCta text="BE" as="a" href="https://www.behance.net/jupaoss" target="_blank" rel="noopener noreferrer" />
           </span>
         </div>
       </div>

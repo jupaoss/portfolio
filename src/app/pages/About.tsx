@@ -7,6 +7,7 @@ import { SiteHeader } from "../components/SiteHeader";
 import { SplitLines } from "../components/SplitLines";
 import { SiteFooter } from "../components/SiteFooter";
 import { projects } from "../data/projects";
+import julianPhoto from "../../../graphic-assets/about/julian.png";
 import logoGoogle from "../../../graphic-assets/about/logos/google.svg";
 import logoAndroid from "../../../graphic-assets/about/logos/android.svg";
 import logoUber from "../../../graphic-assets/about/logos/uber.svg";
@@ -195,9 +196,23 @@ export default function About() {
       <SiteHeader variant="dynamic" isDarkLogo={false} isDarkText={false} isDarkMenu={false} isDarkLocation={false} onLogoClick={handleLogoClick} />
 
       {/* Name */}
-      <div className="px-4 sm:px-[120px] flex flex-col sm:flex-row sm:gap-[80px] justify-end sm:items-end" style={{ height: 600 }}>
-        <div className="hidden sm:block sm:flex-1" />
-        <div className="sm:flex-1 pb-[40px]">
+      <div className="px-4 sm:px-[120px] flex flex-col sm:flex-row sm:gap-[80px] justify-end sm:items-end relative" style={{ height: 600 }}>
+        <img
+          src={julianPhoto}
+          alt="Julián Patiño"
+          className="absolute object-cover object-top pointer-events-none select-none hidden"
+          style={{
+            top: "40px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            height: "220%",
+            width: "auto",
+            maskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
+            WebkitMaskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
+          }}
+        />
+        <div className="hidden sm:block sm:flex-1 relative z-10" />
+        <div className="sm:flex-1 pb-[40px] relative z-10">
           <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.1} className="font-['Avantt',sans-serif] font-bold text-[56px] leading-[0.9] text-white uppercase" />
         </div>
       </div>
@@ -268,9 +283,23 @@ export default function About() {
       <SiteHeader variant="dynamic" isDarkLogo={false} isDarkText={false} isDarkMenu={false} isDarkLocation={false} onLogoClick={handleLogoClick} />
 
       {/* Name — 800px hero, vertically centered */}
-      <div className="flex items-center" style={{ height: 600, paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
-        <div className="w-[333px]" />
-        <div className="w-[444px]">
+      <div className="flex items-center relative" style={{ height: 600, paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
+        <img
+          src={julianPhoto}
+          alt="Julián Patiño"
+          className="absolute object-cover object-top pointer-events-none select-none hidden"
+          style={{
+            top: "40px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            height: "220%",
+            width: "auto",
+            maskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
+            WebkitMaskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
+          }}
+        />
+        <div className="w-[333px] relative z-10" />
+        <div className="w-[444px] relative z-10">
           <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.1} className="font-['Avantt',sans-serif] font-bold text-[64px] leading-[0.86] text-white uppercase" />
         </div>
       </div>
@@ -289,7 +318,7 @@ export default function About() {
           <div className="flex flex-col gap-[24px] w-[444px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[28px]">
             <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
             <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.6] tracking-[-0.12px]">
-              <SplitLines scroller={scrollRef} animationDelay={0} text="Over the course of my career, I’ve worked on a wide range of projects — from early-stage concept exploration to fully designed, ready-to-ship products." />
+              <SplitLines scroller={scrollRef} animationDelay={0} text={"Over the course of my career, I’ve worked on a wide range of projects — from early‑stage concept exploration to fully designed, ready-to-ship products."} />
               <SplitLines scroller={scrollRef} animationDelay={0.9} text="I’ve collaborated with global agencies and startups across UX and product design initiatives, helping shape strategies and build thoughtful, scalable experiences. Throughout these engagements, I’ve been involved across the full product lifecycle, working closely with cross-functional teams from discovery and definition to design and delivery." />
               <SplitLines scroller={scrollRef} animationDelay={2.0} text="These are some key principles I always look for when designing:" />
               <ul ref={bioListRef} className="flex flex-col gap-1">
