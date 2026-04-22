@@ -55,11 +55,11 @@ export function SiteFooter({ onWorkClick, theme = "light" }: SiteFooterProps) {
       <div className="absolute flex flex-col items-end right-0 bottom-0 gap-[4px] pb-[3px]" data-name="about">
         <div className="flex items-center gap-[4px]" data-name="footer-link-work">
           {activePage === "work" && <NavArrow color={theme === "dark" ? "#eaeaea" : "black"} />}
-          <SlotCta text="WORK" className="text-[12px] font-semibold" onClick={handleWorkClick} />
+          <SlotCta text="WORK" className="text-[12px] font-semibold" onClick={handleWorkClick} isActive={activePage === "work"} />
         </div>
         <div className="flex items-center gap-[4px]" data-name="footer-link-about">
           {activePage === "about" && <NavArrow color={theme === "dark" ? "#eaeaea" : "black"} />}
-          <SlotCta text="ABOUT" className="text-[12px] font-semibold" onClick={() => navigate("/about")} />
+          <SlotCta text="ABOUT" className="text-[12px] font-semibold" onClick={() => navigate("/about")} isActive={activePage === "about"} />
         </div>
       </div>
     </div>

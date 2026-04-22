@@ -11,10 +11,12 @@ interface SlotCtaProps {
   className?: string;
   style?: React.CSSProperties;
   onClick?: () => void;
+  /** Suppress hover animation when the link represents the current page */
+  isActive?: boolean;
 }
 
 /** Whole-word bottom→top reveal on hover. Reverses smoothly on leave. */
-export function SlotCta({ text, as: Tag = "span", href, target, rel, className = "", style, onClick }: SlotCtaProps) {
+export function SlotCta({ text, as: Tag = "span", href, target, rel, className = "", style, onClick, isActive = false }: SlotCtaProps) {
   const reelRef = useRef<HTMLSpanElement>(null);
   const tlRef   = useRef<gsap.core.Timeline | null>(null);
 
@@ -32,8 +34,8 @@ export function SlotCta({ text, as: Tag = "span", href, target, rel, className =
     className: `inline-block overflow-hidden cursor-pointer ${className}`,
     style: { height: "1em", lineHeight: 1, ...style },
     "data-interactive": "true",
-    onMouseEnter: () => tlRef.current?.play(),
-    onMouseLeave: () => tlRef.current?.reverse(),
+    onMouseEnter: () => { if (!isActive) tlRef.current?.play(); },
+    onMouseLeave: () => { if (!isActive) tlRef.current?.reverse(); },
     onClick,
     ...(Tag === "a" ? { href, target, rel } : {}),
   };

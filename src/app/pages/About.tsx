@@ -8,6 +8,7 @@ import { SplitLines } from "../components/SplitLines";
 import { SiteFooter } from "../components/SiteFooter";
 import { projects } from "../data/projects";
 import julianPhoto from "../../../graphic-assets/about/julian.png";
+import { GlitchLogo } from "../components/GlitchLogo";
 import logoGoogle from "../../../graphic-assets/about/logos/google.svg";
 import logoAndroid from "../../../graphic-assets/about/logos/android.svg";
 import logoUber from "../../../graphic-assets/about/logos/uber.svg";
@@ -106,11 +107,18 @@ const EXPERIENCE = [
 export default function About() {
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024);
+  const [isSmall, setIsSmall] = useState(() => window.innerWidth <= 640);
   const scrollRef = useRef<HTMLDivElement>(null);
   const bioListRef = useRef<HTMLUListElement>(null);
+  const heroImgRef = useRef<HTMLImageElement>(null);
+  const closingLogoRef = useRef<HTMLDivElement>(null);
+  const brandsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 1024);
+    const handler = () => {
+      setIsMobile(window.innerWidth < 1024);
+      setIsSmall(window.innerWidth <= 640);
+    };
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
   }, []);
@@ -156,6 +164,32 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
+  // Fade hero image to 0 opacity as the trigger section enters the viewport.
+  // On small screens (≤640px) fade starts when the brands section appears;
+  // otherwise fade starts when the closing logo section appears.
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    const img = heroImgRef.current;
+    const trigger = isSmall ? brandsRef.current : closingLogoRef.current;
+    if (!scroller || !img || !trigger) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(img, {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger,
+          scroller,
+          start: "top 90%",
+          end: "top 30%",
+          scrub: 0.5,
+        },
+      });
+    });
+
+    return () => ctx.revert();
+  }, [isMobile, isSmall]);
+
   // Animate bio list items: large init delay (wait for paragraphs) vs. small scroll delay
   useEffect(() => {
     const scroller = scrollRef.current;
@@ -200,13 +234,16 @@ export default function About() {
         <img
           src={julianPhoto}
           alt="Julián Patiño"
-          className="absolute object-cover object-top pointer-events-none select-none hidden"
+          ref={heroImgRef}
+          className="object-cover object-top pointer-events-none select-none"
           style={{
+            position: "fixed",
             top: "40px",
             left: "50%",
-            transform: "translateX(-50%)",
-            height: "220%",
+            transform: isSmall ? "translateX(calc(-50% + 40px))" : "translateX(-50%)",
+            height: "834px",
             width: "auto",
+            zIndex: 1,
             maskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
             WebkitMaskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
           }}
@@ -217,8 +254,9 @@ export default function About() {
         </div>
       </div>
 
+      <div className="relative z-[2]">
       {/* Based on + Role/Bio */}
-      <div className="px-4 sm:px-[120px] mt-[48px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
+      <div className="px-4 max-sm:pr-[100px] sm:px-[120px] mt-[48px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <HeroReveal lines={["Based on"]} delay={0.22} className="text-[12px] uppercase tracking-[0.48px]" />
           <HeroReveal lines={["MDE, COL"]} delay={0.28} className="font-bold text-[40px] leading-[0.9] text-white uppercase" />
@@ -240,7 +278,7 @@ export default function About() {
       </div>
 
       {/* Experience */}
-      <div className="px-4 sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
+      <div className="px-4 max-sm:pr-[100px] sm:px-[120px] mt-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p className="text-[12px] uppercase tracking-[0.48px]">Prior Experience</p>
           <p className="flex items-start font-bold text-[48px] leading-[1] tracking-[-2px] text-white">5</p>
@@ -259,7 +297,7 @@ export default function About() {
       </div>
 
       {/* Brands */}
-      <div className="px-4 sm:px-[120px] mt-[80px] pb-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
+      <div ref={brandsRef} className="px-4 max-sm:pr-[100px] sm:px-[120px] mt-[80px] pb-[80px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
           <p className="text-[12px] uppercase tracking-[0.48px]">Brands &amp; Organizations</p>
           <p className="flex items-start font-bold text-[48px] leading-[1] tracking-[-2px] text-white">22<span className="text-[20px] mt-[4px]">+</span></p>
@@ -274,6 +312,12 @@ export default function About() {
           </div>
         </div>
       </div>
+
+      {/* Closing logo */}
+      <div ref={closingLogoRef} className="px-4 max-sm:pr-[100px] sm:px-[120px]" style={{ paddingTop: 80, paddingBottom: isSmall ? 160 : 160 }}>
+        <GlitchLogo />
+      </div>
+      </div>{/* end z-[2] wrapper */}
     </>
   );
 
@@ -287,25 +331,28 @@ export default function About() {
         <img
           src={julianPhoto}
           alt="Julián Patiño"
-          className="absolute object-cover object-top pointer-events-none select-none hidden"
+          ref={heroImgRef}
+          className="object-cover object-top pointer-events-none select-none"
           style={{
+            position: "fixed",
             top: "40px",
             left: "50%",
             transform: "translateX(-50%)",
-            height: "220%",
+            height: "834px",
             width: "auto",
+            zIndex: 1,
             maskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
             WebkitMaskImage: "radial-gradient(ellipse 55% 80% at 50% 15%, black 20%, transparent 72%)",
           }}
         />
         <div className="w-[333px] relative z-10" />
-        <div className="w-[444px] relative z-10">
+        <div className="w-[444px] relative z-10 ml-[167px]">
           <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.1} className="font-['Avantt',sans-serif] font-bold text-[64px] leading-[0.86] text-white uppercase" />
         </div>
       </div>
 
       {/* Post-hero content */}
-      <div className="flex flex-col gap-[260px] xl:gap-[190px] pb-[120px]">
+      <div className="relative z-[2] flex flex-col gap-[260px] xl:gap-[190px] pb-[120px]">
 
         {/* Based on + Role/Bio row */}
         <div className="flex items-start" style={{ paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
@@ -315,7 +362,7 @@ export default function About() {
             <HeroReveal lines={["MDE, COL"]} delay={0.28} className="font-bold text-[56px] leading-[0.9] text-white uppercase" />
           </div>
           {/* Right — pt matches label height (12px) + gap (16px) to align heading with MDE, COL */}
-          <div className="flex flex-col gap-[24px] w-[444px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[28px]">
+          <div className="flex flex-col gap-[24px] w-[444px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[28px] ml-[167px]">
             <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
             <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.6] tracking-[-0.12px]">
               <SplitLines scroller={scrollRef} animationDelay={0} text={"Over the course of my career, I’ve worked on a wide range of projects — from early‑stage concept exploration to fully designed, ready-to-ship products."} />
@@ -339,7 +386,7 @@ export default function About() {
             <p className="flex items-start font-bold text-[56px] leading-[1] tracking-[-2px] text-white" data-scroll-fade>5</p>
           </div>
           {/* Right */}
-          <div className="flex flex-col w-[444px] font-['Avantt',sans-serif] text-[#eaeaea]">
+          <div className="flex flex-col w-[444px] font-['Avantt',sans-serif] text-[#eaeaea] ml-[167px]">
             {EXPERIENCE.map((item, i) => (
               <div key={i} data-scroll-fade className="py-5 flex flex-col gap-1">
                 <div className="flex justify-between items-start">
@@ -362,13 +409,18 @@ export default function About() {
             </p>
           </div>
           {/* Right */}
-          <div className="grid grid-cols-3 gap-x-[16px] gap-y-[24px] xl:gap-y-[40px] w-[444px]">
+          <div className="grid grid-cols-3 gap-x-[16px] gap-y-[24px] xl:gap-y-[40px] w-[444px] ml-[167px]">
             {BRANDS.map((brand, i) => (
               <div key={i} data-scroll-fade className="flex items-center justify-start h-[40px]">
                 <img src={brand.logo} alt={brand.name} className="w-[110px] h-[100px] object-contain object-left brightness-0 invert" />
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Closing logo */}
+        <div ref={closingLogoRef} style={{ paddingLeft: 256, paddingRight: 256, paddingTop: 80, paddingBottom: 80 }}>
+          <GlitchLogo />
         </div>
 
       </div>
@@ -383,7 +435,9 @@ export default function About() {
     >
       <DotGrid fixed />
       {isMobile ? mobileLayout : desktopLayout}
-      <SiteFooter theme="dark" onWorkClick={handleLogoClick} />
+      <div className="relative z-[2] bg-black">
+        <SiteFooter theme="dark" onWorkClick={handleLogoClick} />
+      </div>
     </div>
   );
 }
