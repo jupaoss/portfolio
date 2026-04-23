@@ -251,12 +251,13 @@ interface TitleRevealProps {
   title: string;
   platform: string;
   isMobile: boolean;
+  isTablet: boolean;
   /** false on initial load (parent timeline handles it); true on project switch */
   animate: boolean;
   stroke?: boolean;
 }
 
-function TitleReveal({ title, platform, isMobile, animate, stroke }: TitleRevealProps) {
+function TitleReveal({ title, platform, isMobile, isTablet, animate, stroke }: TitleRevealProps) {
   useLayoutEffect(() => {
     if (!animate) return;
     const ctx = gsap.context(() => {
@@ -288,8 +289,10 @@ function TitleReveal({ title, platform, isMobile, animate, stroke }: TitleReveal
         <p
           key={i}
           data-name={`project-title-word-${i}`}
-          className={`font-['Avantt',sans-serif] font-bold text-[#131313] leading-[0.86] m-0 ${
-            isMobile ? "text-[48px]" : "text-[64px]"
+          className={`font-['Avantt',sans-serif] font-bold text-[#131313] m-0 ${
+            isMobile || isTablet
+              ? "text-[48px] leading-[1.0]"
+              : "text-[64px] leading-[0.86]"
           }`}
           style={stroke ? { WebkitTextStroke: "0.5px #676767" } : undefined}
         >
@@ -650,6 +653,7 @@ const isMobile = screenW < 640;
               title={currentProject.title}
               platform={currentProject.platform}
               isMobile={isMobile}
+              isTablet={isTablet}
               animate={cardStackDone && (!isReturning || fromAbout)}
               stroke={currentProject.id === "carpooling-app"}
             />

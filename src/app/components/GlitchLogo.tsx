@@ -55,6 +55,8 @@ export function GlitchLogo({ className = "", style }: GlitchLogoProps) {
 
     let raf: number | null = null;
     let alive = true;
+    // Indirection so onEnter can restart the loop even though tick is defined inside setup()
+    let startLoop: (() => void) | null = null;
 
     // Mouse state lives outside setup() so handlers can be added synchronously
     const mouse = { x: 0, y: 0 };
@@ -68,6 +70,8 @@ export function GlitchLogo({ className = "", style }: GlitchLogoProps) {
       mouse.x = e.clientX - b.left; mouse.y = e.clientY - b.top;
       prev.x = mouse.x;             prev.y = mouse.y;
       vel.x = 0;                    vel.y = 0;
+      // Restart loop if it stopped while idle
+      if (!raf && alive) startLoop?.();
     };
     const onMove  = (e: MouseEvent) => {
       const b = wrap.getBoundingClientRect();
@@ -121,6 +125,9 @@ export function GlitchLogo({ className = "", style }: GlitchLogoProps) {
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, w, h);
 
+        // active = true while hovering OR while any tile is still settling back to rest
+        let active = hover;
+
         for (let row = 0; row < ROWS; row++) {
           for (let col = 0; col < COLS; col++) {
             const i   = row * COLS + col;
@@ -131,6 +138,10 @@ export function GlitchLogo({ className = "", style }: GlitchLogoProps) {
 
             offsets[i].x += (vel.x * force * MAX_PUSH - offsets[i].x) * EASE;
             offsets[i].y += (vel.y * force * MAX_PUSH - offsets[i].y) * EASE;
+
+            if (!active && (Math.abs(offsets[i].x) > 0.05 || Math.abs(offsets[i].y) > 0.05)) {
+              active = true;
+            }
 
             const ox = offsets[i].x;
             const oy = offsets[i].y;
@@ -150,9 +161,15 @@ export function GlitchLogo({ className = "", style }: GlitchLogoProps) {
           }
         }
 
-        raf = requestAnimationFrame(tick);
+        // Keep looping only while something is moving; stop when fully settled
+        if (active) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          raf = null;
+        }
       };
 
+      startLoop = () => { if (!raf && alive) raf = requestAnimationFrame(tick); };
       raf = requestAnimationFrame(tick);
     };
 
