@@ -123,6 +123,21 @@ export default function About() {
     return () => window.removeEventListener("resize", handler);
   }, []);
 
+  useLayoutEffect(() => {
+    const img = heroImgRef.current;
+    if (!img) return;
+    const ctx = gsap.context(() => {
+      gsap.set(img, { opacity: 0 });
+      gsap.to(img, {
+        opacity: 1,
+        duration: 1.5,
+        ease: "power2.out",
+        delay: 0.05,
+      });
+    });
+    return () => ctx.revert();
+  }, []);
+
   const handleLogoClick = () => {
     navigate("/", { state: { fromProjectId: projects[0].id, fromAbout: true, fromHeroBounds: { width: window.innerWidth, height: window.innerHeight } } });
   };
