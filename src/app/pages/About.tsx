@@ -130,9 +130,9 @@ export default function About() {
       gsap.set(img, { opacity: 0 });
       gsap.to(img, {
         opacity: 1,
-        duration: 1.5,
+        duration: 1.1,
         ease: "power2.out",
-        delay: 0.05,
+        delay: 0,
       });
     });
     return () => ctx.revert();
@@ -179,9 +179,10 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
-  // Fade hero image to 0 opacity as the trigger section enters the viewport.
-  // On small screens (≤640px) fade starts when the brands section appears;
-  // otherwise fade starts when the closing logo section appears.
+  // Fade hero image out as the trigger section enters the viewport.
+  // fromTo with explicit opacity:1 start ensures correctness regardless of
+  // initial animation timing. scrub:true gives 1:1 scroll tracking so the
+  // image reverses smoothly when scrolling back up.
   useEffect(() => {
     const scroller = scrollRef.current;
     const img = heroImgRef.current;
@@ -189,17 +190,20 @@ export default function About() {
     if (!scroller || !img || !trigger) return;
 
     const ctx = gsap.context(() => {
-      gsap.to(img, {
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger,
-          scroller,
-          start: "top 90%",
-          end: "top 30%",
-          scrub: 0.5,
-        },
-      });
+      gsap.fromTo(img,
+        { opacity: 1 },
+        {
+          opacity: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger,
+            scroller,
+            start: "top 100%",
+            end: "top 25%",
+            scrub: true,
+          },
+        }
+      );
     });
 
     return () => ctx.revert();
@@ -229,7 +233,7 @@ export default function About() {
               opacity: 1,
               duration: 0.65,
               ease: 'power2.out',
-              delay: isInit ? 2.8 + idx * 0.2 : idx * 0.15,
+              delay: isInit ? 3.1 + idx * 0.2 : idx * 0.15,
             });
           });
         },
@@ -265,7 +269,7 @@ export default function About() {
         />
         <div className="hidden sm:block sm:flex-1 relative z-10" />
         <div className="sm:flex-1 pb-[40px] relative z-10">
-          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.1} className="font-['Avantt',sans-serif] font-bold text-[56px] leading-[0.9] text-white uppercase" />
+          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.35} className="font-['Avantt',sans-serif] font-bold text-[56px] leading-[0.9] text-white uppercase" />
         </div>
       </div>
 
@@ -273,11 +277,11 @@ export default function About() {
       {/* Based on + Role/Bio */}
       <div className="px-4 max-sm:pr-[100px] sm:px-[120px] mt-[48px] flex flex-col sm:flex-row sm:gap-[80px] font-['Avantt',sans-serif] text-[#eaeaea]">
         <div className="w-full sm:flex-1 flex flex-col gap-4">
-          <HeroReveal lines={["Based on"]} delay={0.22} className="text-[12px] uppercase tracking-[0.48px]" />
-          <HeroReveal lines={["MDE, COL"]} delay={0.28} className="font-bold text-[40px] leading-[0.9] text-white uppercase" />
+          <HeroReveal lines={["Based on"]} delay={0.50} className="text-[12px] uppercase tracking-[0.48px]" />
+          <HeroReveal lines={["MDE, COL"]} delay={0.57} className="font-bold text-[40px] leading-[0.9] text-white uppercase" />
         </div>
         <div className="w-full sm:flex-1 flex flex-col gap-6 mt-[48px] sm:mt-0">
-          <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[32px] leading-[1.0] text-white uppercase" />
+          <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.70} className="font-['Avantt',sans-serif] font-bold text-[32px] leading-[1.0] text-white uppercase" />
           <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.5] tracking-[-0.12px]">
             <SplitLines scroller={scrollRef} animationDelay={0} text="During my career I've had the opportunity to work in projects that span from pure upstream concept work to ready to ship products." />
             <SplitLines scroller={scrollRef} animationDelay={0.9} text="I've also worked in UX/UI projects in different global agencies and startups focused on building innovative strategies and product engineering, where I've been involved in the entire building process." />
@@ -362,7 +366,7 @@ export default function About() {
         />
         <div className="w-[333px] relative z-10" />
         <div className="w-[444px] relative z-10 ml-[167px]">
-          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.1} className="font-['Avantt',sans-serif] font-bold text-[64px] leading-[0.86] text-white uppercase" />
+          <HeroReveal lines={["JULIÁN", "PATIÑO", "OSSA"]} delay={0.35} className="font-['Avantt',sans-serif] font-bold text-[64px] leading-[0.86] text-white uppercase" />
         </div>
       </div>
 
@@ -373,12 +377,12 @@ export default function About() {
         <div className="flex items-start" style={{ paddingLeft: 256, paddingRight: 256, gap: "clamp(80px, calc((100vw - 1024px) / (1280 - 1024) * (240 - 80) + 80px), 240px)" }}>
           {/* Left */}
           <div className="flex flex-col gap-[16px] w-[333px] font-['Avantt',sans-serif] text-[#eaeaea]">
-            <HeroReveal lines={["Based on"]} delay={0.22} className="text-[12px] uppercase tracking-[0.48px] font-medium" />
-            <HeroReveal lines={["MDE, COL"]} delay={0.28} className="font-bold text-[56px] leading-[0.9] text-white uppercase" />
+            <HeroReveal lines={["Based on"]} delay={0.50} className="text-[12px] uppercase tracking-[0.48px] font-medium" />
+            <HeroReveal lines={["MDE, COL"]} delay={0.57} className="font-bold text-[56px] leading-[0.9] text-white uppercase" />
           </div>
           {/* Right — pt matches label height (12px) + gap (16px) to align heading with MDE, COL */}
           <div className="flex flex-col gap-[24px] w-[444px] font-['Avantt',sans-serif] text-[#eaeaea] pt-[28px] ml-[167px]">
-            <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.42} className="font-['Avantt',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
+            <HeroReveal lines={["SOFTWARE &", "EXPERIENCE", "DESIGNER"]} delay={0.70} className="font-['Avantt',sans-serif] font-bold text-[40px] leading-[1.0] text-white uppercase" />
             <div className="flex flex-col gap-4 font-normal text-[12px] leading-[1.6] tracking-[-0.12px]">
               <SplitLines scroller={scrollRef} animationDelay={0} text={"Over the course of my career, I’ve worked on a wide range of projects — from early‑stage concept exploration to fully designed, ready-to-ship products."} />
               <SplitLines scroller={scrollRef} animationDelay={0.9} text="I’ve collaborated with global agencies and startups across UX and product design initiatives, helping shape strategies and build thoughtful, scalable experiences. Throughout these engagements, I’ve been involved across the full product lifecycle, working closely with cross-functional teams from discovery and definition to design and delivery." />
