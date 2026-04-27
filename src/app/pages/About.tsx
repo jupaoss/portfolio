@@ -180,9 +180,10 @@ export default function About() {
   }, []);
 
   // Fade hero image out as the trigger section enters the viewport.
-  // fromTo with explicit opacity:1 start ensures correctness regardless of
-  // initial animation timing. scrub:true gives 1:1 scroll tracking so the
-  // image reverses smoothly when scrolling back up.
+  // immediateRender:false prevents the "from" state from being applied on
+  // tween creation, avoiding a conflict with the entry animation that is
+  // still running at this point. invalidateOnRefresh:true ensures the
+  // trigger positions are recalculated after fonts/assets settle in production.
   useEffect(() => {
     const scroller = scrollRef.current;
     const img = heroImgRef.current;
@@ -191,22 +192,31 @@ export default function About() {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(img,
-        { opacity: 1 },
+        { opacity: 1, immediateRender: false },
         {
           opacity: 0,
           ease: "none",
           scrollTrigger: {
             trigger,
             scroller,
-            start: "top 100%",
+            start: "top bottom",
             end: "top 25%",
             scrub: true,
+            invalidateOnRefresh: true,
           },
         }
       );
     });
 
-    return () => ctx.revert();
+    // Re-calculate trigger positions once the layout has settled (fonts,
+    // remote assets) — this is the most common cause of production-only
+    // ScrollTrigger drift where the scrub snaps instead of interpolating.
+    const rafId = requestAnimationFrame(() => ScrollTrigger.refresh());
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      ctx.revert();
+    };
   }, [isMobile, isSmall]);
 
   // Animate bio list items: large init delay (wait for paragraphs) vs. small scroll delay
