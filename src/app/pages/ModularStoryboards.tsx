@@ -287,7 +287,7 @@ export default function ModularStoryboards() {
         <div className="flex flex-col gap-6 w-[70%]">
           <div className="flex flex-col gap-1">
             <p data-name="detail-text-line-0" className="text-[14px] uppercase font-semibold tracking-[0.48px]">My role</p>
-            <p data-name="detail-text-line-1" className="text-[12px] font-normal leading-[1.6] tracking-[-0.12px]">Design System Lead & Illustration Support</p>
+            <p data-name="detail-text-line-1" className="text-[12px] font-normal leading-[1.6] tracking-[-0.12px]">Design System Lead & Illustrator</p>
           </div>
           <div className="flex flex-col gap-3">
             <p data-name="detail-text-line-3" className="text-[14px] uppercase font-semibold tracking-[0.48px]">Description</p>
@@ -406,7 +406,7 @@ export default function ModularStoryboards() {
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] uppercase w-full">
             <p data-name="detail-text-line-0" className="font-semibold leading-[1.6]">My role</p>
           </div>
-          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal text-[12px] leading-[1.6] tracking-[-0.12px] w-full">Design System Lead & Illustration Support</p>
+          <p data-name="detail-text-line-1" className="font-['Avantt',sans-serif] font-normal text-[12px] leading-[1.6] tracking-[-0.12px] w-full">Design System Lead & Illustrator</p>
         </div>
         <div className="content-stretch flex flex-col gap-[16px] items-start w-[215px] text-black" data-name="team">
           <div className="flex flex-col font-['Avantt',sans-serif] font-medium justify-end leading-[0] text-[14px] uppercase w-full">
